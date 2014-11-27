@@ -6,6 +6,9 @@
 #
 #------------------------------------------------------------------------------
 
+# Load configuration
+source `dirname $0`/config.conf
+
 # Modules
 MODULES=
 
@@ -208,7 +211,7 @@ function push_arm() {
         exit 1
     fi
 
-	export PATH="$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$PATH"
+	export PATH="$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
 
 	# search compiler in the path, to fail now instead of later.
 	CC=$(which $TOOLCHAIN_PREFIX-gcc)
@@ -229,6 +232,9 @@ function push_arm() {
 	export STRIP="$TOOLCHAIN_PREFIX-strip --strip-unneeded"
 	export MAKE="make -j5"
 	export READELF="$TOOLCHAIN_PREFIX-readelf"
+
+  # export environment for Qt
+  export ANDROID_NDK_ROOT=$ANDROIDNDK
 
 	# This will need to be updated to support Python versions other than 2.7
 	export BUILDLIB_PATH="$BUILD_hostpython/build/lib.linux-`uname -m`-2.7/"
@@ -406,8 +412,8 @@ function run_prepare() {
 	echo "sdk.dir=$ANDROIDSDK" > $SRC_PATH/local.properties
 
 	# copy the initial blacklist in build
-	try cp -a $SRC_PATH/blacklist.txt $BUILD_PATH
-	try cp -a $SRC_PATH/whitelist.txt $BUILD_PATH
+	# try cp -a $SRC_PATH/blacklist.txt $BUILD_PATH
+	# try cp -a $SRC_PATH/whitelist.txt $BUILD_PATH
 
 	# check arm env
 	push_arm
