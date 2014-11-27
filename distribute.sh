@@ -528,6 +528,12 @@ function run_source_modules() {
 function run_get_packages() {
 	info "Run get packages"
 
+  if [ ! -d "$BUILD_PATH/tmp" ]; then
+    try mkdir $BUILD_PATH/tmp
+    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"   -O $BUILD_PATH/tmp/config.sub
+    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $BUILD_PATH/tmp/config.guess
+  fi
+
 	for module in $MODULES; do
 		# download dependencies for this module
 		# check if there is not an overload from environment
