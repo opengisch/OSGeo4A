@@ -1,0 +1,38 @@
+diff -rupN orig/qwtpolarconfig.pri new/qwtpolarconfig.pri
+--- orig/qwtpolarconfig.pri	2014-01-31 10:23:39.359290693 +0100
++++ new/qwtpolarconfig.pri	2014-11-28 00:19:26.999466172 +0100
+@@ -31,7 +31,7 @@ QWT_POLAR_INSTALL_LIBS      = $${QWT_POL
+ # Designer plugin
+ ######################################################################
+ 
+-QWT_POLAR_INSTALL_PLUGINS   = $${QWT_POLAR_INSTALL_PREFIX}/plugins/designer
++# QWT_POLAR_INSTALL_PLUGINS   = $${QWT_POLAR_INSTALL_PREFIX}/plugins/designer
+ # QWT_POLAR_INSTALL_PLUGINS   = $${QT_INSTALL_PREFIX}/plugins/designer
+ 
+ ######################################################################
+@@ -40,7 +40,7 @@ QWT_POLAR_INSTALL_PLUGINS   = $${QWT_POL
+ # it will be a static library.
+ ######################################################################
+ 
+-QWT_POLAR_CONFIG           += QwtPolarDll
++QWT_POLAR_CONFIG           += QwtPolarDll plugin
+ 
+ ######################################################################
+ # If you want to export a plot to a SVG document
+@@ -70,14 +70,14 @@ QWT_POLAR_INSTALL_FEATURES  = $${QWT_POL
+ # Otherwise you have to build it from the designer directory.
+ ######################################################################
+ 
+-QWT_POLAR_CONFIG     += QwtPolarDesigner
++# QWT_POLAR_CONFIG     += QwtPolarDesigner
+ 
+ ######################################################################
+ # If you want to auto build the examples, enable the line below
+ # Otherwise you have to build them from the examples directory.
+ ######################################################################
+ 
+-QWT_POLAR_CONFIG     += QwtPolarExamples
++# QWT_POLAR_CONFIG     += QwtPolarExamples
+ 
+ ######################################################################
+ # When Qt has been built as framework qmake wants 

@@ -42,6 +42,7 @@ function build_expat() {
 	push_arm
   printenv
   try $BUILD_expat/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try make install -j$CORES
 	pop_arm
 }
 
