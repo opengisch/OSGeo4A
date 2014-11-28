@@ -177,14 +177,14 @@ function push_arm() {
 	#export OFLAG="-Os"
 	#export OFLAG="-O2"
 
-	export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM"
+	export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$DIST_PATH/include"
 	if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
 		CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
 	fi
 	export CXXFLAGS="$CFLAGS"
 
 	# that could be done only for darwin platform, but it doesn't hurt.
-	export LDFLAGS="-lm"
+	export LDFLAGS="-lm -L$DIST_PATH/lib"
 
 	# this must be something depending of the API level of Android
 	PYPLATFORM=$($PYTHON -c 'from __future__ import print_function; import sys; print(sys.platform)')
@@ -211,7 +211,7 @@ function push_arm() {
         exit 1
     fi
 
-	export PATH="$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
+	export PATH="$DIST_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
 
 	# search compiler in the path, to fail now instead of later.
 	CC=$(which $TOOLCHAIN_PREFIX-gcc)
@@ -235,6 +235,8 @@ function push_arm() {
 
   # export environment for Qt
   export ANDROID_NDK_ROOT=$ANDROIDNDK
+  # and for cmake
+  export ANDROID_NDK=$ANDROIDNDK
 
 	# This will need to be updated to support Python versions other than 2.7
 	export BUILDLIB_PATH="$BUILD_hostpython/build/lib.linux-`uname -m`-2.7/"
@@ -357,8 +359,8 @@ function run_prepare() {
 	debug "API level set to $ANDROIDAPI"
 
 	export NDKPLATFORM="$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-arm"
-	export ARCH="armeabi"
-	#export ARCH="armeabi-v7a" # not tested yet.
+	#export ARCH="armeabi"
+	export ARCH="armeabi-v7a" # not tested yet.
 
 	info "Check mandatory tools"
 	# ensure that some tools are existing

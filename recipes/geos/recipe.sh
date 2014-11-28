@@ -42,7 +42,15 @@ function build_geos() {
   try cd $BUILD_PATH/geos/build
 	push_arm
   printenv
-  try $BUILD_geos/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+#  CXXFLAGS="${CXXFLAGS} -I${ANDROIDNDK}/sources/cxx-stl/gnu-libstdc++/4.9/include" \
+#  LDFLAGS="${LDFLAGS} -L${ANDROIDNDK}/sources/cxx-stl/gnu-libstdc++/4.9/armeabi-v7a" \
+#    try $BUILD_geos/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try cmake \
+    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \
+    $BUILD_geos
+  echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build/geos_svn_revision.h
+  # try make -j$CORES
   try make install -j$CORES
 	pop_arm
 }

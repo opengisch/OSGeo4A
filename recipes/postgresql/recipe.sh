@@ -4,7 +4,7 @@
 VERSION_postgresql=9.3.5
 
 # dependencies of this recipe
-DEPS_postgresql=()
+DEPS_postgresql=(iconv)
 
 # url of the package
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
@@ -42,7 +42,9 @@ function build_postgresql() {
 	push_arm
   printenv
   try $BUILD_postgresql/configure --prefix=$DIST_PATH --host=arm-linux-androideabi --without-readline
-  try make install -j$CORES
+  # sed -i "s|/\* #undef HAVE_SRANDOM \*/|#define HAVE_SRANDOM 1|" $BUILD_PATH/postgresql/build/src/include/pg_config.h
+  # sed -i "s|/\* #undef HAVE_RANDOM \*/|#define HAVE_RANDOM 1|" $BUILD_PATH/postgresql/build/src/include/pg_config.h
+  try make install -j$CORES -C src/interfaces/libpq
 	pop_arm
 }
 

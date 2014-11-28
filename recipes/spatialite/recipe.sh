@@ -4,7 +4,7 @@
 VERSION_spatialite=4.2.0
 
 # dependencies of this recipe
-DEPS_spatialite=()
+DEPS_spatialite=(sqlite proj iconv freexl geos)
 
 # url of the package
 URL_spatialite=http://www.gaia-gis.it/gaia-sins/libspatialite-${VERSION_spatialite}.tar.gz
@@ -28,8 +28,8 @@ function prebuild_spatialite() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_spatialite/conftools
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_spatialite/conftools
+  try cp $BUILD_PATH/tmp/config.sub $BUILD_spatialite
+  try cp $BUILD_PATH/tmp/config.guess $BUILD_spatialite
   try patch -p1 < $RECIPE_spatialite/patches/spatialite.patch
 
   touch .patched
@@ -41,7 +41,13 @@ function build_spatialite() {
   try cd $BUILD_PATH/spatialite/build
 	push_arm
   printenv
-  try $BUILD_spatialite/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  CFLAGS="${CFLAGS} -lc -lm -lgeos -lgeos_c" \
+  LDFLAGS="${LDFLAGS} -llog" \
+    try $BUILD_spatialite/configure \
+    --prefix=$DIST_PATH \
+    --host=arm-linux-androideabi \
+    --with-geosconfig=$DIST_PATH/bin/geos-config \
+    --enable-libxml2=no
   try make install -j$CORES
 	pop_arm
 }
