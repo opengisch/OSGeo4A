@@ -85,6 +85,7 @@ function build_qgis() {
     -DSPATIALINDEX_LIBRARY=$DIST_PATH/lib/libspatialindex.so \
     -DWITH_APIDOC=OFF \
     -DWITH_ASTYLE=OFF \
+    -DANDROID_STL=gnustl_shared \
     $BUILD_qgis
   echo '#define qgis_SVN_REVISION 0' > $BUILD_PATH/qgis/build/qgis_svn_revision.h
   # try make -j$CORES
