@@ -387,7 +387,7 @@ function run_prepare() {
 		error "The distribution $DIST_PATH already exist"
 		error "Press a key to remove it, or Control + C to abort."
 		read
-		try rm -rf "$DIST_PATH"
+		# try rm -rf "$DIST_PATH"
 	fi
 	try mkdir -p "$DIST_PATH"
 
