@@ -4,8 +4,7 @@
 VERSION_qgis=2.6.0
 
 # dependencies of this recipe
-# DEPS_qgis=(gdal qwt qwtpolar qscintilla spatialite spatialindex expat)
-DEPS_qgis=(gsl)
+DEPS_qgis=(gdal qwt qwtpolar qscintilla spatialite spatialindex expat gsl)
 
 # url of the package
 URL_qgis=https://github.com/m-kuhn/QGIS/archive/android-2_6.tar.gz
