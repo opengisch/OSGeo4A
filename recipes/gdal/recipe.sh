@@ -36,12 +36,17 @@ function prebuild_gdal() {
 
 # function called to build the source code
 function build_gdal() {
-  try mkdir -p $BUILD_PATH/gdal/build
-  try cd $BUILD_PATH/gdal/build
+  # try mkdir -p $BUILD_PATH/gdal/build
+  try cd $BUILD_gdal
 	push_arm
   printenv
-  try $BUILD_gdal/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
-  try make -j$CORES
+  LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
+    try ./configure \
+    --prefix=$DIST_PATH \
+    --host=arm-linux-androideabi \
+    --with-sqlite3=$DIST_PATH \
+    --with-geos=$DIST_PATH/bin/geos-config
+  try make #-j$CORES
   try make install -j$CORES
 	pop_arm
 }
