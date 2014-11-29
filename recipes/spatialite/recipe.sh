@@ -41,8 +41,8 @@ function build_spatialite() {
   try cd $BUILD_PATH/spatialite/build
 	push_arm
   printenv
-  CFLAGS="${CFLAGS} -lc -lm -lgeos -lgeos_c" \
-  LDFLAGS="${LDFLAGS} -llog" \
+  CFLAGS="${CFLAGS}" \
+  LDFLAGS="${LDFLAGS} -lgeos -lgeos_c -lstdc++ -lsupc++ -llog" \
     try $BUILD_spatialite/configure \
     --prefix=$DIST_PATH \
     --host=arm-linux-androideabi \
