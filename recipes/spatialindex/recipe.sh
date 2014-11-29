@@ -28,20 +28,20 @@ function prebuild_spatialindex() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_spatialindex/conftools
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_spatialindex/conftools
   try patch -p1 < $RECIPE_spatialindex/patches/spatialindex.patch
-
+  try cp $BUILD_PATH/tmp/config.sub $BUILD_spatialindex
+  try cp $BUILD_PATH/tmp/config.guess $BUILD_spatialindex
   touch .patched
 }
 
 # function called to build the source code
 function build_spatialindex() {
-  try mkdir -p $BUILD_PATH/spatialindex/build
-  try cd $BUILD_PATH/spatialindex/build
+  # try mkdir -p $BUILD_PATH/spatialindex/build
+  # try cd $BUILD_PATH/spatialindex/build
+  cd $BUILD_spatialindex
 	push_arm
-  printenv
-  try $BUILD_spatialindex/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
+    try $BUILD_spatialindex/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try make install -j$CORES
 	pop_arm
 }

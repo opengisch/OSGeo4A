@@ -46,8 +46,8 @@ function build_qscintilla() {
   test -d $DIST_PATH/lib || mkdir -p $DIST_PATH/lib
 
   # install
-  export INSTALL_ROOT=$DIST_PATH
-  try make install
+  INSTALL_ROOT=$DIST_PATH \
+    try make install
 
 	pop_arm
 }

@@ -37,11 +37,11 @@ function prebuild_gsl() {
 
 # function called to build the source code
 function build_gsl() {
-  try mkdir -p $BUILD_PATH/gsl/build
-  try cd $BUILD_PATH/gsl/build
+  mkdir $BUILD_PATH/gsl/build
+  cd $BUILD_PATH/gsl/build
 	push_arm
-  printenv
   try $BUILD_gsl/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try make -j$CORES
   try make install -j$CORES
 	pop_arm
 }
