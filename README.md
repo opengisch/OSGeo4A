@@ -3,6 +3,8 @@ OSGeo4A
 
 This provides a set of scripts to build opensource geo tools for android.
 
+This is *Experimental*
+
 Build instructions
 -----------
 
