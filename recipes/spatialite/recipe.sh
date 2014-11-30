@@ -40,7 +40,6 @@ function build_spatialite() {
   try mkdir -p $BUILD_PATH/spatialite/build
   try cd $BUILD_PATH/spatialite/build
 	push_arm
-  printenv
   CFLAGS="${CFLAGS}" \
   LDFLAGS="${LDFLAGS} -lgeos -lgeos_c -lstdc++ -lsupc++ -llog" \
     try $BUILD_spatialite/configure \

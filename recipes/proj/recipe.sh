@@ -40,7 +40,6 @@ function build_proj() {
   try mkdir -p $BUILD_PATH/proj/build
   try cd $BUILD_PATH/proj/build
 	push_arm
-  printenv
   try $BUILD_proj/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try make install -j$CORES
 	pop_arm

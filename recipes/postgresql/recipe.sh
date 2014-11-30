@@ -40,10 +40,7 @@ function build_postgresql() {
   try mkdir -p $BUILD_PATH/postgresql/build
   try cd $BUILD_PATH/postgresql/build
 	push_arm
-  printenv
   try $BUILD_postgresql/configure --prefix=$DIST_PATH --host=arm-linux-androideabi --without-readline
-  # sed -i "s|/\* #undef HAVE_SRANDOM \*/|#define HAVE_SRANDOM 1|" $BUILD_PATH/postgresql/build/src/include/pg_config.h
-  # sed -i "s|/\* #undef HAVE_RANDOM \*/|#define HAVE_RANDOM 1|" $BUILD_PATH/postgresql/build/src/include/pg_config.h
   try make install -j$CORES -C src/interfaces/libpq
 	pop_arm
 }

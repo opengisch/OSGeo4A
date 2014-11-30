@@ -40,7 +40,6 @@ function build_gdal() {
   # try mkdir -p $BUILD_PATH/gdal/build
   try cd $BUILD_gdal
 	push_arm
-  printenv
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
     try ./configure \
     --prefix=$DIST_PATH \

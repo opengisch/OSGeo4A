@@ -39,7 +39,6 @@ function build_freexl() {
   try mkdir -p $BUILD_PATH/freexl/build
   try cd $BUILD_PATH/freexl/build
 	push_arm
-  printenv
   try $BUILD_freexl/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try make install -j$CORES
 	pop_arm

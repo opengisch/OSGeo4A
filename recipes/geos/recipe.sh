@@ -41,10 +41,6 @@ function build_geos() {
   try mkdir -p $BUILD_PATH/geos/build
   try cd $BUILD_PATH/geos/build
 	push_arm
-  printenv
-#  CXXFLAGS="${CXXFLAGS} -I${ANDROIDNDK}/sources/cxx-stl/gnu-libstdc++/4.9/include" \
-#  LDFLAGS="${LDFLAGS} -L${ANDROIDNDK}/sources/cxx-stl/gnu-libstdc++/4.9/armeabi-v7a" \
-#    try $BUILD_geos/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \

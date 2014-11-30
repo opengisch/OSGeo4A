@@ -40,7 +40,6 @@ function build_sqlite() {
   try mkdir -p $BUILD_PATH/sqlite/build
   try cd $BUILD_PATH/sqlite/build
 	push_arm
-  printenv
   try $BUILD_sqlite/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try make install -j$CORES
 	pop_arm
