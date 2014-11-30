@@ -1,0 +1,8 @@
+build
+dist
+.packages
+src/apk/default.properties
+src/apk/local.properties
+.deps
+.optional-deps
+config.conf
