@@ -28,12 +28,11 @@ function prebuild_iconv() {
     return
   fi
 
-  patch -p1 < $RECIPES_PATH/iconv/patches/libiconv.path
+  try patch -p1 < $RECIPES_PATH/iconv/patches/libiconv.patch
   try cp $BUILD_PATH/tmp/config.sub $BUILD_iconv/build-aux
   try cp $BUILD_PATH/tmp/config.guess $BUILD_iconv/build-aux
   try cp $BUILD_PATH/tmp/config.sub $BUILD_iconv/libcharset/build-aux
   try cp $BUILD_PATH/tmp/config.guess $BUILD_iconv/libcharset/build-aux
-  try patch -p1 < $RECIPE_iconv/patches/iconv.patch
 
   touch .patched
 }
@@ -43,7 +42,6 @@ function build_iconv() {
   try mkdir -p $BUILD_PATH/iconv/build
   try cd $BUILD_PATH/iconv/build
 	push_arm
-  printenv
   try $BUILD_iconv/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try make install -j$CORES
 	pop_arm
