@@ -19,9 +19,9 @@
       <item>Qt5PrintSupport</item>
       <item>Qt5Concurrent</item>
       <item>Qt5Positioning</item>
-      <item>gnustl_shared</item>
     </array>
     <array name="bundled_libs">
+      <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
       <item>geos_c</item>

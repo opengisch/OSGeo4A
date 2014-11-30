@@ -21,9 +21,9 @@
       <item>Qt5Positioning</item>
       <item>Qt5Qml</item>
       <item>Qt5Quick</item>
-      <item>gnustl_shared</item>
     </array>
     <array name="bundled_libs">
+      <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
       <item>geos_c</item>
