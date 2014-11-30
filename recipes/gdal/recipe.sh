@@ -30,6 +30,7 @@ function prebuild_gdal() {
 
   try cp $BUILD_PATH/tmp/config.sub $BUILD_gdal
   try cp $BUILD_PATH/tmp/config.guess $BUILD_gdal
+  try patch -p1 < $RECIPE_gdal/patches/gdal.patch
 
   touch .patched
 }

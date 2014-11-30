@@ -5,6 +5,7 @@ VERSION_qgis=2.6.0
 
 # dependencies of this recipe
 DEPS_qgis=(gdal qwt qwtpolar qscintilla spatialite spatialindex expat gsl)
+# DEPS_qgis=()
 
 # url of the package
 URL_qgis=https://github.com/m-kuhn/QGIS/archive/android-2_6.tar.gz
@@ -41,10 +42,6 @@ function build_qgis() {
   try mkdir -p $BUILD_PATH/qgis/build
   try cd $BUILD_PATH/qgis/build
 	push_arm
-  printenv
-#  CXXFLAGS="${CXXFLAGS} -I${ANDROIDNDK}/sources/cxx-stl/gnu-libstdc++/4.9/include" \
-#  LDFLAGS="${LDFLAGS} -L${ANDROIDNDK}/sources/cxx-stl/gnu-libstdc++/4.9/armeabi-v7a" \
-#    try $BUILD_qgis/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
   try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DFLEX_EXECUTABLE=/usr/bin/flex \

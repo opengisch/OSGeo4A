@@ -49,6 +49,7 @@ function build_geos() {
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \
     -DANDROID_STL=gnustl_shared \
+    -DANDROID=ON \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build/geos_svn_revision.h
   # try make -j$CORES

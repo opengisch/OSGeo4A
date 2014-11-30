@@ -1,42 +1,46 @@
---- a/configure
-+++ b/configure
-@@ -9966,8 +9966,17 @@
-   version_type=linux
-   need_lib_prefix=no
-   need_version=no
--  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
--  soname_spec='${libname}${release}${shared_ext}$major'
-+  case $host_os in
-+  # This must be Linux Android ELF.
-+  linux-android*)
-+    library_names_spec='$libname${shared_ext}'
-+    soname_spec='${libname}${shared_ext}'
-+    ;;
-+  *)  
-+    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
-+    soname_spec='${libname}${release}${shared_ext}$major'
-+    ;;
-+  esac
-   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
-   shlibpath_var=LD_LIBRARY_PATH
-   shlibpath_overrides_runpath=no
-@@ -14350,8 +14359,17 @@
-   version_type=linux
-   need_lib_prefix=no
-   need_version=no
--  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
--  soname_spec='${libname}${release}${shared_ext}$major'
-+  case $host_os in
-+  # This must be Linux Android ELF.
-+  linux-android*)
-+    library_names_spec='$libname${shared_ext}'
-+    soname_spec='${libname}${shared_ext}'
-+    ;;
-+  *)  
-+    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
-+    soname_spec='${libname}${release}${shared_ext}$major'
-+    ;;
-+  esac
-   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
-   shlibpath_var=LD_LIBRARY_PATH
-   shlibpath_overrides_runpath=no
+diff -rupN orig/capi/CMakeLists.txt new/capi/CMakeLists.txt
+--- orig/capi/CMakeLists.txt	2014-11-30 15:49:25.078555486 +0100
++++ new/capi/CMakeLists.txt	2014-11-30 16:06:19.134887151 +0100
+@@ -33,11 +33,17 @@ if(NOT GEOS_ENABLE_MACOSX_FRAMEWORK)
+       VERSION ${CAPI_VERSION}
+       CLEAN_DIRECT_OUTPUT 1)
+   else()
+-    set_target_properties(geos_c
+-      PROPERTIES
+-      VERSION ${CAPI_VERSION}
+-      SOVERSION ${CAPI_SOVERSION}
+-      CLEAN_DIRECT_OUTPUT 1)
++    if (ANDROID)
++      set_target_properties(geos_c
++        PROPERTIES
++        CLEAN_DIRECT_OUTPUT 1)
++    else()
++      set_target_properties(geos_c
++        PROPERTIES
++        VERSION ${CAPI_VERSION}
++        SOVERSION ${CAPI_SOVERSION}
++        CLEAN_DIRECT_OUTPUT 1)
++    endif()
+   endif()
+ 
+ endif()
+Binary files orig/libs/armeabi-v7a/libgnustl_shared.so and new/libs/armeabi-v7a/libgnustl_shared.so differ
+diff -rupN orig/src/CMakeLists.txt new/src/CMakeLists.txt
+--- orig/src/CMakeLists.txt	2014-11-30 15:49:25.064555581 +0100
++++ new/src/CMakeLists.txt	2014-11-30 16:08:50.433915455 +0100
+@@ -67,9 +66,14 @@ else()
+   set_target_properties(geos
+     PROPERTIES
+     DEFINE_SYMBOL GEOS_DLL_EXPORT
+-    VERSION ${VERSION}
+     CLEAN_DIRECT_OUTPUT 1)
+ 
++  if(NOT ANDROID)
++    set_target_properties(geos
++      VERSION ${VERSION}
++    )
++  endif()
++
+   set_target_properties(geos-static
+     PROPERTIES
+     OUTPUT_NAME "geos"
