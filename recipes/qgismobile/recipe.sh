@@ -4,8 +4,7 @@
 VERSION_qgismobile=2.6.0
 
 # dependencies of this recipe
-# DEPS_qgismobile=(qgis)
-DEPS_qgismobile=()
+DEPS_qgismobile=(qgis)
 
 # url of the package
 URL_qgismobile=https://github.com/opengis-ch/QGIS-Mobile/archive/master.tar.gz
