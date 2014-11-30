@@ -4,7 +4,7 @@
 VERSION_spatialite=4.2.0
 
 # dependencies of this recipe
-DEPS_spatialite=(sqlite proj iconv freexl geos)
+DEPS_spatialite=(sqlite3 proj iconv freexl geos)
 
 # url of the package
 URL_spatialite=http://www.gaia-gis.it/gaia-sins/libspatialite-${VERSION_spatialite}.tar.gz
