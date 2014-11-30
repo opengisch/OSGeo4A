@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <array name="qt_sources">
+      <!-- Qt5.3 Libs     -->
+      <item>https://download.qt-project.org/ministro/android/qt5/qt-5.3</item>
+    </array>
+    <string name="repository">default</string>
+    <array name="qt_libs">
+      <item>Qt5Core</item>
+      <item>Qt5Gui</item>
+      <item>Qt5Widgets</item>
+      <item>Qt5Sql</item>
+      <item>Qt5Xml</item>
+      <item>Qt5Network</item>
+      <item>Qt5Sensors</item>
+      <item>Qt5OpenGL</item>
+      <item>Qt5Svg</item>
+      <item>Qt5Script</item>
+      <item>Qt5PrintSupport</item>
+      <item>Qt5Concurrent</item>
+      <item>Qt5Positioning</item>
+      <item>gnustl_shared</item>
+    </array>
+    <array name="bundled_libs">
+      <item>expat</item>
+      <item>geos</item>
+      <item>geos_c</item>
+      <item>gslcblas</item>
+      <item>sqlite3</item>
+      <item>charset</item>
+      <item>iconv</item>
+      <item>freexl</item>
+      <item>gdal</item>
+      <item>proj</item>
+      <item>spatialindex</item>
+      <item>qscintilla2</item>
+      <item>qwt</item>
+      <item>qwtpolar</item>
+      <item>pq</item>
+      <item>spatialite</item>
+
+      <item>qgis_core</item>
+      <item>qgis_gui</item>
+      <item>qgis_analysis</item>
+      <item>qgis_networkanalysis</item>
+    </array>
+  </resources>
