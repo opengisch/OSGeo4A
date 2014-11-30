@@ -780,10 +780,20 @@ function run_pymodules_install() {
 function run_distribute() {
 	info "Run distribute"
 
+	if [ "X$LAYOUT" == "X" ]; then
+    export LAYOUT="default"
+  fi
+
+  if [ ! -d "$ROOT_PATH/layouts/$LAYOUT" ]; then
+			error "Layout $LAYOUT not found. Specify with -a or create a soft link with the name default in the layouts folder."
+			exit -1
+  fi
+
+
 	debug "Create initial layout"
   try cp $ROOT_PATH/src/apk $DIST_PATH/ -r
 	debug "Create customized layout"
-  try cp -r $ROOT_PATH/layouts/qgis-debug/* $DIST_PATH/apk
+  try cp -r $ROOT_PATH/layouts/$LAYOUT/* $DIST_PATH/apk
   try cp -r $DIST_PATH/files $DIST_PATH/apk/assets
   try cd $DIST_PATH/apk
 
@@ -897,7 +907,7 @@ function arm_deduplicate() {
 
 
 # Do the build
-while getopts ":hCvlfxm:u:d:s" opt; do
+while getopts ":hCvlfxm:u:d:s:a" opt; do
 	case $opt in
 		h)
 			usage
@@ -918,6 +928,9 @@ while getopts ":hCvlfxm:u:d:s" opt; do
 			pop_arm
 			exit 0
 			;;
+    a)
+      LAYOUT="$OPTARG"
+      ;;
 		m)
 			MODULES="$OPTARG"
 			;;
