@@ -30,6 +30,7 @@ function prebuild_freexl() {
 
   try cp $BUILD_PATH/tmp/config.sub $BUILD_freexl
   try cp $BUILD_PATH/tmp/config.guess $BUILD_freexl
+  try patch -p1 < $RECIPE_freexl/patches/freexl.patch
 
   touch .patched
 }
