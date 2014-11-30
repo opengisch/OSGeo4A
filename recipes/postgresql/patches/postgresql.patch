@@ -1,0 +1,16 @@
+diff -rupN orig/src/port/crypt.c new/src/port/crypt.c
+--- orig/src/port/crypt.c	2014-11-30 22:50:43.186268913 +0100
++++ new/src/port/crypt.c	2014-11-30 22:51:47.251821034 +0100
+@@ -84,12 +84,6 @@ static int	des_cipher(const char *in, ch
+ #endif
+ 
+ /*
+- * define "B64" to be the declaration for a 64 bit integer.
+- * XXX this feature is currently unused, see "endian" comment below.
+- */
+-#define B64 __int64
+-
+-/*
+  * define "LARGEDATA" to get faster permutations, by using about 72 kilobytes
+  * of lookup tables.  This speeds up des_setkey() and des_cipher(), but has
+  * little effect on crypt().

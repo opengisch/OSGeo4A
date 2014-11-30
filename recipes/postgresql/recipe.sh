@@ -30,7 +30,7 @@ function prebuild_postgresql() {
 
   try cp $BUILD_PATH/tmp/config.sub $BUILD_postgresql/conftools
   try cp $BUILD_PATH/tmp/config.guess $BUILD_postgresql/conftools
-  try patch -p1 < $RECIPE_postgresql/patches/postgresql.patch
+  try patch -p1 < $RECIPE_postgresql/patches/libpq.patch
 
   touch .patched
 }
@@ -41,7 +41,14 @@ function build_postgresql() {
   try cd $BUILD_PATH/postgresql/build
 	push_arm
   try $BUILD_postgresql/configure --prefix=$DIST_PATH --host=arm-linux-androideabi --without-readline
-  try make install -j$CORES -C src/interfaces/libpq
+  try make -j$CORES -C src/interfaces/libpq
+
+  #simulate make install
+  echo "installing libpq"
+  try cp -v $BUILD_postgresql/src/include/postgres_ext.h $DIST_PATH/include
+  try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $DIST_PATH/include
+  try cp -v $BUILD_PATH/postgresql/build/src/include/pg_config_ext.h $DIST_PATH/include/
+  try cp -v $BUILD_PATH/postgresql/build/src/interfaces/libpq/libpq.so $DIST_PATH/lib/
 	pop_arm
 }
 

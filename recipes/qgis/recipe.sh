@@ -4,7 +4,7 @@
 VERSION_qgis=2.6.0
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qwt qwtpolar qscintilla spatialite spatialindex expat gsl)
+DEPS_qgis=(gdal qwt qwtpolar qscintilla spatialite spatialindex expat gsl postgresql)
 # DEPS_qgis=()
 
 # url of the package
@@ -59,6 +59,10 @@ function build_qgis() {
     -DICONV_LIBRARY=$DIST_PATH/lib/libiconv.so \
     -DSQLITE3_INCLUDE_DIR=$DIST_PATH/include \
     -DSQLITE3_LIBRARY=$DIST_PATH/lib/libsqlite3.so \
+    -DPOSTGRES_CONFIG= \
+    -DPOSTGRES_CONFIG_PREFER_PATH= \
+    -DPOSTGRES_INCLUDE_DIR=$DIST_PATH/include \
+    -DPOSTGRES_LIBRARY=$DIST_PATH/lib/libpq.so \
     -DWITH_BINDINGS=OFF \
     -DWITH_INTERNAL_SPATIALITE=OFF \
     -DWITH_GRASS=OFF \

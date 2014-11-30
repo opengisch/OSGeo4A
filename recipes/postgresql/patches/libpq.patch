@@ -1,0 +1,42 @@
+--- a/src/Makefile.shlib
++++ b/src/Makefile.shlib
+@@ -243,7 +243,13 @@
+ ifeq ($(PORTNAME), linux)
+   LINK.shared		= $(COMPILER) -shared
+   ifdef soname
+-    LINK.shared		+= -Wl,-soname,$(soname)
++    ifeq (linux-android,$(findstring linux-android,$(host_os)))
++        #crosscompiling for android needs to create unvesioned libs
++        shlib		= lib$(NAME)$(DLSUFFIX)
++        LINK.shared		+= -Wl,-soname,lib$(NAME)$(DLSUFFIX)
++    else
++        LINK.shared		+= -Wl,-soname,$(soname)
++    endif
+   endif
+   BUILD.exports		= ( echo '{ global:'; $(AWK) '/^[^\#]/ {printf "%s;\n",$$1}' $<; echo ' local: *; };' ) >$@
+   exports_file		= $(SHLIB_EXPORTS:%.txt=%.list)
+@@ -251,6 +257,7 @@
+     LINK.shared		+= -Wl,--version-script=$(exports_file)
+   endif
+ endif
++
+ 
+ ifeq ($(PORTNAME), solaris)
+   ifeq ($(GCC), yes)
+
+diff --git a/src/port/crypt.c b/src/port/crypt.c
+index 85b98c5..416c509 100644
+--- a/src/port/crypt.c
++++ b/src/port/crypt.c
+@@ -87,7 +87,10 @@ static int	des_cipher(const char *in, char *out, long salt, int num_iter);
+  * define "B64" to be the declaration for a 64 bit integer.
+  * XXX this feature is currently unused, see "endian" comment below.
+  */
+-#define B64 __int64
++//to avoid crypt.c:237: error: expected specifier-qualifier-list before '__int64' when cross compiling for android
++#ifndef ANDROID
++    #define B64 __int64
++#endif
+ 
+ /*
+  * define "LARGEDATA" to get faster permutations, by using about 72 kilobytes
