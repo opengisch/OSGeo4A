@@ -838,7 +838,7 @@ function run_distribute() {
 
 	debug "Strip libraries"
 	push_arm
-	try find "$DIST_PATH"/private "$DIST_PATH"/apk/libs -iname '*.so' -exec $STRIP {} \;
+	try find "$DIST_PATH"/apk/libs -iname '*.so' -exec $STRIP {} \;
 	pop_arm
 }
 
