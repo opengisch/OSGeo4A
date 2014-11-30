@@ -29,11 +29,6 @@ function prebuild_qgis() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_qgis
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_qgis
-  try patch -p1 < $RECIPE_qgis/patches/qgis.patch
-  try patch -p1 < $RECIPE_qgis/patches/qgis_std_nan.patch
-
   touch .patched
 }
 
@@ -84,8 +79,7 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DANDROID_STL=gnustl_shared \
     $BUILD_qgis
-  echo '#define qgis_SVN_REVISION 0' > $BUILD_PATH/qgis/build/qgis_svn_revision.h
-  # try make -j$CORES
+  try make -j$CORES
   try make install -j$CORES
 	pop_arm
 }
