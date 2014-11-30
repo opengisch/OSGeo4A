@@ -411,8 +411,8 @@ function run_prepare() {
 	test -d $LIBLINK_PATH || mkdir -p $LIBLINK_PATH
 
 	# create initial files
-	echo "target=android-$ANDROIDAPI" > $SRC_PATH/default.properties
-	echo "sdk.dir=$ANDROIDSDK" > $SRC_PATH/local.properties
+	echo "target=android-$ANDROIDAPI" > $SRC_PATH/apk/project.properties
+	echo "sdk.dir=$ANDROIDSDK" > $SRC_PATH/apk/local.properties
 
 	# copy the initial blacklist in build
 	# try cp -a $SRC_PATH/blacklist.txt $BUILD_PATH
@@ -759,7 +759,7 @@ function run_pymodules_install() {
 			exit -1
 		fi
 	done
-	
+
 	debug "Check if virtualenv is existing"
 	if [ ! -d venv ]; then
 		debug "Installing virtualenv"
@@ -780,66 +780,72 @@ function run_pymodules_install() {
 function run_distribute() {
 	info "Run distribute"
 
-	cd "$DIST_PATH"
-
 	debug "Create initial layout"
-	try mkdir assets bin private res templates
+  try cp $ROOT_PATH/src/apk $DIST_PATH/ -r
+	debug "Create customized layout"
+  try cp -r $ROOT_PATH/layouts/qgis-debug/* $DIST_PATH/apk
+  try cp -r $DIST_PATH/files $DIST_PATH/apk/assets
+  try cd $DIST_PATH/apk
 
-	debug "Copy default files"
-	try cp -a $SRC_PATH/default.properties .
-	try cp -a $SRC_PATH/local.properties .
-	try cp -a $SRC_PATH/build.py .
-	try cp -a $SRC_PATH/buildlib .
-	try cp -a $SRC_PATH/src .
-	try cp -a $SRC_PATH/templates .
-	try cp -a $SRC_PATH/res .
-	try cp -a $BUILD_PATH/blacklist.txt .
-	try cp -a $BUILD_PATH/whitelist.txt .
+#	try cp -a $SRC_PATH/default.properties .
+#	try cp -a $SRC_PATH/local.properties .
+#	try cp -a $SRC_PATH/build.py .
+#	try cp -a $SRC_PATH/buildlib .
+#	try cp -a $SRC_PATH/src .
+#	try cp -a $SRC_PATH/templates .
+#	try cp -a $SRC_PATH/res .
+#	try cp -a $BUILD_PATH/blacklist.txt .
+#	try cp -a $BUILD_PATH/whitelist.txt .
 
-	debug "Copy python distribution"
-	$HOSTPYTHON -OO -m compileall $BUILD_PATH/python-install
-	try cp -a $BUILD_PATH/python-install .
+#	debug "Copy python distribution"
+#	$HOSTPYTHON -OO -m compileall $BUILD_PATH/python-install
+#	try cp -a $BUILD_PATH/python-install .
 
 	debug "Copy libs"
 	try mkdir -p libs/$ARCH
-	try cp -a $BUILD_PATH/libs/* libs/$ARCH/
+	try cp -aL ../lib/*.so libs/$ARCH/
 
-	debug "Copy java files from various libs"
-	cp -a $BUILD_PATH/java/* src
+#	debug "Copy java files from various libs"
+#	cp -a $BUILD_PATH/java/* src
 
-	debug "Fill private directory"
-	try cp -a python-install/lib private/
-	try mkdir -p private/include/python2.7
-	
-	if [ "$COPYLIBS" == "1" ]; then
-		if [ -s "libs/$ARCH/copylibs" ]; then
-			try sh -c "cat libs/$ARCH/copylibs | xargs -d'\n' cp -t private/"
-		fi
-	else
-		try mv libs/$ARCH/libpymodules.so private/
-	fi
-	try cp python-install/include/python2.7/pyconfig.h private/include/python2.7/
+#	debug "Fill private directory"
+#	try cp -a python-install/lib private/
+#	try mkdir -p private/include/python2.7
 
-	debug "Reduce private directory from unwanted files"
-	try rm -f "$DIST_PATH"/private/lib/libpython2.7.so
-	try rm -rf "$DIST_PATH"/private/lib/pkgconfig
-	try cd "$DIST_PATH"/private/lib/python2.7
-	try find . | grep -E '*\.(py|pyc|so\.o|so\.a|so\.libs)$' | xargs rm
+#	if [ "$COPYLIBS" == "1" ]; then
+#		if [ -s "libs/$ARCH/copylibs" ]; then
+#			try sh -c "cat libs/$ARCH/copylibs | xargs -d'\n' cp -t private/"
+#		fi
+#	else
+#		try mv libs/$ARCH/libpymodules.so private/
+#	fi
+#	try cp python-install/include/python2.7/pyconfig.h private/include/python2.7/
+
+#	debug "Reduce private directory from unwanted files"
+#	try rm -f "$DIST_PATH"/private/lib/libpython2.7.so
+#	try rm -rf "$DIST_PATH"/private/lib/pkgconfig
+#	try cd "$DIST_PATH"/private/lib/python2.7
+#	try find . | grep -E '*\.(py|pyc|so\.o|so\.a|so\.libs)$' | xargs rm
 
 	# we are sure that all of theses will be never used on android (well...)
-	try rm -rf ctypes
-	try rm -rf lib2to3
-	try rm -rf idlelib
-	try rm -rf config/libpython*.a
-	try rm -rf config/python.o
-	try rm -rf lib-dynload/_ctypes_test.so
-	try rm -rf lib-dynload/_testcapi.so
+#	try rm -rf ctypes
+#	try rm -rf lib2to3
+#	try rm -rf idlelib
+#	try rm -rf config/libpython*.a
+#	try rm -rf config/python.o
+#	try rm -rf lib-dynload/_ctypes_test.so
+#	try rm -rf lib-dynload/_testcapi.so
 
 	debug "Strip libraries"
 	push_arm
-	try find "$DIST_PATH"/private "$DIST_PATH"/libs -iname '*.so' -exec $STRIP {} \;
+	try find "$DIST_PATH"/private "$DIST_PATH"/apk/libs -iname '*.so' -exec $STRIP {} \;
 	pop_arm
+}
 
+function run_build_apk() {
+  info "Build apk"
+  cd $DIST_PATH/apk
+  try ant debug
 }
 
 function run_biglink() {
@@ -859,10 +865,11 @@ function run() {
 	run_get_packages
 	run_prebuild
 	run_build
-	run_biglink
+#	run_biglink
 	run_postbuild
-	run_pymodules_install
+#	run_pymodules_install
 	run_distribute
+  run_build_apk
 	info "All done !"
 }
 
