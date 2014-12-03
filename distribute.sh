@@ -858,6 +858,13 @@ function run_build_apk() {
   try ant debug
 }
 
+function run_install_apk() {
+  info "Install apk"
+  cd $DIST_PATH/apk
+  # TODO make the fielname generic
+  try $ANDROIDSDK/platform-tools/adb install -r bin/qgis-debug.apk
+}
+
 function run_biglink() {
 	push_arm
 	if [ "$COPYLIBS" == "0" ]; then
@@ -880,6 +887,7 @@ function run() {
 #	run_pymodules_install
 	run_distribute
   run_build_apk
+  run_install_apk
 	info "All done !"
 }
 
@@ -907,7 +915,7 @@ function arm_deduplicate() {
 
 
 # Do the build
-while getopts ":hCvlfxm:u:d:s:a" opt; do
+while getopts ":hCvlfxim:u:d:s:a" opt; do
 	case $opt in
 		h)
 			usage
@@ -930,6 +938,9 @@ while getopts ":hCvlfxm:u:d:s:a" opt; do
 			;;
     a)
       LAYOUT="$OPTARG"
+      ;;
+    i)
+      INSTALL=1
       ;;
 		m)
 			MODULES="$OPTARG"
