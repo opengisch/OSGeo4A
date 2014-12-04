@@ -50,9 +50,9 @@ function build_qwt() {
 	push_arm
   try qmake $BUILD_qwt
   # sed -i "s|\$(INSTALL_ROOT)/libs/.*/|\$(INSTALL_ROOT)$DIST_PATH/lib/|" src/Makefile
-  try make -j$CORES
+  try make
   sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$DIST_PATH/lib/|g" src/Makefile
-  try make install -j$CORES
+  try make install
 	pop_arm
 }
 

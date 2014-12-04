@@ -55,8 +55,8 @@ function build_geos() {
     -DANDROID=ON \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build/geos_svn_revision.h
-  # try make -j$CORES
-  try make install -j$CORES
+  try make
+  try make install
 	pop_arm
 }
 

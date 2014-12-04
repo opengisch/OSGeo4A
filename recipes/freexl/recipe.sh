@@ -48,7 +48,7 @@ function build_freexl() {
   try cd $BUILD_PATH/freexl/build
 	push_arm
   try $BUILD_freexl/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
-  try make install -j$CORES
+  try make install
 	pop_arm
 }
 

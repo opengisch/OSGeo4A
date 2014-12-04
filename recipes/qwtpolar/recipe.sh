@@ -49,9 +49,9 @@ function build_qwtpolar() {
   try cd $BUILD_PATH/qwtpolar/build
 	push_arm
   try qmake $BUILD_qwtpolar
-  try make -j$CORES
+  try make
   sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$DIST_PATH/lib/|g" src/Makefile
-  try make install -j$CORES
+  try make install
 	pop_arm
 }
 

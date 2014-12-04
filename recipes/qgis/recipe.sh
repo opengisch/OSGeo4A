@@ -83,8 +83,8 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DANDROID_STL=gnustl_shared \
     $BUILD_qgis
-  try make -j$CORES
-  try make install -j$CORES
+  try make
+  try make install
 	pop_arm
 }
 

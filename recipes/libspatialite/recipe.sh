@@ -55,7 +55,8 @@ function build_libspatialite() {
     --host=arm-linux-androideabi \
     --with-geosconfig=$DIST_PATH/bin/geos-config \
     --enable-libxml2=no
-  try make install -j$CORES
+  try make
+  try make install
 	pop_arm
 }
 

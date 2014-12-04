@@ -48,7 +48,7 @@ function build_postgresql() {
   try cd $BUILD_PATH/postgresql/build
 	push_arm
   try $BUILD_postgresql/configure --prefix=$DIST_PATH --host=arm-linux-androideabi --without-readline
-  try make -j$CORES -C src/interfaces/libpq
+  try make -C src/interfaces/libpq
 
   #simulate make install
   echo "installing libpq"

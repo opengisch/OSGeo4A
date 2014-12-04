@@ -45,8 +45,8 @@ function build_qgismobile() {
     -DQGIS_INCLUDE_DIR:FILEPATH=$DIST_PATH/include/qgis \
     -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \
     $BUILD_qgismobile
-  try make -j$CORES
-  try make install -j$CORES
+  try make
+  try make install
 	pop_arm
 }
 

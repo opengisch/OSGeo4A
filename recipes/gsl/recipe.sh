@@ -48,8 +48,8 @@ function build_gsl() {
   cd $BUILD_PATH/gsl/build
 	push_arm
   try $BUILD_gsl/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
-  try make -j$CORES
-  try make install -j$CORES
+  try make
+  try make install
 	pop_arm
 }
 

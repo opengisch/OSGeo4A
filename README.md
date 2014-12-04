@@ -15,11 +15,14 @@ export ANDROIDSDK="/path/to/android-sdk"
 export ANDROIDNDK="/path/to/android-sdk"
 export ANDROIDNDKVER=r10c
 export ANDROIDAPI=14
-export CORES=8
 export QTSDK="/path/to/qt/sdk/Qt5.4.0/5.4"
 
 # To use local sourcecode instead of the configured URL:
 # export O4A_[module]_DIR=/usr/src/mymodulesource
+
+# By default all cores will be used to build
+# Use this option to override
+# export CORES=4
 ```
 
 Call

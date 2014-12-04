@@ -6,6 +6,9 @@
 #
 #------------------------------------------------------------------------------
 
+# By default use all available cores, override in config.conf if desired
+CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+
 # Load configuration
 source `dirname $0`/config.conf
 
@@ -231,7 +234,7 @@ function push_arm() {
 	export RANLIB="$TOOLCHAIN_PREFIX-ranlib"
 	export LD="$TOOLCHAIN_PREFIX-ld"
 	export STRIP="$TOOLCHAIN_PREFIX-strip --strip-unneeded"
-	export MAKE="make -j5"
+	export MAKE="make -j$CORES"
 	export READELF="$TOOLCHAIN_PREFIX-readelf"
 
   # export environment for Qt

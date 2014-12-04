@@ -48,7 +48,7 @@ function build_sqlite3() {
   try cd $BUILD_PATH/sqlite3/build
 	push_arm
   try $BUILD_sqlite3/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
-  try make install -j$CORES
+  try make install
 	pop_arm
 }
 

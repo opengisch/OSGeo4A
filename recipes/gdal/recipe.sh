@@ -53,8 +53,8 @@ function build_gdal() {
     --host=arm-linux-androideabi \
     --with-sqlite3=$DIST_PATH \
     --with-geos=$DIST_PATH/bin/geos-config
-  try make #-j$CORES
-  try make install -j$CORES
+  try make
+  try make install
 	pop_arm
 }
 

@@ -48,7 +48,7 @@ function build_proj() {
   try cd $BUILD_PATH/proj/build
 	push_arm
   try $BUILD_proj/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
-  try make install -j$CORES
+  try make install
 	pop_arm
 }
 
