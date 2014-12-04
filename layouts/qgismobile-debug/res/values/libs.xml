@@ -23,7 +23,6 @@
       <item>Qt5Quick</item>
     </array>
     <array name="bundled_libs">
-      <item>gnustl_shared</item>
       <item>expat</item>
       <item>geos</item>
       <item>geos_c</item>
