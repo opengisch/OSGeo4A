@@ -36,12 +36,14 @@ function prebuild_spatialindex() {
 
 # function called to build the source code
 function build_spatialindex() {
-  # try mkdir -p $BUILD_PATH/spatialindex/build
-  # try cd $BUILD_PATH/spatialindex/build
-  cd $BUILD_spatialindex
+  try mkdir -p $BUILD_PATH/spatialindex/build
+  try cd $BUILD_PATH/spatialindex/build
+  # cd $BUILD_spatialindex
 	push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
+  CXXFLAGS="${CXXFLAGS} -I${BUILD_spatialindex}/include" \
     try $BUILD_spatialindex/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try make -j$CORES
   try make install -j$CORES
 	pop_arm
 }
