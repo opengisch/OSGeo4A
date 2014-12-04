@@ -210,7 +210,7 @@ function push_arm() {
 
 	export CXXFLAGS="$CFLAGS -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/include -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include"
 
-	export LDFLAGS="-lm -L$DIST_PATH/lib -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}"
+	export LDFLAGS="-lm -L$DIST_PATH/lib"
 
 	export PATH="$DIST_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
 

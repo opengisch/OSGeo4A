@@ -47,6 +47,7 @@ function build_gdal() {
   try cd $BUILD_gdal
 	push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
+  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try ${BUILD_gdal}/configure \
     --prefix=$DIST_PATH \
     --host=arm-linux-androideabi \

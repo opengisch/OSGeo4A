@@ -49,6 +49,7 @@ function build_libspatialite() {
 	push_arm
   CFLAGS="${CFLAGS}" \
   LDFLAGS="${LDFLAGS} -lgeos -lgeos_c -lstdc++ -lsupc++ -llog" \
+  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try $BUILD_libspatialite/configure \
     --prefix=$DIST_PATH \
     --host=arm-linux-androideabi \
