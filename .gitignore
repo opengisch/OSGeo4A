@@ -6,3 +6,4 @@ src/apk/local.properties
 .deps
 .optional-deps
 config.conf
+layouts/default
