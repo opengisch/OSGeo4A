@@ -35,6 +35,13 @@ function prebuild_proj() {
   touch .patched
 }
 
+function shouldbuild_proj() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/proj/build/src/.libs/libproj.so -nt $BUILD_proj/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_proj() {
   try mkdir -p $BUILD_PATH/proj/build

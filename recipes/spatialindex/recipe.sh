@@ -34,6 +34,13 @@ function prebuild_spatialindex() {
   touch .patched
 }
 
+function shouldbuild_spatialindex() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/spatialindex/build/.libs/libspatialindex.so -nt $BUILD_spatialindex/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_spatialindex() {
   try mkdir -p $BUILD_PATH/spatialindex/build

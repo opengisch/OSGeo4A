@@ -36,6 +36,13 @@ function prebuild_geos() {
   touch .patched
 }
 
+function shouldbuild_geos() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/geos/build/lib/libgeos.so -nt $BUILD_geos/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_geos() {
   try mkdir -p $BUILD_PATH/geos/build

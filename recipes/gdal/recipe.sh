@@ -4,7 +4,7 @@
 VERSION_gdal=1.11.1
 
 # dependencies of this recipe
-DEPS_gdal=(iconv)
+DEPS_gdal=(iconv sqlite3 geos)
 
 # url of the package
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
@@ -35,13 +35,19 @@ function prebuild_gdal() {
   touch .patched
 }
 
+function shouldbuild_gdal() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_gdal/.libs/libgdal.so -nt $BUILD_gdal/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_gdal() {
-  # try mkdir -p $BUILD_PATH/gdal/build
   try cd $BUILD_gdal
 	push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
-    try ./configure \
+    try ${BUILD_gdal}/configure \
     --prefix=$DIST_PATH \
     --host=arm-linux-androideabi \
     --with-sqlite3=$DIST_PATH \

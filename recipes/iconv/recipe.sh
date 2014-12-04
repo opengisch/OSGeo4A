@@ -37,6 +37,13 @@ function prebuild_iconv() {
   touch .patched
 }
 
+function shouldbuild_iconv() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/iconv/build/libcharset/lib/.libs/libcharset.so -nt $BUILD_iconv/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_iconv() {
   try mkdir -p $BUILD_PATH/iconv/build

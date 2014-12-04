@@ -35,6 +35,13 @@ function prebuild_gsl() {
   touch .patched
 }
 
+function shouldbuild_gsl() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/gsl/build/.libs/libgsl.so -nt $BUILD_gsl/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_gsl() {
   mkdir $BUILD_PATH/gsl/build

@@ -35,6 +35,13 @@ function prebuild_freexl() {
   touch .patched
 }
 
+function shouldbuild_freexl() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/freexl/build/src/.libs/libfreexl.so -nt $BUILD_freexl/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_freexl() {
   try mkdir -p $BUILD_PATH/freexl/build

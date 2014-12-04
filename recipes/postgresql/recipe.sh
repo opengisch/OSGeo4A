@@ -35,6 +35,13 @@ function prebuild_postgresql() {
   touch .patched
 }
 
+function shouldbuild_postgresql() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/postgresql/build/src/interfaces/libpq/libpq.so -nt $BUILD_postgresql/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_postgresql() {
   try mkdir -p $BUILD_PATH/postgresql/build

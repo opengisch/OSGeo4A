@@ -4,7 +4,7 @@
 VERSION_qgis=2.6.0
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qwt qwtpolar qscintilla spatialite spatialindex expat gsl postgresql)
+DEPS_qgis=(gdal qwt qwtpolar qscintilla libspatialite spatialindex expat gsl postgresql)
 # DEPS_qgis=()
 
 # url of the package

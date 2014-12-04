@@ -36,15 +36,22 @@ function prebuild_qwtpolar() {
   touch .patched
 }
 
+function shouldbuild_qwtpolar() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_qwtpolar/lib/libqwtpolar.so -nt $BUILD_qwtpolar/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_qwtpolar() {
   try mkdir -p $BUILD_PATH/qwtpolar/build
   try cd $BUILD_PATH/qwtpolar/build
 	push_arm
   try qmake $BUILD_qwtpolar
-  try make # -j$CORES
+  try make -j$CORES
   sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$DIST_PATH/lib/|g" src/Makefile
-  try make install #-j$CORES
+  try make install -j$CORES
 	pop_arm
 }
 

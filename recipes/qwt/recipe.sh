@@ -7,7 +7,7 @@ VERSION_qwt=6.1.1
 DEPS_qwt=()
 
 # url of the package
-URL_qwt=http://downloads.sourceforge.net/project/qwt/qwt/$VERSION_qwt/qwt-${VERSION_qwt}.tar.bz2
+URL_qwt=http://downloads.sourceforge.net/qwtect/qwt/qwt/$VERSION_qwt/qwt-${VERSION_qwt}.tar.bz2
 
 # md5 of the package
 MD5_qwt=fe4bdd561ef5584924e72e15bcf46b9e
@@ -34,6 +34,13 @@ function prebuild_qwt() {
   sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $DIST_PATH|" qwtconfig.pri
 
   touch .patched
+}
+
+function shouldbuild_qwt() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/qwt/build/lib/libqwt.so -nt $BUILD_qwt/.patched ]; then
+    DO_BUILD=0
+  fi
 }
 
 # function called to build the source code

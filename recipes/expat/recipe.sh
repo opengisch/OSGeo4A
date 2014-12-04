@@ -35,6 +35,13 @@ function prebuild_expat() {
   touch .patched
 }
 
+function shouldbuild_expat() {
+  # If lib is newer than the sourcecode skip build
+  if [ $BUILD_PATH/expat/build/.libs/libexpat.so -nt $BUILD_expat/.patched ]; then
+    DO_BUILD=0
+  fi
+}
+
 # function called to build the source code
 function build_expat() {
   try mkdir -p $BUILD_PATH/expat/build
