@@ -21,14 +21,7 @@ RECIPE_qgismobile=$RECIPES_PATH/qgismobile
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
 function prebuild_qgismobile() {
-  cd $BUILD_qgismobile
-
-  # check marker
-  if [ -f .patched ]; then
-    return
-  fi
-
-  touch .patched
+  true
 }
 
 # function called to build the source code
