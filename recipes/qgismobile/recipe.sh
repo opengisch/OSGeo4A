@@ -43,6 +43,7 @@ function build_qgismobile() {
     -DGEOS_LIBRARY=$DIST_PATH/lib/libgeos_c.so \
     -DGEOS_LIB_NAME_WITH_PREFIX=-lgeos_c \
     -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \
+    -DLIBRARY_OUTPUT_PATH_ROOT:PATH=$DIST_PATH \
     $BUILD_qgismobile
   try make
   try make install
