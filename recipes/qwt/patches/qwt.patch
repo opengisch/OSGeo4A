@@ -1,7 +1,7 @@
 diff -rupN original/qwtconfig.pri new/qwtconfig.pri
 --- original/qwtconfig.pri	2013-05-30 17:18:27.767341938 +0200
 +++ new/qwtconfig.pri	2014-11-27 18:16:22.485174201 +0100
-@@ -70,7 +70,7 @@ QWT_INSTALL_FEATURES  = $${QWT_INSTALL_P
+@@ -72,7 +72,7 @@ QWT_INSTALL_FEATURES  = $${QWT_INSTALL_P
  # it will be a static library.
  ######################################################################
  
@@ -10,7 +10,7 @@ diff -rupN original/qwtconfig.pri new/qwtconfig.pri
  
  ######################################################################
  # QwtPlot enables all classes, that are needed to use the QwtPlot 
-@@ -116,7 +116,7 @@ QWT_CONFIG     += QwtOpenGL
+@@ -118,7 +118,7 @@ QWT_CONFIG     += QwtOpenGL
  # Otherwise you have to build it from the designer directory.
  ######################################################################
  

@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qwt=6.1.1
+VERSION_qwt=6.1.2
 
 # dependencies of this recipe
 DEPS_qwt=()
 
 # url of the package
-URL_qwt=http://downloads.sourceforge.net/qwtect/qwt/qwt/$VERSION_qwt/qwt-${VERSION_qwt}.tar.bz2
+URL_qwt=http://downloads.sourceforge.net/qwt/qwt/$VERSION_qwt/qwt-${VERSION_qwt}.tar.bz2
 
 # md5 of the package
-MD5_qwt=fe4bdd561ef5584924e72e15bcf46b9e
+MD5_qwt=9c88db1774fa7e3045af063bbde44d7d
 
 # default build path
 BUILD_qwt=$BUILD_PATH/qwt/$(get_directory $URL_qwt)
@@ -29,7 +29,6 @@ function prebuild_qwt() {
   fi
 
   try patch -p1 < $RECIPE_qwt/patches/qwt.patch
-  try patch -p2 < $RECIPE_qwt/patches/qwt611-qt54.patch
   try patch -p1 < $RECIPE_qwt/patches/qwt-install.patch
   sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $DIST_PATH|" qwtconfig.pri
 
