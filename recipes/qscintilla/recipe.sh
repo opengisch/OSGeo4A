@@ -49,11 +49,11 @@ function build_qscintilla() {
   sed -i "s|\$(INSTALL_ROOT).*/include|\$(INSTALL_ROOT)/include/|" Makefile
 
   # Makefile fails to create include and lib folders if not present
-  test -d $DIST_PATH/include || mkdir -p $DIST_PATH/include
-  test -d $DIST_PATH/lib || mkdir -p $DIST_PATH/lib
+  test -d $STAGE_PATH/include || mkdir -p $STAGE_PATH/include
+  test -d $STAGE_PATH/lib || mkdir -p $STAGE_PATH/lib
 
   # install
-  INSTALL_ROOT=$DIST_PATH \
+  INSTALL_ROOT=$STAGE_PATH \
     try make install
 
 	pop_arm

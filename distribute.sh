@@ -56,6 +56,7 @@ fi
 
 # Paths
 ROOT_PATH="$(dirname $($PYTHON -c 'from __future__ import print_function; import os,sys;print(os.path.realpath(sys.argv[1]))' $0))"
+STAGE_PATH="${ROOT_PATH}/stage"
 RECIPES_PATH="$ROOT_PATH/recipes"
 BUILD_PATH="$ROOT_PATH/build"
 LIBS_PATH="$ROOT_PATH/build/libs"
@@ -180,7 +181,7 @@ function push_arm() {
 	#export OFLAG="-Os"
 	#export OFLAG="-O2"
 
-	export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$DIST_PATH/include"
+	export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include"
 	if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
 		CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
 	fi
@@ -213,9 +214,9 @@ function push_arm() {
 
 	export CXXFLAGS="$CFLAGS -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/include -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include"
 
-	export LDFLAGS="-lm -L$DIST_PATH/lib"
+	export LDFLAGS="-lm -L$STAGE_PATH/lib"
 
-	export PATH="$DIST_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
+	export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
 
 	# search compiler in the path, to fail now instead of later.
 	CC=$(which $TOOLCHAIN_PREFIX-gcc)
@@ -385,26 +386,25 @@ function run_prepare() {
 		error "\thttps://github.com/kivy/python-for-android/issues"
 	fi
 
-	info "Distribution will be located at $DIST_PATH"
-	if [ -e "$DIST_PATH" ]; then
-		error "The distribution $DIST_PATH already exist"
-		error "Press a key to remove it, or Control + C to abort."
-		read
-		# try rm -rf "$DIST_PATH"
-	fi
-	try mkdir -p "$DIST_PATH"
-
 	if [ $DO_CLEAN_BUILD -eq 1 ]; then
 		info "Cleaning build"
+		try rm -rf $STAGE_PATH
 		try rm -rf $BUILD_PATH
 		try rm -rf $SRC_PATH/obj
 		try rm -rf $SRC_PATH/libs
-		pushd $JNI_PATH
-		push_arm
-		try ndk-build clean
-		pop_arm
-		popd
+#		pushd $JNI_PATH
+#		push_arm
+#		try ndk-build clean
+#		pop_arm
+#		popd
 	fi
+
+	info "Distribution will be located at $STAGE_PATH"
+	if [ -e "$STAGE_PATH" ]; then
+		info "The directory $STAGE_PATH already exist"
+		info "Will continue using and possibly overwrite what is in there"
+	fi
+	try mkdir -p "$STAGE_PATH"
 
 	# create build directory if not found
 	test -d $PACKAGES_PATH || mkdir -p $PACKAGES_PATH
@@ -794,11 +794,12 @@ function run_distribute() {
 
 
 	debug "Create initial layout"
-  try cp $ROOT_PATH/src/apk $DIST_PATH/ -r
+  try mkdir -p $DIST_PATH
+  try cp $ROOT_PATH/src/apk/* $DIST_PATH -r
 	debug "Create customized layout"
-  try cp -r $ROOT_PATH/layouts/$LAYOUT/* $DIST_PATH/apk
-  try cp -r $DIST_PATH/files $DIST_PATH/apk/assets
-  try cd $DIST_PATH/apk
+  try cp -r $ROOT_PATH/layouts/$LAYOUT/* $DIST_PATH
+  try cp -r $STAGE_PATH/files $DIST_PATH/assets
+  try cd $DIST_PATH
 
 #	try cp -a $SRC_PATH/default.properties .
 #	try cp -a $SRC_PATH/local.properties .
@@ -816,7 +817,7 @@ function run_distribute() {
 
 	debug "Copy libs"
 	try mkdir -p libs/$ARCH
-	try cp -aL ../lib/*.so libs/$ARCH/
+	try cp -aL $STAGE_PATH/lib/*.so libs/$ARCH/
 
 #	debug "Copy java files from various libs"
 #	cp -a $BUILD_PATH/java/* src
@@ -851,19 +852,19 @@ function run_distribute() {
 
 	debug "Strip libraries"
 	push_arm
-	try find "$DIST_PATH"/apk/libs -iname '*.so' -exec $STRIP {} \;
+	try find "${DIST_PATH}/libs" -iname '*.so' -exec $STRIP {} \;
 	pop_arm
 }
 
 function run_build_apk() {
   info "Build apk"
-  cd $DIST_PATH/apk
+  cd $DIST_PATH
   try ant debug
 }
 
 function run_install_apk() {
   info "Install apk"
-  cd $DIST_PATH/apk
+  cd $DIST_PATH
   # TODO make the fielname generic
   try $ANDROIDSDK/platform-tools/adb install -r bin/qgis-debug.apk
 }
@@ -918,7 +919,7 @@ function arm_deduplicate() {
 
 
 # Do the build
-while getopts ":hCvlfxim:u:d:s:a" opt; do
+while getopts ":hCvlfxim:a:u:d:s" opt; do
 	case $opt in
 		h)
 			usage

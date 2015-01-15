@@ -51,9 +51,9 @@ function build_libspatialite() {
   LDFLAGS="${LDFLAGS} -lgeos -lgeos_c -lstdc++ -lsupc++ -llog" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try $BUILD_libspatialite/configure \
-    --prefix=$DIST_PATH \
+    --prefix=$STAGE_PATH \
     --host=arm-linux-androideabi \
-    --with-geosconfig=$DIST_PATH/bin/geos-config \
+    --with-geosconfig=$STAGE_PATH/bin/geos-config \
     --enable-libxml2=no
   try make
   try make install

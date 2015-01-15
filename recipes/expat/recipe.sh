@@ -47,7 +47,7 @@ function build_expat() {
   try mkdir -p $BUILD_PATH/expat/build
   try cd $BUILD_PATH/expat/build
 	push_arm
-  try $BUILD_expat/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try $BUILD_expat/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
   try make install
 	pop_arm
 }

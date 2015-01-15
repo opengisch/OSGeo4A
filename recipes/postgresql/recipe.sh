@@ -47,15 +47,15 @@ function build_postgresql() {
   try mkdir -p $BUILD_PATH/postgresql/build
   try cd $BUILD_PATH/postgresql/build
 	push_arm
-  try $BUILD_postgresql/configure --prefix=$DIST_PATH --host=arm-linux-androideabi --without-readline
+  try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi --without-readline
   try make -C src/interfaces/libpq
 
   #simulate make install
   echo "installing libpq"
-  try cp -v $BUILD_postgresql/src/include/postgres_ext.h $DIST_PATH/include
-  try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $DIST_PATH/include
-  try cp -v $BUILD_PATH/postgresql/build/src/include/pg_config_ext.h $DIST_PATH/include/
-  try cp -v $BUILD_PATH/postgresql/build/src/interfaces/libpq/libpq.so $DIST_PATH/lib/
+  try cp -v $BUILD_postgresql/src/include/postgres_ext.h $STAGE_PATH/include
+  try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $STAGE_PATH/include
+  try cp -v $BUILD_PATH/postgresql/build/src/include/pg_config_ext.h $STAGE_PATH/include/
+  try cp -v $BUILD_PATH/postgresql/build/src/interfaces/libpq/libpq.so $STAGE_PATH/lib/
 	pop_arm
 }
 

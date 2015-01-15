@@ -49,10 +49,10 @@ function build_gdal() {
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try ${BUILD_gdal}/configure \
-    --prefix=$DIST_PATH \
+    --prefix=$STAGE_PATH \
     --host=arm-linux-androideabi \
-    --with-sqlite3=$DIST_PATH \
-    --with-geos=$DIST_PATH/bin/geos-config
+    --with-sqlite3=$STAGE_PATH \
+    --with-geos=$STAGE_PATH/bin/geos-config
   try make
   try make install
 	pop_arm

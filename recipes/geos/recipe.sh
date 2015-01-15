@@ -50,7 +50,7 @@ function build_geos() {
 	push_arm
   try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
-    -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DANDROID_STL=gnustl_shared \
     -DANDROID=ON \
     $BUILD_geos

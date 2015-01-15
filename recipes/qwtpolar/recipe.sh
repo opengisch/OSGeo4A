@@ -29,9 +29,9 @@ function prebuild_qwtpolar() {
   fi
 
   patch -p1 < $RECIPES_PATH/qwtpolar/patches/qwtpolar-features.patch
-  echo "INCLUDEPATH += $DIST_PATH/include" >> qwtpolarconfig.pri
-  echo "LIBS += $DIST_PATH/lib/libqwt.so" >> qwtpolarconfig.pri
-  sed -i "s|QWT_POLAR_INSTALL_PREFIX    = .*|QWT_POLAR_INSTALL_PREFIX = $DIST_PATH|" qwtpolarconfig.pri
+  echo "INCLUDEPATH += $STAGE_PATH/include" >> qwtpolarconfig.pri
+  echo "LIBS += $STAGE_PATH/lib/libqwt.so" >> qwtpolarconfig.pri
+  sed -i "s|QWT_POLAR_INSTALL_PREFIX    = .*|QWT_POLAR_INSTALL_PREFIX = $STAGE_PATH|" qwtpolarconfig.pri
 
   touch .patched
 }
@@ -50,7 +50,7 @@ function build_qwtpolar() {
 	push_arm
   try qmake $BUILD_qwtpolar
   try make
-  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$DIST_PATH/lib/|g" src/Makefile
+  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
 	pop_arm
 }

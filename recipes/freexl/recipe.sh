@@ -47,7 +47,7 @@ function build_freexl() {
   try mkdir -p $BUILD_PATH/freexl/build
   try cd $BUILD_PATH/freexl/build
 	push_arm
-  try $BUILD_freexl/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try $BUILD_freexl/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
   try make install
 	pop_arm
 }

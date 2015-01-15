@@ -29,21 +29,22 @@ function build_qgismobile() {
   try mkdir -p $BUILD_PATH/qgismobile/build
   try cd $BUILD_PATH/qgismobile/build
 	push_arm
-  CMAKE_INCLUDE_PATH=$DIST_PATH/include \
+  CMAKE_INCLUDE_PATH=$STAGE_PATH/include \
      try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DANDROID_STL=gnustl_shared \
-    -DQGIS_ANALYSIS_LIBRARY:FILEPATH=$DIST_PATH/lib/libqgis_analysis.so \
-    -DQGIS_CORE_LIBRARY:FILEPATH=$DIST_PATH/lib/libqgis_core.so\
-    -DQGIS_GUI_LIBRARY:FILEPATH=$DIST_PATH/lib/libqgis_gui.so \
-    -DQGIS_INCLUDE_DIR:FILEPATH=$DIST_PATH/include/qgis \
-    -DGEOS_CONFIG=$DIST_PATH/bin/geos-config \
-    -DGEOS_CONFIG_PREFER_PATH=$DIST_PATH/bin \
-    -DGEOS_INCLUDE_DIR=$DIST_PATH/include \
-    -DGEOS_LIBRARY=$DIST_PATH/lib/libgeos_c.so \
+    -DQGIS_ANALYSIS_LIBRARY:FILEPATH=$STAGE_PATH/lib/libqgis_analysis.so \
+    -DQGIS_CORE_LIBRARY:FILEPATH=$STAGE_PATH/lib/libqgis_core.so\
+    -DQGIS_GUI_LIBRARY:FILEPATH=$STAGE_PATH/lib/libqgis_gui.so \
+    -DQGIS_INCLUDE_DIR:FILEPATH=$STAGE_PATH/include/qgis \
+    -DGEOS_CONFIG=$STAGE_PATH/bin/geos-config \
+    -DGEOS_CONFIG_PREFER_PATH=$STAGE_PATH/bin \
+    -DGEOS_INCLUDE_DIR=$STAGE_PATH/include \
+    -DGEOS_LIBRARY=$STAGE_PATH/lib/libgeos_c.so \
     -DGEOS_LIB_NAME_WITH_PREFIX=-lgeos_c \
-    -DCMAKE_INSTALL_PREFIX:PATH=$DIST_PATH \
-    -DLIBRARY_OUTPUT_PATH_ROOT:PATH=$DIST_PATH \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DLIBRARY_OUTPUT_PATH_ROOT:PATH=$STAGE_PATH \
+    -DENABLE_TESTS:BOOL=FALSE \
     $BUILD_qgismobile
   try make
   try make install

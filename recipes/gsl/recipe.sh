@@ -47,7 +47,7 @@ function build_gsl() {
   mkdir $BUILD_PATH/gsl/build
   cd $BUILD_PATH/gsl/build
 	push_arm
-  try $BUILD_gsl/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try $BUILD_gsl/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
   try make
   try make install
 	pop_arm

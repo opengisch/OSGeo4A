@@ -49,7 +49,7 @@ function build_iconv() {
   try mkdir -p $BUILD_PATH/iconv/build
   try cd $BUILD_PATH/iconv/build
 	push_arm
-  try $BUILD_iconv/configure --prefix=$DIST_PATH --host=arm-linux-androideabi
+  try $BUILD_iconv/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
   try make
   try make install
 	pop_arm

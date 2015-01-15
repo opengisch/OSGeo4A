@@ -30,7 +30,7 @@ function prebuild_qwt() {
 
   try patch -p1 < $RECIPE_qwt/patches/qwt.patch
   try patch -p1 < $RECIPE_qwt/patches/qwt-install.patch
-  sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $DIST_PATH|" qwtconfig.pri
+  sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $STAGE_PATH|" qwtconfig.pri
 
   touch .patched
 }
@@ -48,9 +48,9 @@ function build_qwt() {
   try cd $BUILD_PATH/qwt/build
 	push_arm
   try qmake $BUILD_qwt
-  # sed -i "s|\$(INSTALL_ROOT)/libs/.*/|\$(INSTALL_ROOT)$DIST_PATH/lib/|" src/Makefile
+  # sed -i "s|\$(INSTALL_ROOT)/libs/.*/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|" src/Makefile
   try make
-  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$DIST_PATH/lib/|g" src/Makefile
+  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
 	pop_arm
 }
