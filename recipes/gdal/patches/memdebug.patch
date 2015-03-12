@@ -1,0 +1,26 @@
+diff -Naur gdal-1.11.1/port/cpl_vsisimple.cpp b/port/cpl_vsisimple.cpp
+--- gdal-1.11.1/port/cpl_vsisimple.cpp	2014-09-24 15:47:08.000000000 +0200
++++ b/port/cpl_vsisimple.cpp	2015-03-11 17:17:34.524438580 +0100
+@@ -43,11 +43,11 @@
+ 
+ /* Uncomment to check consistent usage of VSIMalloc(), VSIRealloc(), */
+ /* VSICalloc(), VSIFree(), VSIStrdup() */
+-//#define DEBUG_VSIMALLOC
++#define DEBUG_VSIMALLOC
+ 
+ /* Uncomment to compute memory usage statistics. */
+ /* DEBUG_VSIMALLOC must also be defined */
+-//#define DEBUG_VSIMALLOC_STATS
++#define DEBUG_VSIMALLOC_STATS
+ 
+ /* Highly experimental, and likely buggy. Do not use, except for fixing it! */
+ /* DEBUG_VSIMALLOC must also be defined */
+@@ -59,7 +59,7 @@
+ 
+ /* Uncomment to print every memory allocation or deallocation. */
+ /* DEBUG_VSIMALLOC must also be defined */
+-//#define DEBUG_VSIMALLOC_VERBOSE
++#define DEBUG_VSIMALLOC_VERBOSE
+ 
+ CPL_CVSID("$Id: cpl_vsisimple.cpp 27044 2014-03-16 23:41:27Z rouault $");
+ 
