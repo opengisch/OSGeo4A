@@ -56,7 +56,7 @@ fi
 
 # Paths
 ROOT_PATH="$(dirname $($PYTHON -c 'from __future__ import print_function; import os,sys;print(os.path.realpath(sys.argv[1]))' $0))"
-STAGE_PATH="${ROOT_PATH}/stage"
+STAGE_PATH="${ROOT_PATH}/stage/$ARCH"
 RECIPES_PATH="$ROOT_PATH/recipes"
 BUILD_PATH="$ROOT_PATH/build"
 LIBS_PATH="$ROOT_PATH/build/libs"
@@ -195,28 +195,39 @@ function push_arm() {
 		PYPLATFORM="linux"
 	fi
 
-  if [ "X$ANDROIDNDKVER" == "Xr5b" ]; then
-      export TOOLCHAIN_PREFIX=arm-eabi
-      export TOOLCHAIN_VERSION=4.4.0
-  elif [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
+  # Setup compiler toolchain based on CPU architecture
+  if [ "X${ARCH}" == "Xx86" ]; then
+      export TOOLCHAIN_PREFIX=i686-linux-android
+      export TOOLCHAIN_BASEDIR=x86
+      export QT_ARCH_PREFIX=x86
+  elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
       export TOOLCHAIN_PREFIX=arm-linux-androideabi
+      export TOOLCHAIN_BASEDIR=arm-linux-androideabi
+      export QT_ARCH_PREFIX=armv7
+  else
+      echo "Error: Please report issue to enable support for newer ndk."
+      exit 1
+  fi
+
+  # Choose compiler version
+  if [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
       export TOOLCHAIN_VERSION=4.4.3
   elif  [ "X${ANDROIDNDKVER:0:2}" == "Xr9" ]; then
-      export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_VERSION=4.8
   elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ]; then
-      export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_VERSION=4.9
   else
       echo "Error: Please report issue to enable support for newer ndk."
       exit 1
   fi
 
-	export CXXFLAGS="$CFLAGS -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/include -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include"
+	export CXXFLAGS="$CFLAGS -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/include \
+                           -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include \
+                           -isystem $ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH/usr/include"
 
 	export LDFLAGS="-lm -L$STAGE_PATH/lib"
 
-	export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_PREFIX-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_armv7/bin:$PATH"
+	export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_$QT_ARCH_PREFIX/bin:$PATH"
 
 	# search compiler in the path, to fail now instead of later.
 	CC=$(which $TOOLCHAIN_PREFIX-gcc)
@@ -255,7 +266,7 @@ function push_arm() {
 }
 
 function pop_arm() {
-	info "Leaving ARM enviromnent"
+	info "Leaving ARM environment"
 	export PATH=$OLD_PATH
 	export CFLAGS=$OLD_CFLAGS
 	export CXXFLAGS=$OLD_CXXFLAGS
@@ -322,7 +333,7 @@ function check_build_deps() {
 }
 
 function run_prepare() {
-	info "Check enviromnent"
+	info "Check environment"
 	if [ "X$ANDROIDSDK" == "X" ]; then
 		error "No ANDROIDSDK environment set, abort"
 		exit -1
@@ -362,10 +373,18 @@ function run_prepare() {
 	debug "NDK located at $ANDROIDNDK"
 	debug "NDK version is $ANDROIDNDKVER"
 	debug "API level set to $ANDROIDAPI"
+  if [ "X${ARCH}" == "Xx86" ]; then
+      export SHORTARCH="x86"
+  elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
+      export SHORTARCH="arm"
+  else
+      echo "Error: Please report issue to enable support for newer ndk."
+      exit 1
+  fi
 
-	export NDKPLATFORM="$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-arm"
+	export NDKPLATFORM="$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH"
 	#export ARCH="armeabi"
-	export ARCH="armeabi-v7a" # not tested yet.
+	#export ARCH="armeabi-v7a" # not tested yet.
 
 	info "Check mandatory tools"
 	# ensure that some tools are existing
@@ -542,8 +561,8 @@ function run_get_packages() {
 
   if [ ! -d "$BUILD_PATH/tmp" ]; then
     try mkdir $BUILD_PATH/tmp
-    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"   -O $BUILD_PATH/tmp/config.sub
-    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $BUILD_PATH/tmp/config.guess
+    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"   -O $ROOT_PATH/.packages/config.sub
+    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $ROOT_PATH/.packages/config.guess
   fi
 
 	for module in $MODULES; do
@@ -852,7 +871,7 @@ function run_distribute() {
 
 	debug "Strip libraries"
 	push_arm
-	try find "${DIST_PATH}/libs" -iname '*.so' -exec $STRIP {} \;
+	try find "${DIST_PATH}/libs/${ARCH}" -iname '*.so' -exec $STRIP {} \;
 	pop_arm
 }
 

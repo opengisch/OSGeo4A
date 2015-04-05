@@ -4,7 +4,7 @@
 VERSION_gdal=1.11.1
 
 # dependencies of this recipe
-DEPS_gdal=(iconv sqlite3 geos libtiff)
+DEPS_gdal=(iconv sqlite3 geos libtiff postgresql)
 
 # url of the package
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
@@ -28,8 +28,8 @@ function prebuild_gdal() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_gdal
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_gdal
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_gdal
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_gdal
   try patch -p1 < $RECIPE_gdal/patches/gdal.patch
   try patch -p1 < $RECIPE_gdal/patches/memdebug.patch
 
@@ -38,24 +38,26 @@ function prebuild_gdal() {
 
 function shouldbuild_gdal() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_gdal/.libs/libgdal.so -nt $BUILD_gdal/.patched ]; then
+  if [ $BUILD_path/gdal/build-$ARCH/.libs/libgdal.so -nt $BUILD_gdal/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_gdal() {
-  try cd $BUILD_gdal
+  try rsync -a $BUILD_gdal/ $BUILD_PATH/gdal/build-$ARCH/
+  try cd $BUILD_PATH/gdal/build-$ARCH
 	push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
-    try ${BUILD_gdal}/configure \
+    try ${BUILD_PATH}/gdal/build-$ARCH/configure \
     --prefix=$STAGE_PATH \
-    --host=arm-linux-androideabi \
+    --host=${TOOLCHAIN_PREFIX} \
     --with-sqlite3=$STAGE_PATH \
-    --with-geos=$STAGE_PATH/bin/geos-config
-  try make
-  try make install
+    --with-geos=$STAGE_PATH/bin/geos-config \
+    --with-pg=no
+  try make &> make.log
+  try make install &> install.log
 	pop_arm
 }
 

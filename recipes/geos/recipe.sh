@@ -28,8 +28,8 @@ function prebuild_geos() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_geos
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_geos
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_geos
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_geos
   try patch -p1 < $RECIPE_geos/patches/geos.patch
   try patch -p1 < $RECIPE_geos/patches/geos_std_nan.patch
 
@@ -38,21 +38,22 @@ function prebuild_geos() {
 
 function shouldbuild_geos() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/geos/build/lib/libgeos.so -nt $BUILD_geos/.patched ]; then
+  if [ $BUILD_PATH/geos/build-$ARCH/lib/libgeos.so -nt $BUILD_geos/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_geos() {
-  try mkdir -p $BUILD_PATH/geos/build
-  try cd $BUILD_PATH/geos/build
+  try mkdir -p $BUILD_PATH/geos/build-$ARCH
+  try cd $BUILD_PATH/geos/build-$ARCH
 	push_arm
   try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DANDROID_STL=gnustl_shared \
     -DANDROID=ON \
+    -DANDROID_ABI=$ARCH \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build/geos_svn_revision.h
   try make

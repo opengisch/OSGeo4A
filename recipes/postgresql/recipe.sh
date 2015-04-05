@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_postgresql=9.3.5
+VERSION_postgresql=9.4.1
 
 # dependencies of this recipe
 DEPS_postgresql=(iconv)
@@ -10,7 +10,7 @@ DEPS_postgresql=(iconv)
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
 
 # md5 of the package
-MD5_postgresql=5059857c7d7e6ad83b6d55893a121b59
+MD5_postgresql=2cf30f50099ff1109d0aa517408f8eff
 
 # default build path
 BUILD_postgresql=$BUILD_PATH/postgresql/$(get_directory $URL_postgresql)
@@ -28,8 +28,8 @@ function prebuild_postgresql() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_postgresql/conftools
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_postgresql/conftools
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_postgresql/conftools
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_postgresql/conftools
   try patch -p1 < $RECIPE_postgresql/patches/libpq.patch
 
   touch .patched
@@ -37,25 +37,27 @@ function prebuild_postgresql() {
 
 function shouldbuild_postgresql() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/postgresql/build/src/interfaces/libpq/libpq.so -nt $BUILD_postgresql/.patched ]; then
+  if [ $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so -nt $BUILD_postgresql/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_postgresql() {
-  try mkdir -p $BUILD_PATH/postgresql/build
-  try cd $BUILD_PATH/postgresql/build
+  try mkdir -p $BUILD_PATH/postgresql/build-$ARCH
+  try cd $BUILD_PATH/postgresql/build-$ARCH
 	push_arm
-  try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi --without-readline
+  LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
+  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
+  try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX} --without-readline
   try make -C src/interfaces/libpq
 
   #simulate make install
   echo "installing libpq"
   try cp -v $BUILD_postgresql/src/include/postgres_ext.h $STAGE_PATH/include
   try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $STAGE_PATH/include
-  try cp -v $BUILD_PATH/postgresql/build/src/include/pg_config_ext.h $STAGE_PATH/include/
-  try cp -v $BUILD_PATH/postgresql/build/src/interfaces/libpq/libpq.so $STAGE_PATH/lib/
+  try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/include/pg_config_ext.h $STAGE_PATH/include/
+  try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so $STAGE_PATH/lib/
 	pop_arm
 }
 

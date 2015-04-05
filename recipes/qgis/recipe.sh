@@ -22,23 +22,18 @@ RECIPE_qgis=$RECIPES_PATH/qgis
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
 function prebuild_qgis() {
-  cd $BUILD_qgis
-
-  # check marker
-  if [ -f .patched ]; then
-    return
-  fi
-
-  touch .patched
+  true
 }
 
 # function called to build the source code
 function build_qgis() {
-  try mkdir -p $BUILD_PATH/qgis/build
-  try cd $BUILD_PATH/qgis/build
+  try mkdir -p $BUILD_PATH/qgis/build-$ARCH
+  try cd $BUILD_PATH/qgis/build-$ARCH
 	push_arm
   try cmake \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    -DWITH_DESKTOP=ON \
     -DFLEX_EXECUTABLE=/usr/bin/flex \
     -DBISON_EXECUTABLE=/usr/bin/bison \
     -DGDAL_CONFIG=$STAGE_PATH/bin/gdal-config \
@@ -66,6 +61,7 @@ function build_qgis() {
     -DWITH_BINDINGS=OFF \
     -DWITH_INTERNAL_SPATIALITE=OFF \
     -DWITH_GRASS=OFF \
+    -DWITH_QTMOBILITY=OFF \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DENABLE_QT5=ON \
     -DENABLE_TESTS=OFF \
@@ -74,6 +70,7 @@ function build_qgis() {
     -DQWT_INCLUDE_DIR=$STAGE_PATH/include \
     -DQWT_LIBRARY=$STAGE_PATH/lib/libqwt.so \
     -DWITH_INTERNAL_QWTPOLAR=OFF \
+    -DWITH_QWTPOLAR=OFF \
     -DQWTPOLAR_INCLUDE_DIR=$STAGE_PATH/include \
     -DQWTPOLAR_LIBRARY=$STAGE_PATH/lib/libqwtpolar.so \
     -DQSCINTILLA_INCLUDE_DIR=$STAGE_PATH/include \
@@ -81,7 +78,10 @@ function build_qgis() {
     -DSPATIALINDEX_LIBRARY=$STAGE_PATH/lib/libspatialindex.so \
     -DWITH_APIDOC=OFF \
     -DWITH_ASTYLE=OFF \
+    -DANDROID_NDK=$ANDROIDNDK \
     -DANDROID_STL=gnustl_shared \
+    -DANDROID_ABI=$ARCH \
+    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
   try make
   try make install

@@ -40,15 +40,3 @@
    finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
    shlibpath_var=LD_LIBRARY_PATH
    shlibpath_overrides_runpath=no
---- a/configure
-+++ b/configure
-@@ -18390,7 +18390,7 @@
- fi
- 
- # Checking for Android
-- if test "$target_alias" = "android"; then
-+ if test "$host_alias" = "arm-linux-androideabi"; then
-   ANDROID_TRUE=
-   ANDROID_FALSE='#'
- else
-

@@ -28,8 +28,8 @@ function prebuild_libtiff() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_libtiff/config
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_libtiff/config
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_libtiff/config
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_libtiff/config
   try patch -p1 < $RECIPE_libtiff/patches/libtiff.patch
 
   touch .patched
@@ -39,17 +39,17 @@ function prebuild_libtiff() {
 # set DO_BUILD=0 if you know that it does not require a rebuild
 function shouldbuild_libtiff() {
 # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/libtiff/build/libtiff/libtiff.la -nt $BUILD_libtiff/.patched ]; then
+  if [ $BUILD_PATH/libtiff/build-$ARCH/libtiff/libtiff.la -nt $BUILD_libtiff/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_libtiff() {
-  try mkdir -p $BUILD_PATH/libtiff/build
-  try cd $BUILD_PATH/libtiff/build
+  try mkdir -p $BUILD_PATH/libtiff/build-$ARCH
+  try cd $BUILD_PATH/libtiff/build-$ARCH
 	push_arm
-  try $BUILD_libtiff/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_libtiff/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make install
 	pop_arm
 }

@@ -28,8 +28,8 @@ function prebuild_gsl() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_gsl
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_gsl
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_gsl
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_gsl
   try patch -p1 < $RECIPE_gsl/patches/gsl.patch
 
   touch .patched
@@ -37,17 +37,17 @@ function prebuild_gsl() {
 
 function shouldbuild_gsl() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/gsl/build/.libs/libgsl.so -nt $BUILD_gsl/.patched ]; then
+  if [ $BUILD_PATH/gsl/build-$ARCH/.libs/libgsl.so -nt $BUILD_gsl/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_gsl() {
-  mkdir $BUILD_PATH/gsl/build
-  cd $BUILD_PATH/gsl/build
+  mkdir $BUILD_PATH/gsl/build-$ARCH
+  cd $BUILD_PATH/gsl/build-$ARCH
 	push_arm
-  try $BUILD_gsl/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_gsl/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make
   try make install
 	pop_arm

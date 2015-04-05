@@ -28,8 +28,8 @@ function prebuild_sqlite3() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_sqlite3
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_sqlite3
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_sqlite3
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_sqlite3
   try patch -p1 < $RECIPE_sqlite3/patches/sqlite.patch
 
   touch .patched
@@ -37,17 +37,17 @@ function prebuild_sqlite3() {
 
 function shouldbuild_sqlite3() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/sqlite3/build/.libs/libsqlite3.so -nt $BUILD_sqlite3/.patched ]; then
+  if [ $BUILD_PATH/sqlite3/build-$ARCH/.libs/libsqlite3.so -nt $BUILD_sqlite3/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_sqlite3() {
-  try mkdir -p $BUILD_PATH/sqlite3/build
-  try cd $BUILD_PATH/sqlite3/build
+  try mkdir -p $BUILD_PATH/sqlite3/build-$ARCH
+  try cd $BUILD_PATH/sqlite3/build-$ARCH
 	push_arm
-  try $BUILD_sqlite3/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_sqlite3/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make install
 	pop_arm
 }

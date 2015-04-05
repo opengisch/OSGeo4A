@@ -28,8 +28,8 @@ function prebuild_libspatialite() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_libspatialite
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_libspatialite
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_libspatialite
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_libspatialite
   try patch -p1 < $RECIPE_libspatialite/patches/spatialite.patch
 
   touch .patched
@@ -37,26 +37,27 @@ function prebuild_libspatialite() {
 
 function shouldbuild_libspatialite() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/libspatialite/build/src/.libs/libspatialite.so -nt $BUILD_libspatialite/.patched ]; then
+  if [ $BUILD_PATH/libspatialite/build-$ARCH/src/.libs/libspatialite.so -nt $BUILD_libspatialite/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_libspatialite() {
-  try mkdir -p $BUILD_PATH/libspatialite/build
-  try cd $BUILD_PATH/libspatialite/build
+  try mkdir -p $BUILD_PATH/libspatialite/build-$ARCH
+  try cd $BUILD_PATH/libspatialite/build-$ARCH
 	push_arm
   CFLAGS="${CFLAGS}" \
-  LDFLAGS="${LDFLAGS} -lgeos -lgeos_c -lstdc++ -lsupc++ -llog" \
+  LDFLAGS="${LDFLAGS} -lstdc++ -lgeos -lgeos_c -lsupc++ -llog " \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try $BUILD_libspatialite/configure \
     --prefix=$STAGE_PATH \
-    --host=arm-linux-androideabi \
+    --host=${TOOLCHAIN_PREFIX} \
+    --target=android \
     --with-geosconfig=$STAGE_PATH/bin/geos-config \
     --enable-libxml2=no
-  try make
-  try make install
+  try make &> make.log
+  try make install &> install.log
 	pop_arm
 }
 

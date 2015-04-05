@@ -28,8 +28,8 @@ function prebuild_expat() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_expat/conftools
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_expat/conftools
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_expat/conftools
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_expat/conftools
   try patch -p1 < $RECIPE_expat/patches/expat.patch
 
   touch .patched
@@ -37,17 +37,17 @@ function prebuild_expat() {
 
 function shouldbuild_expat() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/expat/build/.libs/libexpat.so -nt $BUILD_expat/.patched ]; then
+  if [ $BUILD_PATH/expat/build-$ARCH/.libs/libexpat.so -nt $BUILD_expat/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_expat() {
-  try mkdir -p $BUILD_PATH/expat/build
-  try cd $BUILD_PATH/expat/build
+  try mkdir -p $BUILD_PATH/expat/build-$ARCH
+  try cd $BUILD_PATH/expat/build-$ARCH
 	push_arm
-  try $BUILD_expat/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_expat/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make install
 	pop_arm
 }

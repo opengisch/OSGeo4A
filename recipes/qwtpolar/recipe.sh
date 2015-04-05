@@ -45,12 +45,12 @@ function shouldbuild_qwtpolar() {
 
 # function called to build the source code
 function build_qwtpolar() {
-  try mkdir -p $BUILD_PATH/qwtpolar/build
-  try cd $BUILD_PATH/qwtpolar/build
+  try mkdir -p $BUILD_PATH/qwtpolar/build-$ARCH
+  try cd $BUILD_PATH/qwtpolar/build-$ARCH
 	push_arm
   try qmake $BUILD_qwtpolar
   try make
-  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
+  sed -i "s|\$(INSTALL_ROOT)/libs/${ARCH}/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
 	pop_arm
 }

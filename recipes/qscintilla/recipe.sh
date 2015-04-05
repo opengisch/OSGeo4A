@@ -26,15 +26,15 @@ function prebuild_qscintilla() {
 
 function shouldbuild_qscintilla() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_qscintilla/build/libqscintilla2.so -nt $BUILD_qscintilla/.patched ]; then
+  if [ $BUILD_qscintilla/build-$ARCH/libqscintilla2.so -nt $BUILD_qscintilla/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_qscintilla() {
-  try mkdir -p $BUILD_qscintilla/build
-  try cd $BUILD_qscintilla/build
+  try mkdir -p $BUILD_qscintilla/build-$ARCH
+  try cd $BUILD_qscintilla/build-$ARCH
 
 	push_arm
 

@@ -29,27 +29,27 @@ function prebuild_iconv() {
   fi
 
   try patch -p1 < $RECIPES_PATH/iconv/patches/libiconv.patch
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_iconv/build-aux
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_iconv/build-aux
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_iconv/libcharset/build-aux
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_iconv/libcharset/build-aux
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_iconv/build-aux
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_iconv/build-aux
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_iconv/libcharset/build-aux
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_iconv/libcharset/build-aux
 
   touch .patched
 }
 
 function shouldbuild_iconv() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/iconv/build/libcharset/lib/.libs/libcharset.so -nt $BUILD_iconv/.patched ]; then
+  if [ $BUILD_PATH/iconv/build-$ARCH/libcharset/lib/.libs/libcharset.so -nt $BUILD_iconv/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_iconv() {
-  try mkdir -p $BUILD_PATH/iconv/build
-  try cd $BUILD_PATH/iconv/build
+  try mkdir -p $BUILD_PATH/iconv/build-$ARCH
+  try cd $BUILD_PATH/iconv/build-$ARCH
 	push_arm
-  try $BUILD_iconv/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_iconv/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make
   try make install
 	pop_arm

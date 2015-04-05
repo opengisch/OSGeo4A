@@ -30,27 +30,28 @@ function prebuild_qwt() {
 
   try patch -p1 < $RECIPE_qwt/patches/qwt.patch
   try patch -p1 < $RECIPE_qwt/patches/qwt-install.patch
-  sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $STAGE_PATH|" qwtconfig.pri
 
   touch .patched
 }
 
 function shouldbuild_qwt() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/qwt/build/lib/libqwt.so -nt $BUILD_qwt/.patched ]; then
+  if [ $BUILD_PATH/qwt/build-$ARCH/lib/libqwt.so -nt $BUILD_qwt/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_qwt() {
-  try mkdir -p $BUILD_PATH/qwt/build
-  try cd $BUILD_PATH/qwt/build
+  try cd $BUILD_qwt
+  sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $STAGE_PATH|" qwtconfig.pri
+  try mkdir -p $BUILD_PATH/qwt/build-$ARCH
+  try cd $BUILD_PATH/qwt/build-$ARCH
 	push_arm
   try qmake $BUILD_qwt
   # sed -i "s|\$(INSTALL_ROOT)/libs/.*/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|" src/Makefile
   try make
-  sed -i "s|\$(INSTALL_ROOT)/libs/armeabi-v7a/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
+  sed -i "s|\$(INSTALL_ROOT)/libs/${ARCH}/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
 	pop_arm
 }

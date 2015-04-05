@@ -28,8 +28,8 @@ function prebuild_freexl() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_freexl
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_freexl
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_freexl
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_freexl
   try patch -p1 < $RECIPE_freexl/patches/freexl.patch
 
   touch .patched
@@ -37,17 +37,17 @@ function prebuild_freexl() {
 
 function shouldbuild_freexl() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/freexl/build/src/.libs/libfreexl.so -nt $BUILD_freexl/.patched ]; then
+  if [ $BUILD_PATH/freexl/build-$ARCH/src/.libs/libfreexl.so -nt $BUILD_freexl/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_freexl() {
-  try mkdir -p $BUILD_PATH/freexl/build
-  try cd $BUILD_PATH/freexl/build
+  try mkdir -p $BUILD_PATH/freexl/build-$ARCH
+  try cd $BUILD_PATH/freexl/build-$ARCH
 	push_arm
-  try $BUILD_freexl/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_freexl/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make install
 	pop_arm
 }

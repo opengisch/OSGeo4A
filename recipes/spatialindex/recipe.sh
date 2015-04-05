@@ -29,28 +29,28 @@ function prebuild_spatialindex() {
   fi
 
   try patch -p1 < $RECIPE_spatialindex/patches/spatialindex.patch
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_spatialindex
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_spatialindex
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_spatialindex
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_spatialindex
   touch .patched
 }
 
 function shouldbuild_spatialindex() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/spatialindex/build/.libs/libspatialindex.so -nt $BUILD_spatialindex/.patched ]; then
+  if [ $BUILD_PATH/spatialindex/build-$ARCH/.libs/libspatialindex.so -nt $BUILD_spatialindex/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_spatialindex() {
-  try mkdir -p $BUILD_PATH/spatialindex/build
-  try cd $BUILD_PATH/spatialindex/build
+  try mkdir -p $BUILD_PATH/spatialindex/build-$ARCH
+  try cd $BUILD_PATH/spatialindex/build-$ARCH
   # cd $BUILD_spatialindex
 	push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   CXXFLAGS="${CXXFLAGS} -I${BUILD_spatialindex}/include" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
-    try $BUILD_spatialindex/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+    try $BUILD_spatialindex/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make
   try make install
 	pop_arm

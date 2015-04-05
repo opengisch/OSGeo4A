@@ -1,33 +1,34 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgismobile=2.6.0
+VERSION_qfield=0.2.3
 
 # dependencies of this recipe
-DEPS_qgismobile=(qgis)
+DEPS_qfield=(qgis)
 
 # url of the package
-URL_qgismobile=https://github.com/opengis-ch/QGIS-Mobile/archive/master.tar.gz
+URL_qfield=https://github.com/opengis-ch/QGIS-Mobile/archive/master.tar.gz
 
 # md5 of the package
-MD5_qgismobile=5b16f8a358674ca3490a64692146fa1d
+MD5_qfield=5b16f8a358674ca3490a64692146fa1d
 
 # default build path
-BUILD_qgismobile=$BUILD_PATH/qgismobile/$(get_directory $URL_qgismobile)
+BUILD_qfield=$BUILD_PATH/qfield/$(get_directory $URL_qfield)
 
 # default recipe path
-RECIPE_qgismobile=$RECIPES_PATH/qgismobile
+RECIPE_qfield=$RECIPES_PATH/qfield
 
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
-function prebuild_qgismobile() {
+function prebuild_qfield() {
   true
 }
 
 # function called to build the source code
-function build_qgismobile() {
-  try mkdir -p $BUILD_PATH/qgismobile/build
-  try cd $BUILD_PATH/qgismobile/build
+function build_qfield() {
+  return
+  try mkdir -p $BUILD_PATH/qfield/build
+  try cd $BUILD_PATH/qfield/build
 	push_arm
   CMAKE_INCLUDE_PATH=$STAGE_PATH/include \
      try cmake \
@@ -45,13 +46,15 @@ function build_qgismobile() {
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DLIBRARY_OUTPUT_PATH_ROOT:PATH=$STAGE_PATH \
     -DENABLE_TESTS:BOOL=FALSE \
-    $BUILD_qgismobile
+    -DANDROID_NATIVE_API_LEVEL=19 \
+    -DGIT_EXECUTABLE=`which git` \
+    $BUILD_qfield
   try make
   try make install
 	pop_arm
 }
 
 # function called after all the compile have been done
-function postbuild_qgismobile() {
+function postbuild_qfield() {
 	true
 }

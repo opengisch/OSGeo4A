@@ -28,8 +28,8 @@ function prebuild_proj() {
     return
   fi
 
-  try cp $BUILD_PATH/tmp/config.sub $BUILD_proj
-  try cp $BUILD_PATH/tmp/config.guess $BUILD_proj
+  try cp $ROOT_PATH/.packages/config.sub $BUILD_proj
+  try cp $ROOT_PATH/.packages/config.guess $BUILD_proj
   try patch -p1 < $RECIPE_proj/patches/proj4.patch
 
   touch .patched
@@ -37,17 +37,17 @@ function prebuild_proj() {
 
 function shouldbuild_proj() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/proj/build/src/.libs/libproj.so -nt $BUILD_proj/.patched ]; then
+  if [ $BUILD_PATH/proj/build-$ARCH/src/.libs/libproj.so -nt $BUILD_proj/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_proj() {
-  try mkdir -p $BUILD_PATH/proj/build
-  try cd $BUILD_PATH/proj/build
+  try mkdir -p $BUILD_PATH/proj/build-$ARCH
+  try cd $BUILD_PATH/proj/build-$ARCH
 	push_arm
-  try $BUILD_proj/configure --prefix=$STAGE_PATH --host=arm-linux-androideabi
+  try $BUILD_proj/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make install
 	pop_arm
 }
