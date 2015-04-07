@@ -55,7 +55,7 @@ function build_geos() {
     -DANDROID=ON \
     -DANDROID_ABI=$ARCH \
     $BUILD_geos
-  echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build/geos_svn_revision.h
+  echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build-$ARCH/geos_svn_revision.h
   try make
   try make install
 	pop_arm

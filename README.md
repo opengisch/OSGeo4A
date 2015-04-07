@@ -13,7 +13,7 @@ Create a file config.conf in the root folder with the following content
 ```sh
 export ANDROIDSDK="/path/to/android-sdk"
 export ANDROIDNDK="/path/to/android-sdk"
-export ANDROIDNDKVER=r10c
+export ANDROIDNDKVER=r10d
 export ANDROIDAPI=14
 export ARCH="armeabi-v7a"
 #export ARCH="x86"
@@ -29,7 +29,7 @@ export QTSDK="/path/to/qt/sdk/Qt5.4.0/5.4"
 
 Call
 ```sh
-./distribute.sh d=qgis m='qgis'
+./distribute.sh -dqgis -mqgis
 ```
 
 Options
