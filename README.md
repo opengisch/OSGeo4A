@@ -15,6 +15,8 @@ export ANDROIDSDK="/path/to/android-sdk"
 export ANDROIDNDK="/path/to/android-sdk"
 export ANDROIDNDKVER=r10c
 export ANDROIDAPI=14
+export ARCH="armeabi-v7a"
+#export ARCH="x86"
 export QTSDK="/path/to/qt/sdk/Qt5.4.0/5.4"
 
 # To use local sourcecode instead of the configured URL:
