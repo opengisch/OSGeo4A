@@ -568,10 +568,10 @@ function run_get_packages() {
 	for module in $MODULES; do
 		# download dependencies for this module
 		# check if there is not an overload from environment
-		module_dir=$(eval "echo \$P4A_${module}_DIR")
+		module_dir=$(eval "echo \$O4A_${module}_DIR")
 		if [ "$module_dir" ]
 		then
-			debug "\$P4A_${module}_DIR is not empty, linking $module_dir dir instead of downloading"
+			debug "\$O4A_${module}_DIR is not empty, linking $module_dir dir instead of downloading"
 			directory=$(eval "echo \$BUILD_${module}")
 			if [ -e $directory ]; then
 				try rm -rf "$directory"
