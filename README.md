@@ -16,9 +16,9 @@ we suggest installing the ones that we show in the example config file below.
 
 please note that the API 23 (Android 6, is not yet supported by the NDK r10e) 
 
-Alternatively you can manually get:
-Android SDK http://developer.android.com/sdk/index.html#Other
-Android NDK http://developer.android.com/ndk/downloads/index.html
+Alternatively you can manually get the Android SDK at
+http://developer.android.com/sdk/index.html#Other and the Android NDK at 
+http://developer.android.com/ndk/downloads/index.html
 
 Build instructions
 -----------
