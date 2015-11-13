@@ -7,7 +7,7 @@ VERSION_qca=2.1.0
 DEPS_qca=()
 
 # url of the package
-URL_qca=http://delta.affinix.com/qca/qca-${VERSION_qca}.tar.gz
+URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz
 #URL_qca=http://quickgit.kde.org/?p=qca.git&a=snapshot&h=4f966b0217c10b6fd3c12caf7d2467759fbec7f7&fmt=tgz
 
 # md5 of the package
