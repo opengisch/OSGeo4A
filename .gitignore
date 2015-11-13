@@ -8,3 +8,4 @@ src/apk/local.properties
 .optional-deps
 config.conf
 layouts/default
+ant.properties
