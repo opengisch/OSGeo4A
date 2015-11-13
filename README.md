@@ -26,7 +26,8 @@ Create a file config.conf in the root folder with the following content
 
 ```sh
 export ANDROIDSDK="/path/to/android-sdk"
-export ANDROIDNDK="/path/to/android-sdk"
+# if installed with android studio, this is in ndk-bundle if not adjust it
+export ANDROIDNDK="/path/to/android-sdk/ndk-bundle"
 export ANDROIDNDKVER=r10e
 export ANDROIDAPI=21
 export ARCH="armeabi-v7a"
