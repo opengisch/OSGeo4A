@@ -35,10 +35,10 @@ function build_qgis() {
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DWITH_DESKTOP=ON \
     -DWITH_QTWEBKIT=OFF \
-    -DPYTHON_EXECUTABLE=/usr/bin/python \
-    -DQT_LRELEASE_EXECUTABLE=/usr/bin/lrelease \
-    -DFLEX_EXECUTABLE=/usr/bin/flex \
-    -DBISON_EXECUTABLE=/usr/bin/bison \
+    -DPYTHON_EXECUTABLE=`which python` \
+    -DQT_LRELEASE_EXECUTABLE=`which lrelease` \
+    -DFLEX_EXECUTABLE=`which flex` \
+    -DBISON_EXECUTABLE=`which bison` \
     -DGDAL_CONFIG=$STAGE_PATH/bin/gdal-config \
     -DGDAL_CONFIG_PREFER_FWTOOLS_PAT=/bin_safe \
     -DGDAL_CONFIG_PREFER_PATH=$STAGE_PATH/bin \
