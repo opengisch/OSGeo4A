@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+import os
+import sys
+import subprocess
+import re
+
+re_needso = re.compile(r'^.*\(NEEDED\)\s+Shared library: \[lib(.*)\.so\]\s*$')
+
+blacklist_libs = (
+  'c',
+  'stdc++',
+  'gnustl_shared',
+  'dl',
+  'python2.7',
+  'sdl',
+  'sdl_image',
+  'sdl_ttf',
+  'z',
+  'm',
+  'GLESv2',
+  'jpeg',
+  'png',
+  'log',
+  'Qt5PrintSupport',
+  'Qt5Svg',
+  'Qt5OpenGL',
+  'Qt5Gui',
+  'Qt5Widgets',
+  'Qt5Core',
+  'Qt5Concurrent',
+  'Qt5Sql',
+  'Qt5Xml',
+  'Qt5Network',
+  'Qt5Positioning',
+)
+
+scanned_libs={}
+
+def scan_lib(sofile):
+  needed_libs = []
+  print('Scanning ' + sofile)
+  fn = os.path.join(sys.argv[2], 'lib' + sofile + '.so')
+  out = subprocess.check_output([os.environ['READELF'], '-d', fn])
+  for line in out.splitlines():
+    needso = re_needso.match(line)
+    if needso:
+      lib = needso.group(1)
+      if lib in blacklist_libs:
+        continue
+      print(' * ' + lib)
+      needed_libs.append(lib)
+
+  for lib in needed_libs:
+    if lib not in scanned_libs:
+      scan_lib(lib)
+      scanned_libs[lib]=1
+    else:
+      scanned_libs[lib]+=1
+
+scan_lib(sys.argv[1])
+print(' ***** FINAL RESULT ***** ')
+
+print('{:<15} {:<3}'.format('Lib','Count'))
+for k, v in scanned_libs.iteritems():
+  print("{:<15} {:<3}".format(k, v))

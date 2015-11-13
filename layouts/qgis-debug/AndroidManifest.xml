@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest android:versionCode="10" package="org.qgis.qgis" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2.6.0" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="@string/app_name">
+<manifest android:versionCode="11" package="org.qgis.qgis" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2.8.1 - Wien" android:installLocation="auto">
+  <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="@string/app_name" android:icon="@drawable/icon">
         <activity android:name="org.qgis.QgisActivity"
             android:noHistory="true"
             android:icon="@drawable/icon"
@@ -50,7 +50,7 @@
             <!-- Splash screen -->
         </activity>
     </application>
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="20"/>
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19" android:maxSdkVersion="19"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>

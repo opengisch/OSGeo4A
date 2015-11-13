@@ -246,7 +246,8 @@ function push_arm() {
 	export RANLIB="$TOOLCHAIN_PREFIX-ranlib"
 	export LD="$TOOLCHAIN_PREFIX-ld"
 	export STRIP="$TOOLCHAIN_PREFIX-strip --strip-unneeded"
-	export MAKE="make -j$CORES"
+  export MAKESMP="make -j$CORES"
+  export MAKE="make"
 	export READELF="$TOOLCHAIN_PREFIX-readelf"
 
   # export environment for Qt
@@ -817,7 +818,11 @@ function run_distribute() {
   try cp $ROOT_PATH/src/apk/* $DIST_PATH -r
 	debug "Create customized layout"
   try cp -r $ROOT_PATH/layouts/$LAYOUT/* $DIST_PATH
-  try cp -r $STAGE_PATH/files $DIST_PATH/assets
+  try mkdir -p $DIST_PATH/assets
+  pushd $STAGE_PATH/files
+  rm $DIST_PATH/assets/assets.zip
+  zip -r $DIST_PATH/assets/assets.zip share/resources/ share/svg/
+  popd
   try cd $DIST_PATH
 
 #	try cp -a $SRC_PATH/default.properties .
@@ -834,7 +839,8 @@ function run_distribute() {
 #	$HOSTPYTHON -OO -m compileall $BUILD_PATH/python-install
 #	try cp -a $BUILD_PATH/python-install .
 
-	debug "Copy libs"
+	debug "Copy libs for ${ARCH}"
+  try rm -rf libs
 	try mkdir -p libs/$ARCH
 	try cp -aL $STAGE_PATH/lib/*.so libs/$ARCH/
 
@@ -910,7 +916,7 @@ function run() {
 #	run_pymodules_install
 	run_distribute
   run_build_apk
-  run_install_apk
+#  run_install_apk
 	info "All done !"
 }
 

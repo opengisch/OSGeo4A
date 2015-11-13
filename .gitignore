@@ -1,5 +1,6 @@
 build
 dist
+stage
 .packages
 src/apk/default.properties
 src/apk/local.properties

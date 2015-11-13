@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=2.6.0
+VERSION_qgis=2.12.0
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qwt qwtpolar qscintilla libspatialite spatialindex expat gsl postgresql)
+DEPS_qgis=(gdal qwt qwtpolar qca qscintilla libspatialite spatialindex expat gsl postgresql)
 # DEPS_qgis=()
 
 # url of the package
@@ -31,9 +31,12 @@ function build_qgis() {
   try cd $BUILD_PATH/qgis/build-$ARCH
 	push_arm
   try cmake \
-    -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DWITH_DESKTOP=ON \
+    -DWITH_QTWEBKIT=OFF \
+    -DPYTHON_EXECUTABLE=/usr/bin/python \
+    -DQT_LRELEASE_EXECUTABLE=/usr/bin/lrelease \
     -DFLEX_EXECUTABLE=/usr/bin/flex \
     -DBISON_EXECUTABLE=/usr/bin/bison \
     -DGDAL_CONFIG=$STAGE_PATH/bin/gdal-config \
@@ -83,7 +86,7 @@ function build_qgis() {
     -DANDROID_ABI=$ARCH \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
-  try make
+  try $MAKESMP
   try make install
 	pop_arm
 }
