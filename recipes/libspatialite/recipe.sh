@@ -7,7 +7,7 @@ VERSION_libspatialite=4.2.0
 DEPS_libspatialite=(sqlite3 proj iconv freexl geos)
 
 # url of the package
-URL_libspatialite=http://www.gaia-gis.it/gaia-sins/libspatialite-${VERSION_libspatialite}.tar.gz
+URL_libspatialite=http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-${VERSION_libspatialite}.tar.gz
 
 # md5 of the package
 MD5_libspatialite=83305ed694a77152120d1f74c5151779
