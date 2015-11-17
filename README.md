@@ -30,26 +30,16 @@ http://developer.android.com/ndk/downloads/index.html
 Build instructions
 -----------
 Create a file config.conf in the root folder by copying the config.conf.default
- file and edit it accordingly to your needs
-
+ file and edit it accordingly to your needs 
 ```sh
+cd OSGeo4A
 cp config.conf.default config.conf
-```
-
-Call
-```sh
+# nano config.conf
 ./distribute.sh -dqgis -mqgis
 ```
 
-Options
------------
+To get more info about the distribute file, call:
+```sh
+./distribute.sh -h
+```
 
-<dl>
- <dt>-l</dt> <dd>List available modules</dd>
- <dt>-m</dt> <dd>Specifies the list of modules to build</dd>
- <dt>-a</dt> <dd>Layout to build</dd>
- <dt>-s</dt> <dd>Run a bash in an ARM cross compile environment</dd>
- <dt>-d</dt> <dd>Distribution to build</dd>
- <dt>-f</dt> <dd>Do a clean build</dd>
- <dt>-h</dt> <dd>Help</dd>
-</dl>
