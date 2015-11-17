@@ -29,29 +29,11 @@ http://developer.android.com/ndk/downloads/index.html
 
 Build instructions
 -----------
-Create a file config.conf in the root folder with the following content
+Create a file config.conf in the root folder by copying the config.conf.default
+ file and edit it accordingly to your needs
 
 ```sh
-# Currently suggested versions
-export ANDROIDNDKVER=r10e
-export ANDROIDAPI=21
-
-# PATHS 
-export ANDROIDSDK="/path/to/android-sdk"
-# if installed with android studio, this is in ndk-bundle if not adjust it
-export ANDROIDNDK="/path/to/android-sdk/ndk-bundle"
-export QTSDK="/path/to/qt/sdk/Qt5.4.0/5.4"
-# To use local sourcecode instead of the configured URL:
-# export O4A_[module]_DIR=/usr/src/mymodulesource like this
-# export O4A_qfield_DIR="/home/marco/dev/QGIS/QField"
-# export O4A_qgis_DIR="/home/marco/dev/QGIS/master"
-
-# BUILD
-export ARCH="armeabi-v7a"
-#export ARCH="x86"
-# By default all cores will be used to build
-# Use this option to override
-# export CORES=4
+cp config.conf.default config.conf
 ```
 
 Call
