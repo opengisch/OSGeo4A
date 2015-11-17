@@ -1,0 +1,22 @@
+### Currently suggested versions ####
+export ANDROIDNDKVER=r10e
+export ANDROIDAPI=15 # min 15 max 21
+
+#### PATHS ####
+export ANDROIDSDK="/path/to/android-sdk"
+# if installed with android studio, this is in ndk-bundle if not adjust it
+export ANDROIDNDK="/path/to/android-sdk/ndk-bundle"
+export QTSDK="/path/to/qt/sdk/Qt/5.5"
+
+### LOCAL SOURCES ###
+# To use local sourcecode instead of the configured URL:
+# export O4A_[module]_DIR=/usr/src/mymodulesource like this
+# export O4A_qfield_DIR="/home/marco/dev/QGIS/QField"
+# export O4A_qgis_DIR="/home/marco/dev/QGIS/master"
+
+### BUILD ###
+export ARCH="armeabi-v7a"
+#export ARCH="x86"
+# By default all cores will be used to build
+# Use this option to override
+# export CORES=4
