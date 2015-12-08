@@ -22,10 +22,16 @@ RECIPE_qca=$RECIPES_PATH/qca
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
 function prebuild_qca() {
- cd $BUILD_qca
- patch --verbose --forward -p1 < $ROOT_PATH/patches/qca_qio.patch
- patch --verbose --forward -p1 < $ROOT_PATH/patches/qca_console.patch
- true
+  cd $BUILD_qca
+  # check marker
+  if [ -f .patched ]; then
+    return
+  fi
+
+  try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_qio.patch
+  try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_console.patch
+
+  touch .patched
 }
 
 function shouldbuild_qca() {
