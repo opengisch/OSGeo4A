@@ -67,6 +67,7 @@ function build_qgis() {
     -DWITH_QTMOBILITY=OFF \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DENABLE_QT5=ON \
+    -DPYTHON_VER=2.7 \
     -DENABLE_TESTS=OFF \
     -DEXPAT_INCLUDE_DIR=$STAGE_PATH/include \
     -DEXPAT_LIBRARY=$STAGE_PATH/lib/libexpat.so \
