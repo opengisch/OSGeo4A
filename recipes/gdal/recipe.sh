@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_gdal=1.11.1
+VERSION_gdal=2.0.2
 
 # dependencies of this recipe
 DEPS_gdal=(iconv sqlite3 geos libtiff postgresql)
@@ -10,7 +10,7 @@ DEPS_gdal=(iconv sqlite3 geos libtiff postgresql)
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
 
 # md5 of the package
-MD5_gdal=7555f55855f613be49e6508eed0ac3fa
+MD5_gdal=573865f3f59ba7b4f8f4cddf223b52a5
 
 # default build path
 BUILD_gdal=$BUILD_PATH/gdal/$(get_directory $URL_gdal)
