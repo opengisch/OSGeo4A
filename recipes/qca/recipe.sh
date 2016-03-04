@@ -52,6 +52,7 @@ function build_qca() {
  try cmake \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+  -DANDROID_ABI=$ARCH \
   -DQT4_BUILD=OFF \
   -DQCA_SUFFIX=qt5 \
   -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
