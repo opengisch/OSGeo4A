@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_libtiff=4.0.3
+VERSION_libtiff=4.0.6
 
 # dependencies of this recipe
 DEPS_libtiff=()
@@ -10,7 +10,7 @@ DEPS_libtiff=()
 URL_libtiff=http://download.osgeo.org/libtiff/tiff-${VERSION_libtiff}.tar.gz
 
 # md5 of the package
-MD5_libtiff=051c1068e6a0627f461948c365290410
+MD5_libtiff=d1d2e940dea0b5ad435f21f03d96dd72
 
 # default build path
 BUILD_libtiff=$BUILD_PATH/libtiff/$(get_directory $URL_libtiff)
@@ -30,7 +30,7 @@ function prebuild_libtiff() {
 
   try cp $ROOT_PATH/.packages/config.sub $BUILD_libtiff/config
   try cp $ROOT_PATH/.packages/config.guess $BUILD_libtiff/config
-  try patch -p1 < $RECIPE_libtiff/patches/libtiff.patch
+  # try patch -p1 < $RECIPE_libtiff/patches/libtiff.patch
 
   touch .patched
 }
