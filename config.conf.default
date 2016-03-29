@@ -15,8 +15,7 @@ export QTSDK="/path/to/qt/sdk/Qt/5.5"
 # export O4A_qgis_DIR="/home/marco/dev/QGIS/master"
 
 ### BUILD ###
-export ARCH="armeabi-v7a"
-#export ARCH="x86"
+export ARCHES=("armeabi-v7a" "x86")
 # By default all cores will be used to build
 # Use this option to override
 # export CORES=4

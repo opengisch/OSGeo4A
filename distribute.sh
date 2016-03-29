@@ -162,7 +162,7 @@ function get_directory() {
 }
 
 function push_arm() {
-	info "Entering in ARM environment"
+	info "Entering in ${ARCH} environment"
 
 	# save for pop
 	export OLD_PATH=$PATH
@@ -267,7 +267,7 @@ function push_arm() {
 }
 
 function pop_arm() {
-	info "Leaving ARM environment"
+	info "Leaving ${ARCH} environment"
 	export PATH=$OLD_PATH
 	export CFLAGS=$OLD_CFLAGS
 	export CXXFLAGS=$OLD_CXXFLAGS
@@ -484,6 +484,7 @@ function run_source_modules() {
 	needed=($MODULES)
 	declare -a processed
 	declare -a pymodules
+  processed=()
 
 	fn_deps='.deps'
 	fn_optional_deps='.optional-deps'
@@ -548,6 +549,7 @@ function run_source_modules() {
 		fi
 	done
 
+  info `pwd`
 	MODULES="$($PYTHON tools/depsort.py --optional $fn_optional_deps < $fn_deps)"
 
 	info "Modules changed to $MODULES"
@@ -854,7 +856,7 @@ function run_distribute() {
 #	if [ "$COPYLIBS" == "1" ]; then
 #		if [ -s "libs/$ARCH/copylibs" ]; then
 #			try sh -c "cat libs/$ARCH/copylibs | xargs -d'\n' cp -t private/"
-#		fi
+#	  fi
 #	else
 #		try mv libs/$ARCH/libpymodules.so private/
 #	fi
@@ -906,17 +908,21 @@ function run_biglink() {
 
 function run() {
 	check_build_deps
-	run_prepare
-	run_source_modules
-	run_get_packages
-	run_prebuild
-	run_build
-#	run_biglink
-	run_postbuild
-#	run_pymodules_install
-	run_distribute
-  run_build_apk
-#  run_install_apk
+  for ARCH in ${ARCHES[@]}; do
+    cd ${ROOT_PATH}
+    STAGE_PATH="${ROOT_PATH}/stage/$ARCH"
+    run_prepare
+    run_source_modules
+    run_get_packages
+    run_prebuild
+    run_build
+  #	run_biglink
+    run_postbuild
+  #	run_pymodules_install
+  # run_distribute
+  # run_build_apk
+  done
+  #  run_install_apk
 	info "All done !"
 }
 
