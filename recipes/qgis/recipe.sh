@@ -34,6 +34,7 @@ function build_qgis() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DWITH_DESKTOP=ON \
+    -DDISABLE_DEPRECATED=ON \
     -DWITH_QTWEBKIT=OFF \
     -DPYTHON_EXECUTABLE=`which python` \
     -DQT_LRELEASE_EXECUTABLE=`which lrelease` \
