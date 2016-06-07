@@ -31,7 +31,7 @@ function prebuild_gdal() {
   try cp $ROOT_PATH/.packages/config.sub $BUILD_gdal
   try cp $ROOT_PATH/.packages/config.guess $BUILD_gdal
   try patch -p1 < $RECIPE_gdal/patches/gdal.patch
-  try patch -p1 < $RECIPE_gdal/patches/memdebug.patch
+  # try patch -p1 < $RECIPE_gdal/patches/memdebug.patch
 
   touch .patched
 }
@@ -56,7 +56,7 @@ function build_gdal() {
     --with-sqlite3=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no
-  try make &> make.log
+  try make
   try make install &> install.log
 	pop_arm
 }
