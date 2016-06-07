@@ -48,13 +48,15 @@ function shouldbuild_libtiff() {
 function build_libtiff() {
   try mkdir -p $BUILD_PATH/libtiff/build-$ARCH
   try cd $BUILD_PATH/libtiff/build-$ARCH
-	push_arm
-  try $BUILD_libtiff/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+  push_arm
+  try cmake \
+    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    $BUILD_libtiff
   try make install
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
 function postbuild_libtiff() {
-	true
+  true
 }
