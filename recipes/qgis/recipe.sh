@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=2.12.0
+VERSION_qgis=2.14.0
 
 # dependencies of this recipe
 DEPS_qgis=(gdal qwt qwtpolar qca qscintilla libspatialite spatialindex expat gsl postgresql)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/m-kuhn/QGIS/archive/android-2_6.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/final-2_14_3.tar.gz
 
 # md5 of the package
-MD5_qgis=c232f3f8af17d0aed663d26432192b31
+MD5_qgis=28103330bf56363a11d93c1ccf168663
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
