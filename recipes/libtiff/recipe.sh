@@ -51,6 +51,7 @@ function build_libtiff() {
   push_arm
   try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     $BUILD_libtiff
   try make install
   pop_arm
