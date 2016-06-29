@@ -9,7 +9,7 @@ Dependencies instructions
 -----------
 - you need a JDK v6 or later (OpenJDK is also good)
 - [Apache ant] (http://ant.apache.org/bindownload.cgi) v1.8 or later
-- [Qt5 for android]
+- [Qt5 for android > 5.6]
 (http://download.qt.io/official_releases/qt/5.5/5.5.1/qt-opensource-linux-x64-android-5.5.1.run)
 - and all the android stuff. the easiest way to get all the android dependencies
 is to install [Android studio] (http://developer.android.com/sdk/index.html)
