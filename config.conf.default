@@ -4,7 +4,9 @@ export ANDROIDAPI=15 # min 15 max 21
 
 #### PATHS ####
 export ANDROIDSDK="/path/to/android-sdk"
-# if installed with android studio, this is in ndk-bundle if not adjust it
+# if installed with android studio, this is in ndk-bundle if not
+# download it and install it from 
+# http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
 export ANDROIDNDK="/path/to/android-sdk/ndk-bundle"
 export QTSDK="/path/to/qt/sdk/Qt/5.5"
 
