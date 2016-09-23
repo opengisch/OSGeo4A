@@ -54,6 +54,7 @@ function build_geos() {
     -DANDROID_STL=gnustl_shared \
     -DANDROID=ON \
     -DANDROID_ABI=$ARCH \
+    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build-$ARCH/geos_svn_revision.h
   try make
