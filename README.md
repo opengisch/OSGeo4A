@@ -38,6 +38,12 @@ cp config.conf.default config.conf
 ./distribute.sh -dqgis -mqgis
 ```
 
+Patch Qt 5.7
+------------
+
+If you compile with Qt 5.7 it needs a minimal manual patch, [see here](https://github.com/opengisch/OSGeo4A/pull/15#issuecomment-249107332)
+
+
 To get more info about the distribute file, call:
 ```sh
 ./distribute.sh -h
