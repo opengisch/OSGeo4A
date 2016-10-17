@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=2.16.0
+VERSION_qgis=2.14.7
 
 # dependencies of this recipe
 DEPS_qgis=(gdal qwt qca qscintilla libspatialite spatialindex expat gsl postgresql)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/final-2_16_0.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/final-2_14_7.tar.gz
 
 # md5 of the package
-MD5_qgis=97880d498ceb5a177a80e78afee8d13c
+MD5_qgis=4133d5714f8fcb6f828165b0078c81b8
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -89,10 +89,10 @@ function build_qgis() {
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
   try $MAKESMP install
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
 function postbuild_qgis() {
-	true
+  true
 }
