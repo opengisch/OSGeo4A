@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_geos=3.4.2
+VERSION_geos=3.6.1
 
 # dependencies of this recipe
 DEPS_geos=()
@@ -10,7 +10,7 @@ DEPS_geos=()
 URL_geos=http://download.osgeo.org/geos/geos-${VERSION_geos}.tar.bz2
 
 # md5 of the package
-MD5_geos=fc5df2d926eb7e67f988a43a92683bae
+MD5_geos=c97e338b3bc81f9848656e9d693ca6cc
 
 # default build path
 BUILD_geos=$BUILD_PATH/geos/$(get_directory $URL_geos)
@@ -31,7 +31,6 @@ function prebuild_geos() {
   try cp $ROOT_PATH/.packages/config.sub $BUILD_geos
   try cp $ROOT_PATH/.packages/config.guess $BUILD_geos
   try patch -p1 < $RECIPE_geos/patches/geos.patch
-  try patch -p1 < $RECIPE_geos/patches/geos_std_nan.patch
 
   touch .patched
 }

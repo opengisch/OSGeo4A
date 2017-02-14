@@ -24,23 +24,44 @@ diff -rupN orig/capi/CMakeLists.txt new/capi/CMakeLists.txt
    endif()
  
  endif()
-Binary files orig/libs/armeabi-v7a/libgnustl_shared.so and new/libs/armeabi-v7a/libgnustl_shared.so differ
 diff -rupN orig/src/CMakeLists.txt new/src/CMakeLists.txt
---- orig/src/CMakeLists.txt	2014-11-30 15:49:25.064555581 +0100
-+++ new/src/CMakeLists.txt	2014-11-30 16:08:50.433915455 +0100
-@@ -67,9 +66,14 @@ else()
-   set_target_properties(geos
-     PROPERTIES
-     DEFINE_SYMBOL GEOS_DLL_EXPORT
--    VERSION ${VERSION}
-     CLEAN_DIRECT_OUTPUT 1)
+--- orig/src/CMakeLists.txt	2017-02-14 12:27:51.046377391 +0100
++++ new/src/CMakeLists.txt	2017-02-14 12:29:13.280316592 +0100
+@@ -67,9 +67,14 @@ else()
+     set_target_properties(geos
+       PROPERTIES
+       DEFINE_SYMBOL GEOS_DLL_EXPORT
+-      VERSION ${VERSION}
+       CLEAN_DIRECT_OUTPUT 1)
  
-+  if(NOT ANDROID)
-+    set_target_properties(geos
-+      VERSION ${VERSION}
-+    )
-+  endif()
++    if(NOT ANDROID)
++      set_target_properties(geos
++        VERSION ${VERSION}
++      )
++    endif()
 +
-   set_target_properties(geos-static
-     PROPERTIES
-     OUTPUT_NAME "geos"
+     install(TARGETS geos
+       RUNTIME DESTINATION bin
+       LIBRARY DESTINATION lib
+diff -rupN geos-3.6.1/cmake/modules/GenerateSourceGroups.cmake new/cmake/modules/GenerateSourceGroups.cmake
+--- geos-3.6.1/cmake/modules/GenerateSourceGroups.cmake	1970-01-01 01:00:00.000000000 +0100
++++ new/cmake/modules/GenerateSourceGroups.cmake	2017-02-14 12:35:48.069078275 +0100
+@@ -0,0 +1,17 @@
++#
++# Macro generates tree of IDE source groups based on folders structure
++# Source: http://www.cmake.org/pipermail/cmake/2013-November/056332.html
++# 
++macro(GenerateSourceGroups curdir)
++  file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${curdir} ${PROJECT_SOURCE_DIR}/${curdir}/*)
++  foreach(child ${children})
++    if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
++      GenerateSourceGroups(${curdir}/${child})
++    else()
++      string(REPLACE "/" "\\" groupname ${curdir})
++      # I would like to call the src root folder in a different name, only in visual studio (not mandatory requirement)
++	  string(REPLACE "src" "Source Files" groupname ${groupname})
++      source_group(${groupname} FILES ${PROJECT_SOURCE_DIR}/${curdir}/${child})
++    endif()
++  endforeach()
++endmacro()
+\ No newline at end of file
