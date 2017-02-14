@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=2.14.7
+VERSION_qgis=2.14.11
 
 # dependencies of this recipe
 DEPS_qgis=(gdal qwt qca qscintilla libspatialite spatialindex expat gsl postgresql)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/final-2_14_7.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/final-2_14_11.tar.gz
 
 # md5 of the package
-MD5_qgis=4133d5714f8fcb6f828165b0078c81b8
+MD5_qgis=3a00ec4a051d99b8cc0e5306630d3685
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
