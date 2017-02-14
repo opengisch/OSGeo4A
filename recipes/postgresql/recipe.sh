@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_postgresql=9.6.0
+VERSION_postgresql=9.6.2
 
 # dependencies of this recipe
 DEPS_postgresql=(iconv)
@@ -10,7 +10,7 @@ DEPS_postgresql=(iconv)
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
 
 # md5 of the package
-MD5_postgresql=c5af6ebb790ab877e1d2e56e19cebb29
+MD5_postgresql=ee9cd5dfa24f691275cc65c92b6ff8f7
 
 # default build path
 BUILD_postgresql=$BUILD_PATH/postgresql/$(get_directory $URL_postgresql)
