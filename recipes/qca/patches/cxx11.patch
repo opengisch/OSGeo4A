@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d15a3a7..419bed5 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -25,6 +25,8 @@ set(BUILD_PLUGINS "auto" CACHE STRING "Plugins for building (also possible value
+ option(BUILD_SHARED_LIBS "Build shared library" ON)
+ option(DEVELOPER_MODE "Special developer mode" OFF)
+ 
++SET(CMAKE_CXX_STANDARD 11)
++
+ if(APPLE)
+   option(OSX_FRAMEWORK "Build a Mac OS X Framework" ON)
+ else()

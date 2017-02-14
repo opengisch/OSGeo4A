@@ -30,6 +30,7 @@ function prebuild_qca() {
 
   try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_qio.patch
   try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_console.patch
+  try patch --verbose --forward -p1 < $RECIPE_qca/patches/cxx11.patch
 
   touch .patched
 }
