@@ -205,7 +205,7 @@ function push_arm() {
       export TOOLCHAIN_BASEDIR=arm-linux-androideabi
       export QT_ARCH_PREFIX=armv7
   else
-      echo "Error: Please report issue to enable support for newer ndk."
+      echo "Error: Please report issue to enable support for newer ndk (${ARCH})."
       exit 1
   fi
 
@@ -217,7 +217,7 @@ function push_arm() {
   elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ] || [ "X${ANDROIDNDKVER:0:3}" == "Xr12" ]; then
       export TOOLCHAIN_VERSION=4.9
   else
-      echo "Error: Please report issue to enable support for newer ndk."
+      echo "Error: Please report issue to enable support for newer ndk (${ANDROIDNDKVER:0:3})."
       exit 1
   fi
 
@@ -225,7 +225,7 @@ function push_arm() {
                            -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include \
                            -isystem $ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH/usr/include"
 
-  export LDFLAGS="-lm -L$STAGE_PATH/lib"
+  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/sources/crystax/libs/$ARCH/"
 
   export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_$QT_ARCH_PREFIX/bin:$PATH"
 
@@ -379,7 +379,7 @@ function run_prepare() {
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
       export SHORTARCH="arm"
   else
-      echo "Error: Please report issue to enable support for newer ndk."
+      echo "Error: Please report issue to enable support for newer ndk (${ARCH})."
       exit 1
   fi
 
@@ -919,7 +919,7 @@ function run() {
   # run_biglink
     run_postbuild
   # run_pymodules_install
-  # run_distribute
+  run_distribute
   # run_build_apk
   done
   #  run_install_apk
@@ -964,6 +964,7 @@ while getopts ":hCvlfxim:a:u:d:s" opt; do
       list_modules
       ;;
     s)
+#      export ARCH=armeabi-v7a
       run_prepare
       run_source_modules
       push_arm
