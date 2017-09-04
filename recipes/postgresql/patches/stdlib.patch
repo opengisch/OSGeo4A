@@ -1,21 +1,23 @@
-diff -rupN orig/src/include/pg_config.h build-x86/src/include/pg_config.h
---- orig/src/include/pg_config.h	2015-04-04 22:29:06.276245889 +0200
-+++ build-x86/src/include/pg_config.h	2015-04-04 22:29:49.339957714 +0200
-@@ -392,7 +392,7 @@
- #define HAVE_PWD_H 1
+diff -Naur old/postgresql-9.6.2/src/include/pg_config.h.in postgresql/postgresql-9.6.2/src/include/pg_config.h.in
+--- old/postgresql-9.6.2/src/include/pg_config.h.in	2017-08-28 17:35:15.877261376 +0200
++++ postgresql/postgresql-9.6.2/src/include/pg_config.h.in	2017-08-28 17:35:44.605635463 +0200
+@@ -416,7 +416,8 @@
+ #undef HAVE_PWD_H
  
  /* Define to 1 if you have the `random' function. */
--/* #undef HAVE_RANDOM */
+-#undef HAVE_RANDOM
++// #undef HAVE_RANDOM
 +#define HAVE_RANDOM 1
  
- /* Define to 1 if you have the <readline.h> header file. */
- /* #undef HAVE_READLINE_H */
-@@ -444,7 +444,7 @@
- #define HAVE_SPINLOCKS 1
+ /* Define to 1 if you have the `RAND_OpenSSL' function. */
+ #undef HAVE_RAND_OPENSSL
+@@ -468,7 +469,8 @@
+ #undef HAVE_SPINLOCKS
  
  /* Define to 1 if you have the `srandom' function. */
--/* #undef HAVE_SRANDOM */
+-#undef HAVE_SRANDOM
++// #undef HAVE_SRANDOM
 +#define HAVE_SRANDOM 1
  
- /* Define to 1 if you have the <stdint.h> header file. */
- #define HAVE_STDINT_H 1
+ /* Define to 1 if you have the `SSL_get_current_compression' function. */
+ #undef HAVE_SSL_GET_CURRENT_COMPRESSION

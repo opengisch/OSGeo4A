@@ -4,7 +4,7 @@
 VERSION_qgis=2.14.11
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qwt qca qscintilla libspatialite spatialindex expat gsl postgresql)
+DEPS_qgis=(gdal qwt qca qscintilla libspatialite spatialindex expat gsl postgresql libzip qtkeychain)
 # DEPS_qgis=()
 
 # url of the package
@@ -33,6 +33,7 @@ function build_qgis() {
   try cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     -DWITH_DESKTOP=ON \
     -DDISABLE_DEPRECATED=ON \
     -DWITH_QTWEBKIT=OFF \
@@ -62,6 +63,7 @@ function build_qgis() {
     -DPOSTGRES_CONFIG_PREFER_PATH= \
     -DPOSTGRES_INCLUDE_DIR=$STAGE_PATH/include \
     -DPOSTGRES_LIBRARY=$STAGE_PATH/lib/libpq.so \
+    -DPYTHON_EXECUTABLE=`which python3` \
     -DWITH_BINDINGS=OFF \
     -DWITH_INTERNAL_SPATIALITE=OFF \
     -DWITH_GRASS=OFF \

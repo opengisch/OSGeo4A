@@ -31,6 +31,7 @@ function prebuild_postgresql() {
   try cp $ROOT_PATH/.packages/config.sub $BUILD_postgresql/conftools
   try cp $ROOT_PATH/.packages/config.guess $BUILD_postgresql/conftools
   try patch -p1 < $RECIPE_postgresql/patches/libpq.patch
+  try patch -p2 < $RECIPE_postgresql/patches/stdlib.patch
 
   touch .patched
 }

@@ -39,7 +39,7 @@ function prebuild_libtiff() {
 # set DO_BUILD=0 if you know that it does not require a rebuild
 function shouldbuild_libtiff() {
 # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/libtiff/build-$ARCH/libtiff/libtiff.la -nt $BUILD_libtiff/.patched ]; then
+  if [ $BUILD_PATH/libtiff/build-$ARCH/libtiff/libtiff.so -nt $BUILD_libtiff/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -52,7 +52,10 @@ function build_libtiff() {
   try cmake \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
+    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DANDROID_ABI=$ARCH \
+    -DANDROID_NDK=$ANDROID_NDK \
     $BUILD_libtiff
   try make install
   pop_arm

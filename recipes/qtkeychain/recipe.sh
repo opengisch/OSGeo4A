@@ -1,51 +1,51 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qca=2.1.0
+VERSION_qtkeychain=0.8.0
 
 # dependencies of this recipe
-DEPS_qca=()
+DEPS_qtkeychain=()
 
 # url of the package
-URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz
-#URL_qca=http://quickgit.kde.org/?p=qca.git&a=snapshot&h=4f966b0217c10b6fd3c12caf7d2467759fbec7f7&fmt=tgz
+#URL_qtkeychain=https://github.com/frankosterfeld/qtkeychain/archive/v${VERSION_qtkeychain}.tar.gz
+URL_qtkeychain=https://github.com/hasselmm/qtkeychain/archive/androidkeystore.tar.gz
 
 # md5 of the package
-MD5_qca=c2b00c732036244701bae4853a2101cf
+MD5_qtkeychain=8ac371cb68aad1582e7b8e7b0b4530cd
 
 # default build path
-BUILD_qca=$BUILD_PATH/qca/$(get_directory $URL_qca)
+BUILD_qtkeychain=$BUILD_PATH/qtkeychain/$(get_directory $URL_qtkeychain)
 
 # default recipe path
-RECIPE_qca=$RECIPES_PATH/qca
+RECIPE_qtkeychain=$RECIPES_PATH/qtkeychain
 
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
-function prebuild_qca() {
-  cd $BUILD_qca
+function prebuild_qtkeychain() {
+  cd $BUILD_qtkeychain
   # check marker
   if [ -f .patched ]; then
     return
   fi
 
-  try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_qio.patch
-  try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_console.patch
-  try patch --verbose --forward -p1 < $RECIPE_qca/patches/cxx11.patch
+  try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/qtkeychain_qio.patch
+  try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/qtkeychain_console.patch
+  try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/cxx11.patch
 
   touch .patched
 }
 
-function shouldbuild_qca() {
+function shouldbuild_qtkeychain() {
  # If lib is newer than the sourcecode skip build
- if [ $BUILD_qca/build-$ARCH/libqca2.so -nt $BUILD_qca/.patched ]; then
+ if [ $BUILD_qtkeychain/build-$ARCH/libqtkeychain2.so -nt $BUILD_qtkeychain/.patched ]; then
   DO_BUILD=0
  fi
 }
 
 # function called to build the source code
-function build_qca() {
- try mkdir -p $BUILD_qca/build-$ARCH
- try cd $BUILD_qca/build-$ARCH
+function build_qtkeychain() {
+ try mkdir -p $BUILD_qtkeychain/build-$ARCH
+ try cd $BUILD_qtkeychain/build-$ARCH
 
 	push_arm
 
@@ -56,7 +56,6 @@ function build_qca() {
   -DANDROID_ABI=$ARCH \
   -DANDROID_NDK=$ANDROID_NDK \
   -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
-  -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
   -DQT4_BUILD=OFF \
   -DQCA_SUFFIX=qt5 \
   -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
@@ -64,7 +63,7 @@ function build_qca() {
   -DBUILD_TOOLS=OFF \
   -DWITH_nss_PLUGIN=OFF \
   -DWITH_pkcs11_PLUGIN=OFF \
-  $BUILD_qca
+  $BUILD_qtkeychain
  # try $MAKESMP
  try make install
 
@@ -72,7 +71,7 @@ function build_qca() {
 }
 
 # function called after all the compile have been done
-function postbuild_qca() {
+function postbuild_qtkeychain() {
 	true
 }
 
@@ -87,7 +86,7 @@ function postbuild_qca() {
 # -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config \
 # -DPKGCONFIG_INSTALL_PREFIX=/usr/lib/x86_64-linux-gnu/pkgconfig
 # -DQCA_BINARY_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/bin
-# -DQCA_DOC_INSTALL_DIR=/usr/share/qt5/doc/html/qca
+# -DQCA_DOC_INSTALL_DIR=/usr/share/qt5/doc/html/qtkeychain
 # -DQCA_FEATURE_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features
 # -DQCA_INCLUDE_INSTALL_DIR=/usr/include/x86_64-linux-gnu/qt5
 # -DQCA_LIBRARY_INSTALL_DIR=/usr/lib/x86_64-linux-gnu

@@ -46,13 +46,15 @@ function shouldbuild_freexl() {
 function build_freexl() {
   try mkdir -p $BUILD_PATH/freexl/build-$ARCH
   try cd $BUILD_PATH/freexl/build-$ARCH
-	push_arm
+  push_arm
+  export LDFLAGS="$LDFLAGS -liconv"
+  error $LDFLAGS
   try $BUILD_freexl/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try make install
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
 function postbuild_freexl() {
-	true
+  true
 }

@@ -36,10 +36,11 @@ function build_qscintilla() {
   try mkdir -p $BUILD_qscintilla/build-$ARCH
   try cd $BUILD_qscintilla/build-$ARCH
 
-	push_arm
+  push_arm
 
   # configure
-  try qmake ../Qt4Qt5/qscintilla.pro
+  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/crystax/libs/$ARCH" \
+    try qmake ../Qt4Qt5/qscintilla.pro
 
   # build
   try make
@@ -56,10 +57,10 @@ function build_qscintilla() {
   INSTALL_ROOT=$STAGE_PATH \
     try make install
 
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
 function postbuild_qscintilla() {
-	true
+  true
 }
