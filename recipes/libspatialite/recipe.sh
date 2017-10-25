@@ -56,7 +56,7 @@ function build_libspatialite() {
     --target=android \
     --with-geosconfig=$STAGE_PATH/bin/geos-config \
     --enable-libxml2=no
-  try make &> make.log
+  try make
   try make install &> install.log
 	pop_arm
 }

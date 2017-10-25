@@ -181,7 +181,7 @@ function push_arm() {
   #export OFLAG="-Os"
   #export OFLAG="-O2"
 
-  export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include"
+  export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/crystax/libs/$ARCH"
   if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
     CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
   fi
@@ -225,7 +225,7 @@ function push_arm() {
                            -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include \
                            -isystem $ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH/usr/include"
 
-  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/sources/crystax/libs/$ARCH/"
+  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/sources/crystax/libs/$ARCH"
 
   export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_$QT_ARCH_PREFIX/bin:$PATH"
 

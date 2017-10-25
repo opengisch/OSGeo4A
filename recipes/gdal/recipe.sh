@@ -4,7 +4,7 @@
 VERSION_gdal=2.2.1
 
 # dependencies of this recipe
-DEPS_gdal=(iconv sqlite3 geos libtiff postgresql)
+DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat)
 
 # url of the package
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
@@ -47,7 +47,8 @@ function shouldbuild_gdal() {
 function build_gdal() {
   try rsync -a $BUILD_gdal/ $BUILD_PATH/gdal/build-$ARCH/
   try cd $BUILD_PATH/gdal/build-$ARCH
-	push_arm
+
+  push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try ${BUILD_PATH}/gdal/build-$ARCH/configure \
@@ -55,10 +56,11 @@ function build_gdal() {
     --host=${TOOLCHAIN_PREFIX} \
     --with-sqlite3=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
-    --with-pg=no
+    --with-pg=no \
+    --with-expat=$STAGE_PATH
   try make
   try make install &> install.log
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done

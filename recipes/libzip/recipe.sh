@@ -50,6 +50,7 @@ function build_libzip() {
   pop_arm
   cp $BUILD_PATH/libzip/master/libs/${ARCH}/*.so ${STAGE_PATH}/lib
   cp $BUILD_PATH/libzip/master/jni/*.h ${STAGE_PATH}/include
+  rm -f ${STAGE_PATH}/include/config.h
 }
 
 # function called after all the compile have been done

@@ -34,14 +34,14 @@
       <item>gdal</item>
       <item>proj</item>
       <item>spatialindex</item>
-      <item>qscintilla2</item>
-      <item>qwt</item>
-      <item>qwtpolar</item>
+      <!-- <item>qscintilla2</item> -->
+      <!-- <item>qwt</item> -->
+      <!-- <item>qwtpolar</item> -->
       <item>pq</item>
       <item>spatialite</item>
 
       <item>qgis_core</item>
-      <item>qgis_gui</item>
+      <!--  <item>qgis_gui</item> -->
       <item>qgis_analysis</item>
       <item>qgis_networkanalysis</item>
 

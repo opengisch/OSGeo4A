@@ -7,11 +7,12 @@ VERSION_qca=2.1.0
 DEPS_qca=()
 
 # url of the package
-URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz
-#URL_qca=http://quickgit.kde.org/?p=qca.git&a=snapshot&h=4f966b0217c10b6fd3c12caf7d2467759fbec7f7&fmt=tgz
+# URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz
+# URL_qca=http://quickgit.kde.org/?p=qca.git&a=snapshot&h=4f966b0217c10b6fd3c12caf7d2467759fbec7f7&fmt=tgz
+URL_qca=https://github.com/KDE/qca/archive/v${VERSION_qca}.tar.gz
 
 # md5 of the package
-MD5_qca=c2b00c732036244701bae4853a2101cf
+MD5_qca=b1b8ffad920c4cb3c286bcf34a83f76b
 
 # default build path
 BUILD_qca=$BUILD_PATH/qca/$(get_directory $URL_qca)

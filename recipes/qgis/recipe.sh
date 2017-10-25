@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=2.14.11
+VERSION_qgis=3.0.0
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qwt qca qscintilla libspatialite spatialindex expat gsl postgresql libzip qtkeychain)
+DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkeychain)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/final-2_14_11.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/c176a8bfb0f7f25edea15069318f769e7c9c82bf.tar.gz # QGIS 3.0 pre-release
 
 # md5 of the package
 MD5_qgis=3a00ec4a051d99b8cc0e5306630d3685
@@ -29,7 +29,9 @@ function prebuild_qgis() {
 function build_qgis() {
   try mkdir -p $BUILD_PATH/qgis/build-$ARCH
   try cd $BUILD_PATH/qgis/build-$ARCH
-	push_arm
+
+  push_arm
+
   try cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
@@ -37,7 +39,6 @@ function build_qgis() {
     -DWITH_DESKTOP=ON \
     -DDISABLE_DEPRECATED=ON \
     -DWITH_QTWEBKIT=OFF \
-    -DPYTHON_EXECUTABLE=`which python` \
     -DQT_LRELEASE_EXECUTABLE=`which lrelease` \
     -DFLEX_EXECUTABLE=`which flex` \
     -DBISON_EXECUTABLE=`which bison` \
@@ -70,18 +71,12 @@ function build_qgis() {
     -DWITH_QTMOBILITY=OFF \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DENABLE_QT5=ON \
-    -DPYTHON_VER=2.7 \
     -DENABLE_TESTS=OFF \
     -DEXPAT_INCLUDE_DIR=$STAGE_PATH/include \
     -DEXPAT_LIBRARY=$STAGE_PATH/lib/libexpat.so \
-    -DQWT_INCLUDE_DIR=$STAGE_PATH/include \
-    -DQWT_LIBRARY=$STAGE_PATH/lib/libqwt.so \
     -DWITH_INTERNAL_QWTPOLAR=OFF \
     -DWITH_QWTPOLAR=OFF \
-    -DQWTPOLAR_INCLUDE_DIR=$STAGE_PATH/include \
-    -DQWTPOLAR_LIBRARY=$STAGE_PATH/lib/libqwtpolar.so \
-    -DQSCINTILLA_INCLUDE_DIR=$STAGE_PATH/include \
-    -DQSCINTILLA_LIBRARY=$STAGE_PATH/lib/libqscintilla2.so \
+    -DWITH_GUI=OFF \
     -DSPATIALINDEX_LIBRARY=$STAGE_PATH/lib/libspatialindex.so \
     -DWITH_APIDOC=OFF \
     -DWITH_ASTYLE=OFF \
@@ -90,6 +85,7 @@ function build_qgis() {
     -DANDROID_ABI=$ARCH \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
+
   try $MAKESMP install
   pop_arm
 }

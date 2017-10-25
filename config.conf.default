@@ -1,23 +1,26 @@
 ### Currently suggested versions ####
-export ANDROIDNDKVER=r10e
+export ANDROIDNDKVER=r12b
 export ANDROIDAPI=15 # min 15 max 21
 
 #### PATHS ####
 export ANDROIDSDK="/path/to/android-sdk"
-# if installed with android studio, this is in ndk-bundle if not
-# download it and install it from 
-# http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
-export ANDROIDNDK="/path/to/android-sdk/ndk-bundle"
+export ANDROIDNDK="/path/to/crystax-ndk"
 export QTSDK="/path/to/qt/sdk/Qt/5.5"
+
+# For example:
+# export ANDROIDSDK="/opt/android/sdk"
+# export ANDROIDNDK="/opt/android/crystax-ndk-10.3.2"
+# export QTSDK="/opt/Qt/5.9.2"
 
 ### LOCAL SOURCES ###
 # To use local sourcecode instead of the configured URL:
 # export O4A_[module]_DIR=/usr/src/mymodulesource like this
-# export O4A_qfield_DIR="/home/marco/dev/QGIS/QField"
-# export O4A_qgis_DIR="/home/marco/dev/QGIS/master"
+# export O4A_qgis_DIR="/path/to/repository/qgis/QGIS"
 
 ### BUILD ###
 export ARCHES=("armeabi-v7a" "x86")
+#export ARCHES=("armeabi-v7a")
+
 # By default all cores will be used to build
 # Use this option to override
 # export CORES=4
