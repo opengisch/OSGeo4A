@@ -16,7 +16,7 @@ source `dirname $0`/config.conf
 MODULES=
 
 # Resolve Python path
-PYTHON="$(which python2.7)"
+PYTHON="$(which python3)"
 if [ "X$PYTHON" == "X" ]; then
   PYTHON="$(which python2)"
 fi
@@ -25,9 +25,9 @@ if [ "X$PYTHON" == "X" ]; then
 fi
 
 # Resolve pip path
-PIP_NAME="$(which pip-2.7)"
+PIP_NAME="$(which pip3)"
 if [ "X$PIP_NAME" == "X" ]; then
-  PIP_NAME="$(which pip2.7)"
+  PIP_NAME="$(which pip3)"
 fi
 if [ "X$PIP_NAME" == "X" ]; then
   PIP_NAME="$(which pip2)"
