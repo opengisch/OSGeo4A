@@ -16,7 +16,7 @@ ENV ANDROID_NDK_ROOT /opt/android-ndk
 ENV ANDROID_NDK_TOOLCHAIN_PREFIX arm-linux-androideabi
 ENV ANDROID_NDK_TOOLCHAIN_VERSION 4.9
 ENV ANDROID_NDK_HOST linux-x86_64
-ENV ANDROID_NDK_PLATFORM android-21
+ENV ANDROID_NDK_PLATFORM android-15
 ENV ANDROID_NDK_TOOLS_PREFIX ${ANDROID_NDK_TOOLCHAIN_PREFIX}
 ENV QMAKESPEC android-g++
 ENV PATH ${PATH}:${QT_ANDROID}/bin:${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
@@ -51,11 +51,23 @@ RUN dpkg --add-architecture i386 && apt-get -qq update && apt-get -qq dist-upgra
     libz1:i386 \
     && apt-get -qq clean
 
+RUN apt-get install -qq -y --no-install-recommends \
+    bzip2 \
+    unzip \
+    gcc \
+    g++ \
+    cmake \
+    patch \
+    python3 \
+    rsync \
+    flex \
+    bison
+
 COPY extract-qt-installer.sh /tmp/qt/
 
 # Download & unpack Qt 5.9 toolchains & clean
 RUN curl -Lo /tmp/qt/installer.run "https://download.qt-project.org/official_releases/qt/5.9/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run" \
-    && QT_CI_PACKAGES=qt.$(echo "${QT_VERSION}" | sed 's/\.//g').android_armv7 /tmp/qt/extract-qt-installer.sh /tmp/qt/installer.run "$QT_PATH" \
+    && QT_CI_PACKAGES=qt.$(echo "${QT_VERSION}" | sed 's/\.//g').android_armv7,qt.$(echo "${QT_VERSION}" | sed 's/\.//g').qtscript.android_armv7 /tmp/qt/extract-qt-installer.sh /tmp/qt/installer.run "$QT_PATH" \
     && find "$QT_PATH" -mindepth 1 -maxdepth 1 ! -name '5.*' -exec echo 'Cleaning Qt SDK: {}' \; -exec rm -r '{}' \; \
     && rm -rf /tmp/qt
 
