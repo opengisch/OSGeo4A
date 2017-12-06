@@ -38,6 +38,7 @@ RUN dpkg --add-architecture i386 && apt-get -qq update && apt-get -qq dist-upgra
     make \
     default-jdk \
     ant \
+    bsdtar \
     libsm6 \
     libice6 \
     libxext6 \
@@ -49,7 +50,8 @@ RUN dpkg --add-architecture i386 && apt-get -qq update && apt-get -qq dist-upgra
     libncurses5:i386 \
     libstdc++6:i386 \
     libz1:i386 \
-    && apt-get -qq clean
+    && apt-get -qq clean \
+    && ln -sf $(which bsdtar) $(which tar)
 
 RUN apt-get install -qq -y --no-install-recommends \
     bzip2 \
