@@ -6,6 +6,10 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV PATH ${PATH}:${QT_ANDROID}/bin:${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 USER root
+
+# For ndk-build (libzip) to work properly we need `file` installed
+RUN apt-get install -y file python3-six
+
 COPY .docker /usr/src/.docker
 COPY tools /usr/src/tools
 COPY recipes /usr/src/recipes
