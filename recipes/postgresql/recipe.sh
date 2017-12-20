@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_postgresql=9.6.2
+VERSION_postgresql=10.1
 
 # dependencies of this recipe
 DEPS_postgresql=(iconv)
@@ -10,7 +10,7 @@ DEPS_postgresql=(iconv)
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
 
 # md5 of the package
-MD5_postgresql=ee9cd5dfa24f691275cc65c92b6ff8f7
+MD5_postgresql=0a92328d9970bfb85dcecd011817238a
 
 # default build path
 BUILD_postgresql=$BUILD_PATH/postgresql/$(get_directory $URL_postgresql)
@@ -50,6 +50,7 @@ function build_postgresql() {
 	push_arm
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
+  USE_DEV_URANDOM=1 \
   try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX} --without-readline
   try make -C src/interfaces/libpq
 
