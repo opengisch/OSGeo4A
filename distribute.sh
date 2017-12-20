@@ -96,7 +96,7 @@ if [ "X$WGET" == "X" ]; then
     echo "Error: you need at least wget or curl installed."
     exit 1
   else
-    WGET="$WGET -L -O -o"
+    WGET="$WGET -L -o"
   fi
   WHEAD="curl -L -I"
 else
