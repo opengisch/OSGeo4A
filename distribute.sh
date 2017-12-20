@@ -564,8 +564,8 @@ function run_get_packages() {
 
   if [ ! -d "$BUILD_PATH/tmp" ]; then
     try mkdir $BUILD_PATH/tmp
-    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"   -O $ROOT_PATH/.packages/config.sub
-    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -O $ROOT_PATH/.packages/config.guess
+    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"   -o $ROOT_PATH/.packages/config.sub
+    $WGET -c "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess" -o $ROOT_PATH/.packages/config.guess
   fi
 
   for module in $MODULES; do
