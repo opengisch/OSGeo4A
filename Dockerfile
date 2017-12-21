@@ -16,4 +16,4 @@ COPY recipes /usr/src/recipes
 COPY layouts /usr/src/layouts
 COPY distribute.sh /usr/src/distribute.sh
 RUN mv /usr/src/.docker/config.conf /usr/src/config.conf
-RUN /usr/src/distribute.sh -m qgis
+RUN /usr/src/distribute.sh -m qgis || true && mv /usr/src/stage /home/osgeo4a && rm -rf /usr/src
