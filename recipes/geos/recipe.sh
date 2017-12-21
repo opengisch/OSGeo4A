@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_geos=3.6.1
+VERSION_geos=3.6.2
 
 # dependencies of this recipe
 DEPS_geos=()
