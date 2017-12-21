@@ -806,7 +806,8 @@ function run_distribute() {
   info "Run distribute"
 
   if [ "X$LAYOUT" == "X" ]; then
-    export LAYOUT="default"
+    debug "No layout specified."
+    return
   fi
 
   if [ ! -d "$ROOT_PATH/layouts/$LAYOUT" ]; then
