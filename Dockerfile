@@ -1,4 +1,4 @@
-FROM opengisch/docker-qt-crystax:latest
+FROM opengisch/qt-crystax:latest
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
