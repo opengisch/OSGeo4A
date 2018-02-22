@@ -13,7 +13,7 @@ Dependencies instructions
 - Android SDK (https://developer.android.com/studio/index.html#downloads just command line tools, API 15)
 - Android NDK (Crystax NDK 10.3.2)
 
-[Here] (http://doc.qt.io/qt-5/androidgs.html) are more information on building QT5 code for android
+Also read the [upstream Qt information on building Qt5 code for Android](http://doc.qt.io/qt-5/androidgs.html).
 
 Build instructions
 -----------
