@@ -7,7 +7,7 @@ ENV PATH ${PATH}:${QT_ANDROID}/bin:${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}
 USER root
 
 # For ndk-build (libzip) to work properly we need `file` installed
-RUN apt-get install -y file python3-six
+RUN apt-get install -y file python3-six zip
 
 COPY .docker /usr/src/.docker
 COPY tools /usr/src/tools
