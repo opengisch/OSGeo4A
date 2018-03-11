@@ -200,10 +200,12 @@ function push_arm() {
       export TOOLCHAIN_PREFIX=i686-linux-android
       export TOOLCHAIN_BASEDIR=x86
       export QT_ARCH_PREFIX=x86
+      export QT_ANDROID=${QT_ANDROID_BASE}/android_x86
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
       export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_BASEDIR=arm-linux-androideabi
       export QT_ARCH_PREFIX=armv7
+      export QT_ANDROID=${QT_ANDROID_BASE}/android_armv7
   else
       echo "Error: Please report issue to enable support for newer ndk (${ARCH})."
       exit 1
@@ -227,7 +229,7 @@ function push_arm() {
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/sources/crystax/libs/$ARCH"
 
-  export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QTSDK/android_$QT_ARCH_PREFIX/bin:$PATH"
+  export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QT_ANDROID/bin:$PATH"
 
   # search compiler in the path, to fail now instead of later.
   CC=$(which $TOOLCHAIN_PREFIX-gcc)

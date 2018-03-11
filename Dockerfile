@@ -1,8 +1,7 @@
-FROM opengisch/qt-crystax:latest
+FROM opengisch/qt-crystax:5.9.4-2
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV PATH ${PATH}:${QT_ANDROID}/bin:${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 USER root
 
