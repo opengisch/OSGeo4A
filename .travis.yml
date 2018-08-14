@@ -12,7 +12,7 @@ before_install:
   - sudo apt-get -y install docker-ce
 
 install:
-  - docker build --tag ndk:latest .docker
+  - docker build --tag ndk:latest .
 
 script:
   - docker run ndk:latest
