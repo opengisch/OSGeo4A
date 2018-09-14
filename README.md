@@ -17,11 +17,11 @@ Also read the [upstream Qt information on building Qt5 code for Android](http://
 
 Build instructions
 -----------
-Create a file config.conf in the root folder by copying the config.conf.default
+Create a file `config.conf` in the root folder by copying the `config.conf.default`
 file and edit it accordingly to your needs.
 
-The build system is maintained for QGIS 3.x releases. To build QGIS 2.x releases, modify recipes/qgis/recipe.sh
-accordingly. Alternatively you may want to clone qgis/QGIS locally and point the config.conf file to your local 
+The build system is maintained for QGIS 3.x releases. To build QGIS 2.x releases, modify `recipes/qgis/recipe.sh`
+accordingly. Alternatively you may want to clone qgis/QGIS locally and point the `config.conf` file to your local 
 repository.
 
 ```sh
