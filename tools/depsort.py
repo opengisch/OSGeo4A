@@ -30,10 +30,10 @@ class Graph(object):
             :Returns:
                 iterator, sorted items form first to last
         """
-        graph = dict((k, set(v)) for k, v in self.graph.items())
+        graph = dict((k, set(v)) for k, v in list(self.graph.items()))
         while graph:
             # Find all items without a parent
-            leftmost = [l for l, s in graph.items() if not s]
+            leftmost = [l for l, s in list(graph.items()) if not s]
             if not leftmost:
                 raise ValueError('Dependency cycle detected! %s' % graph)
             # If there is more than one, sort them for predictable order
@@ -42,7 +42,7 @@ class Graph(object):
                 # Yield and remove them from the graph
                 yield result
                 graph.pop(result)
-                for bset in graph.values():
+                for bset in list(graph.values()):
                     bset.discard(result)
 
 
@@ -196,4 +196,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    print main(sys.argv)
+    print(main(sys.argv))

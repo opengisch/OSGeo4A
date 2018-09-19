@@ -10,10 +10,12 @@ Dependencies instructions
 - you need a JDK v6 or later (OpenJDK is also good)
 - [Apache ant](http://ant.apache.org/bindownload.cgi) v1.8 or later
 - [Qt5 for android >= 5.9] Install ARMv7 arch support
-- [Android SDK](https://developer.android.com/studio/index.html#downloads) just command line tools, API 15
-- Android NDK (Crystax NDK 10.3.2)
-
 Also read the [upstream Qt information on building Qt5 code for Android](http://doc.qt.io/qt-5/androidgs.html).
+=======
+- Android SDK ([Download from developer.android.com](https://developer.android.com/studio/index.html#downloads) just command line tools, API 15)
+- Android NDK ([Crystax NDK 10.3.2](https://www.crystax.net/en/android/ndk#download))
+
+[Here](http://doc.qt.io/qt-5/androidgs.html) are more information on building QT5 code for android
 
 Build instructions
 -----------

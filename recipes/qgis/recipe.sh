@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=3.0.0
+VERSION_qgis=3.3.x
 
 # dependencies of this recipe
 DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkeychain)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/17aa88cdecf7a8ef0c61179eb6018b42f800e63a.tar.gz # QGIS 3.0 pre-release
+URL_qgis=https://github.com/m-kuhn/QGIS/archive/https://github.com/qgis/QGIS/archive/6fcc1626f935f91e9f58284e748fdc00c3fa0d16.zip
 
 # md5 of the package
-MD5_qgis=cfefe1f21d6c1c79bd2e83c1e2b56a14
+MD5_qgis=6cb875b80d51f9a26eb05db7f9779011
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -81,6 +81,7 @@ function build_qgis() {
     -DSPATIALINDEX_LIBRARY=$STAGE_PATH/lib/libspatialindex.so \
     -DWITH_APIDOC=OFF \
     -DWITH_ASTYLE=OFF \
+    -DWITH_QUICK=ON \
     -DANDROID_NDK=$ANDROIDNDK \
     -DANDROID_STL=gnustl_shared \
     -DANDROID_ABI=$ARCH \
