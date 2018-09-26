@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_gsl=1.14
+VERSION_gsl=1.16
 
 # dependencies of this recipe
 DEPS_gsl=()
 
 # url of the package
-URL_gsl=http://ftp.gnu.org/gnu/gsl/gsl-${VERSION_gsl}.tar.gz
+URL_gsl=http://ftpmirror.gnu.org/gnu/gsl/gsl-${VERSION_gsl}.tar.gz
 
 # md5 of the package
-MD5_gsl=d55e7b141815412a072a3f0e12442042
+MD5_gsl=e49a664db13d81c968415cd53f62bc8b
 
 # default build path
 BUILD_gsl=$BUILD_PATH/gsl/$(get_directory $URL_gsl)
