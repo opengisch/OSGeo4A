@@ -8,10 +8,10 @@ DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkey
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/m-kuhn/QGIS/archive/https://github.com/qgis/QGIS/archive/6fcc1626f935f91e9f58284e748fdc00c3fa0d16.zip
+URL_qgis=https://github.com/qgis/QGIS/archive/346073a2a5e08133211583c822771ba75198e9d1.zip
 
 # md5 of the package
-MD5_qgis=6cb875b80d51f9a26eb05db7f9779011
+MD5_qgis=e011a08a50211b387e384872120d4468
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -37,7 +37,7 @@ function build_qgis() {
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
-    -DWITH_DESKTOP=ON \
+    -DWITH_DESKTOP=OFF \
     -DDISABLE_DEPRECATED=ON \
     -DWITH_QTWEBKIT=OFF \
     -DQT_LRELEASE_EXECUTABLE=`which lrelease` \
