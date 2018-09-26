@@ -10,7 +10,7 @@ DEPS_libzip=()
 URL_libzip=https://github.com/dec1/libzip-android/archive/master.zip
 
 # md5 of the package
-MD5_libzip=63e1de205a48c6b11034f95457e6aaeb
+MD5_libzip=2e3e7eeced687cb955263c370081d4ef
 
 # default build path
 BUILD_libzip=$BUILD_PATH/libzip/$(get_directory $URL_libzip)
