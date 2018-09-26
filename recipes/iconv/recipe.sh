@@ -7,7 +7,7 @@ VERSION_iconv=1.14
 DEPS_iconv=()
 
 # url of the package
-URL_iconv=http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${VERSION_iconv}.tar.gz
+URL_iconv=http://ftpmirror.gnu.org/gnu/libiconv/libiconv-${VERSION_iconv}.tar.gz
 
 # md5 of the package
 MD5_iconv=e34509b1623cec449dfeb73d7ce9c6c6
