@@ -58,7 +58,7 @@ function build_gdal() {
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \
     --with-expat=$STAGE_PATH
-  try make
+  try $MAKESMP
   try make install &> install.log
   pop_arm
 }

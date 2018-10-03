@@ -5,12 +5,17 @@ export ANDROIDAPI=15 # min 15 max 21
 #### PATHS ####
 export ANDROIDSDK="/path/to/android-sdk"
 export ANDROIDNDK="/path/to/crystax-ndk"
-export QTSDK="/path/to/qt/sdk/Qt/5.5"
+export QT_ANDROID_BASE="/path/to/qt/sdk/Qt/5.11.2"
 
 # For example:
 # export ANDROIDSDK="/opt/android/sdk"
 # export ANDROIDNDK="/opt/android/crystax-ndk-10.3.2"
-# export QTSDK="/opt/Qt/5.9.2"
+# export QT_ANDROID_BASE="/opt/Qt/5.11.2"
+
+# QGIS needs a bison 3. On MacOS you may need
+# to install one with e.g. homebrew and add
+# it to the path
+# export PATH="/usr/local/opt/bison/bin:$PATH"
 
 ### LOCAL SOURCES ###
 # To use local sourcecode instead of the configured URL:
