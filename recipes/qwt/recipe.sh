@@ -50,7 +50,7 @@ function build_qwt() {
 	push_arm
   try qmake $BUILD_qwt
   # sed -i "s|\$(INSTALL_ROOT)/libs/.*/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|" src/Makefile
-  try make
+  try $MAKESMP
   sed -i "s|\$(INSTALL_ROOT)/libs/${ARCH}/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
 	pop_arm

@@ -7,7 +7,17 @@
 #------------------------------------------------------------------------------
 
 # By default use all available cores, override in config.conf if desired
-CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+if [ -f /proc/cpuinfo ]; then
+  CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+else
+  # on MacOS there is no such file
+  if hash sysctl 2>/dev/null; then
+     CORES=$(sysctl -n hw.ncpu)
+  else
+     echo "Unable to determine number of cpu cores, using single core. Override this in config.conf"
+     CORES=1
+  fi
+fi
 
 # Load configuration
 source `dirname $0`/config.conf
@@ -323,16 +333,21 @@ function check_pkg_deb_installed() {
 }
 
 function check_build_deps() {
-    DIST=$(lsb_release -is)
-  info "Check build dependencies for $DIST"
-    case $DIST in
-    Debian|Ubuntu|LinuxMint)
-      check_pkg_deb_installed "build-essential zlib1g-dev cython"
-      ;;
-    *)
-      debug "Avoid check build dependencies, unknow platform $DIST"
-      ;;
-  esac
+    # on MacOS there is no lsb_release command
+    if hash lsb_release 2>/dev/null; then
+        DIST=$(lsb_release -is)
+        info "Check build dependencies for $DIST"
+        case $DIST in
+            Debian|Ubuntu|LinuxMint)
+                check_pkg_deb_installed "build-essential zlib1g-dev cython"
+            ;;
+            *)
+                debug "Avoid check build dependencies, unknow platform $DIST"
+            ;;
+        esac
+    else
+        debug "Avoid check build dependencies, unknow platform"
+    fi
 }
 
 function run_prepare() {

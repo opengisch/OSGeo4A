@@ -50,7 +50,7 @@ function build_freexl() {
   export LDFLAGS="$LDFLAGS -liconv"
   error $LDFLAGS
   try $BUILD_freexl/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
-  try make install
+  try $MAKESMP install
   pop_arm
 }
 

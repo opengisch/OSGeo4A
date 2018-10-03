@@ -9,3 +9,5 @@ src/apk/local.properties
 config.conf
 layouts/default
 ant.properties
+*.idea
+*.DS_Store

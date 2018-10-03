@@ -43,7 +43,7 @@ function build_qscintilla() {
     try qmake ../Qt4Qt5/qscintilla.pro
 
   # build
-  try make
+  try $MAKESMP
 
   # tweak install path
   sed -i "s|\$(INSTALL_ROOT).*/lib|\$(INSTALL_ROOT)/lib/|" Makefile
@@ -55,7 +55,7 @@ function build_qscintilla() {
 
   # install
   INSTALL_ROOT=$STAGE_PATH \
-    try make install
+    try $MAKESMP install
 
   pop_arm
 }

@@ -32,3 +32,20 @@ cp config.conf.default config.conf
 # nano config.conf
 ./distribute.sh -dqgis -mqgis
 ```
+
+MacOS Specific instructions
+---------------------------
+
+- `brew install ant`
+
+To build on MacOS High Sierra, you need java8, not default java 10, since
+you would get `Could not determine java version from '10.0.2' during gradle install step`
+with Qt 5.11.2.
+
+- `brew tap caskroom/versions` 
+- `brew cask install java8` (with java 10 you got  in gradle step) 
+
+To build QGIS, you need relatively new version of bison (3.x). MacOS ships with bison 2.x
+so it is required to install one newer and add to PATH
+
+- `brew install bison`

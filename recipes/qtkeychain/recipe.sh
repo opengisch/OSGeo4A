@@ -65,7 +65,7 @@ function build_qtkeychain() {
   -DWITH_pkcs11_PLUGIN=OFF \
   $BUILD_qtkeychain
  # try $MAKESMP
- try make install
+ try $MAKESMP install
 
 	pop_arm
 }

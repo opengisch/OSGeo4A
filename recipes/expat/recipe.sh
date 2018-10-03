@@ -48,7 +48,7 @@ function build_expat() {
   try cd $BUILD_PATH/expat/build-$ARCH
 	push_arm
   try $BUILD_expat/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
-  try make install
+  try $MAKESMP install
 	pop_arm
 }
 
