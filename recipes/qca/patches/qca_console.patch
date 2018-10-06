@@ -1,3 +1,13 @@
+From eb409f4ffe79179d946805afd96b8acbe6220536 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Sat, 6 Oct 2018 14:19:31 +0200
+Subject: [PATCH] qca_console
+
+---
+ include/QtCrypto/qca_support.h | 430 -----------------------------------------
+ src/CMakeLists.txt             |   2 +-
+ 2 files changed, 1 insertion(+), 431 deletions(-)
+
 diff --git a/include/QtCrypto/qca_support.h b/include/QtCrypto/qca_support.h
 index 9f5d364..544de0d 100644
 --- a/include/QtCrypto/qca_support.h
@@ -440,15 +450,18 @@ index 9f5d364..544de0d 100644
  class AbstractLogDevice;
  
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index f2a2fbf..fed4225 100644
+index 92204f2..5be1390 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -46,7 +46,7 @@ SET( moc_SOURCES
  	qca_securelayer.cpp
  	qca_securemessage.cpp
  	support/qpipe.cpp
--	support/console.cpp 
-+        #support/console.cpp
+-	support/console.cpp
++#	support/console.cpp
  	support/synchronizer.cpp
  	support/dirwatch.cpp
  	support/syncthread.cpp
+-- 
+1.9.1
+
