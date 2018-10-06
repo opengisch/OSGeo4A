@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qca=2.1.0
+VERSION_qca=2.1.3
 
 # dependencies of this recipe
 DEPS_qca=()
@@ -12,7 +12,7 @@ DEPS_qca=()
 URL_qca=https://github.com/KDE/qca/archive/v${VERSION_qca}.tar.gz
 
 # md5 of the package
-MD5_qca=b1b8ffad920c4cb3c286bcf34a83f76b
+MD5_qca=bd646d08fdc1d9be63331a836ecd528f
 
 # default build path
 BUILD_qca=$BUILD_PATH/qca/$(get_directory $URL_qca)
@@ -32,6 +32,7 @@ function prebuild_qca() {
   try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_qio.patch
   try patch --verbose --forward -p1 < $RECIPE_qca/patches/qca_console.patch
   try patch --verbose --forward -p1 < $RECIPE_qca/patches/cxx11.patch
+  try patch --verbose --forward -p1 < $RECIPE_qca/patches/No-setuid-on-Android.patch
 
   touch .patched
 }
