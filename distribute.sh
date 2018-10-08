@@ -261,6 +261,7 @@ function push_arm() {
   export MAKESMP="make -j$CORES"
   export MAKE="make"
   export READELF="$TOOLCHAIN_PREFIX-readelf"
+  export SILENCE_OUTPUT="${ROOT_PATH}/silence_output.sh"
 
   # export environment for Qt
   export ANDROID_NDK_ROOT=$ANDROIDNDK

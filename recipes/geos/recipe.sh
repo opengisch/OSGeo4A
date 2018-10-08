@@ -58,8 +58,8 @@ function build_geos() {
     -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build-$ARCH/geos_svn_revision.h
-  try $MAKESMP
-  try $MAKESMP install
+  ${SILENCE_OUTPUT} geos "$MAKESMP"
+  ${SILENCE_OUTPUT} geos "$MAKESMP install"
   pop_arm
 }
 
