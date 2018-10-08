@@ -342,11 +342,11 @@ function check_build_deps() {
                 check_pkg_deb_installed "build-essential zlib1g-dev cython"
             ;;
             *)
-                debug "Avoid check build dependencies, unknow platform $DIST"
+                debug "Avoid check build dependencies, unknown platform $DIST"
             ;;
         esac
     else
-        debug "Avoid check build dependencies, unknow platform"
+        debug "Avoid check build dependencies, unknown platform"
     fi
 }
 
