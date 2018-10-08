@@ -7,7 +7,7 @@ COMMAND=$2
 
 export PING_SLEEP=60s
 export CURDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export BUILD_OUTPUT=$WORKDIR/recipes/${RECIPE}/build.out
+export BUILD_OUTPUT=${RECIPES_PATH}/${RECIPE}/build.out
 
 touch ${BUILD_OUTPUT}
 
