@@ -12,11 +12,11 @@ export BUILD_OUTPUT=${RECIPES_PATH}/${RECIPE}/build.out
 touch ${BUILD_OUTPUT}
 
 dump_output() {
-   echo Tailing the last 500 lines of output:
+   echo "Tailing the last 500 lines of output:"
    tail -500 ${BUILD_OUTPUT}
 }
 error_handler() {
-  echo ERROR: An error was encountered with the build.
+  echo "ERROR: An error was encountered with the build."
   dump_output
   exit 1
 }
@@ -31,8 +31,7 @@ PING_LOOP_PID=$!
 # My build is using maven, but you could build anything with this, E.g.
 $(${COMMAND}) >> $BUILD_OUTPUT 2>&1
 
-# The build finished without returning an error so dump a tail of the output
-dump_output
-
 # nicely terminate the ping output loop
 kill $PING_LOOP_PID
+
+exit 0
