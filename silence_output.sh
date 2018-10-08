@@ -4,10 +4,14 @@
 
 RECIPE=$1
 COMMAND=$2
+LOG=$3
+if [ -z "$LOG" ]; then
+  LOG=build
+fi
 
 export PING_SLEEP=60s
 export CURDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export BUILD_OUTPUT=${RECIPES_PATH}/${RECIPE}/build.out
+export BUILD_OUTPUT=${RECIPES_PATH}/${RECIPE}/${LOG}.log
 
 touch ${BUILD_OUTPUT}
 
@@ -33,5 +37,7 @@ $(${COMMAND}) >> $BUILD_OUTPUT 2>&1
 
 # nicely terminate the ping output loop
 kill $PING_LOOP_PID
+
+echo "finished. log accessible in ${BUILD_OUTPUT}"
 
 exit 0
