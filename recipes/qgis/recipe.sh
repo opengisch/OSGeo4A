@@ -8,10 +8,10 @@ DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkey
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/346073a2a5e08133211583c822771ba75198e9d1.zip
+URL_qgis=https://github.com/qgis/QGIS/archive/81db0052ff880c5fd535b6f8eb25516212347199.zip
 
 # md5 of the package
-MD5_qgis=e011a08a50211b387e384872120d4468
+MD5_qgis=33cb76e32cc6320e15514cabd80257ba
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)

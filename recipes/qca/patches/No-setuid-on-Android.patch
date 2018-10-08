@@ -1,0 +1,25 @@
+From 1ec17206d9a8eb8657d9fcd925d718fda306de10 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Sat, 6 Oct 2018 14:02:52 +0200
+Subject: [PATCH] No setuid on Android
+
+---
+ src/qca_core.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/qca_core.cpp b/src/qca_core.cpp
+index 15ee385..0550112 100644
+--- a/src/qca_core.cpp
++++ b/src/qca_core.cpp
+@@ -224,7 +224,7 @@ void init(MemoryMode mode, int prealloc)
+ 
+ 	if(drop_root)
+ 	{
+-#ifdef Q_OS_UNIX
++#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID)
+ 		setuid(getuid());
+ #endif
+ 	}
+-- 
+1.9.1
+
