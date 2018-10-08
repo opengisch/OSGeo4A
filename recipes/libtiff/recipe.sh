@@ -57,7 +57,7 @@ function build_libtiff() {
     -DANDROID_ABI=$ARCH \
     -DANDROID_NDK=$ANDROID_NDK \
     $BUILD_libtiff
-  try $MAKESMP install
+  ${SILENCE_OUTPUT} libtiff "$MAKESMP install" install
   pop_arm
 }
 

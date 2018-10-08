@@ -49,7 +49,7 @@ function build_qfield() {
     -DANDROID_NATIVE_API_LEVEL=19 \
     -DGIT_EXECUTABLE=`which git` \
     $BUILD_qfield
-  try $MAKESMP
+  ${SILENCE_OUTPUT} qfield "$MAKESMP" install
   try make install
 	pop_arm
 }

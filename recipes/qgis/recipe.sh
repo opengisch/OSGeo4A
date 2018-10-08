@@ -89,7 +89,7 @@ function build_qgis() {
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
 
-  try $MAKESMP install
+  ${SILENCE_OUTPUT} qgis "$MAKESMP install" install
   pop_arm
 }
 

@@ -64,8 +64,8 @@ function build_qtkeychain() {
   -DWITH_nss_PLUGIN=OFF \
   -DWITH_pkcs11_PLUGIN=OFF \
   $BUILD_qtkeychain
- # try $MAKESMP
- try $MAKESMP install
+ # ${SILENCE_OUTPUT} qtkeychain "$MAKESMP" install
+ ${SILENCE_OUTPUT} qtkeychain "$MAKESMP install" install
 
 	pop_arm
 }

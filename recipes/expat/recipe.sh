@@ -48,7 +48,7 @@ function build_expat() {
   try cd $BUILD_PATH/expat/build-$ARCH
 	push_arm
   try $BUILD_expat/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
-  try $MAKESMP install
+  ${SILENCE_OUTPUT} expat "$MAKESMP install" install
 	pop_arm
 }
 

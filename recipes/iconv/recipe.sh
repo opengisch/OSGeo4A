@@ -50,7 +50,7 @@ function build_iconv() {
   try cd $BUILD_PATH/iconv/build-$ARCH
 	push_arm
   try $BUILD_iconv/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
-  try $MAKESMP
+  ${SILENCE_OUTPUT} iconv "$MAKESMP" install
   try make install
 	pop_arm
 }

@@ -57,7 +57,7 @@ function build_libspatialite() {
     --with-geosconfig=$STAGE_PATH/bin/geos-config \
     --enable-libxml2=no
 
-  try $MAKESMP
+  ${SILENCE_OUTPUT} libspatialite "$MAKESMP" install
   try make install &> install.log
 	pop_arm
 }

@@ -49,7 +49,7 @@ function build_qwtpolar() {
   try cd $BUILD_PATH/qwtpolar/build-$ARCH
 	push_arm
   try qmake $BUILD_qwtpolar
-  try $MAKESMP
+  ${SILENCE_OUTPUT} qwtpolar "$MAKESMP" install
   sed -i "s|\$(INSTALL_ROOT)/libs/${ARCH}/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
 	pop_arm

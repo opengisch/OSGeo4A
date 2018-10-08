@@ -68,8 +68,8 @@ function build_qca() {
   -DWITH_pkcs11_PLUGIN=OFF \
   -DCMAKE_DISABLE_FIND_PACKAGE_Doxygen=TRUE \
   $BUILD_qca
- # try $MAKESMP
- try $MAKESMP install
+ # ${SILENCE_OUTPUT} qca "$MAKESMP" install
+ ${SILENCE_OUTPUT} qca "$MAKESMP install" install
 
 	pop_arm
 }

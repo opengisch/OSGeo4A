@@ -52,7 +52,7 @@ function build_postgresql() {
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
   USE_DEV_URANDOM=1 \
   try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX} --without-readline
-  try $MAKESMP -C src/interfaces/libpq
+  ${SILENCE_OUTPUT} postgresql "$MAKESMP" install -C src/interfaces/libpq
 
   #simulate make install
   echo "installing libpq"

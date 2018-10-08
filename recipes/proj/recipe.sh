@@ -48,7 +48,7 @@ function build_proj() {
   try cd $BUILD_PATH/proj/build-$ARCH
 	push_arm
   try $BUILD_proj/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
-  try $MAKESMP install
+  ${SILENCE_OUTPUT} proj "$MAKESMP install" install
 	pop_arm
 }
 
