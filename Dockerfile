@@ -13,5 +13,6 @@ COPY tools /usr/src/tools
 COPY recipes /usr/src/recipes
 COPY layouts /usr/src/layouts
 COPY distribute.sh /usr/src/distribute.sh
+COPY silence_output.sh /usr/src/silence_output.sh
 RUN mv /usr/src/.docker/config.conf /usr/src/config.conf
 RUN /usr/src/distribute.sh -m qgis && mv /usr/src/stage /home/osgeo4a && rm -rf /usr/src
