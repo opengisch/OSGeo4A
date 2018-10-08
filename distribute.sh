@@ -713,7 +713,7 @@ function run_get_packages() {
         fi
         ;;
       *.zip )
-        try unzip $pfilename
+        try unzip -qq  $pfilename
         root_directory=$(basename $(try unzip -l $pfilename|sed -n 5p|awk '{print $4}'))
         if [ "X$root_directory" != "X$directory" ]; then
           mv $root_directory $directory
