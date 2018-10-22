@@ -116,7 +116,7 @@ fi
 
 case $OSTYPE in
   darwin*)
-    SED="sed -i ''"
+    SED="sed -i .orig"
     ;;
   *)
     SED="sed -i"
