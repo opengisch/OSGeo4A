@@ -31,7 +31,7 @@ function prebuild_libzip() {
 
 function shouldbuild_libzip() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/libzip/build-$ARCH/src/.libs/liblibzip.so -nt $BUILD_libzip/.patched ]; then
+  if [ $BUILD_PATH/libzip/master/libs/$ARCH/libzip.so -nt $BUILD_libzip/.patched ]; then
     DO_BUILD=0
   fi
 }
