@@ -36,7 +36,7 @@ function prebuild_openssl() {
 
 function shouldbuild_openssl() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_openssl/build-$ARCH/libssl.so -nt $BUILD_openssl/.patched ]; then
+  if [ $BUILD_openssl/libssl.so -nt $BUILD_openssl/.patched ]; then
     DO_BUILD=0
   fi
 }
