@@ -31,6 +31,9 @@ function prebuild_openssl() {
   echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config"
   try $SED 's/armv\[7-9\]\*-\*-android/armeabi-v7a\*-\*-android|armv\[7-9\]\*-\*-android/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config
 
+  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Configure"
+  LC_ALL=C try $SED 's/SHLIB_EXT=$shared_extension/SHLIB_EXT=.so/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Configure
+
   touch .patched
 }
 
@@ -75,6 +78,16 @@ function build_openssl() {
       -D__ANDROID_API__=$ANDROIDAPI \
       --prefix=/  \
       $(eval echo $CFLAGS_WITHOUT_SYSROOT)
+
+  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile"
+  # remove docs
+  try $SED '646,690d' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  try $SED '621,643d' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  # remove "link-shared" target, since we do not want links
+  try $SED '346,352d' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  # remove so.x.y versions
+  try $SED 's/LIBVERSION=$(SHLIB_MAJOR).$(SHLIB_MINOR)//g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  try $SED 's/LIBCOMPATVERSIONS=";$(SHLIB_VERSION_HISTORY)"//g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
 
   ${MAKESMP} depend
   ${MAKESMP} CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" build_libs
