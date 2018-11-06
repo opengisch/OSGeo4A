@@ -48,11 +48,14 @@ function shouldbuild_iconv() {
 function build_iconv() {
   try mkdir -p $BUILD_PATH/iconv/build-$ARCH
   try cd $BUILD_PATH/iconv/build-$ARCH
-	push_arm
+
+  push_arm
+
   try $BUILD_iconv/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
   try $MAKESMP
   try make install
-	pop_arm
+
+  pop_arm
 }
 
 # function called after all the compile have been done

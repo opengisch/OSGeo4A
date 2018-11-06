@@ -4,7 +4,7 @@
 VERSION_qca=2.1.3
 
 # dependencies of this recipe
-DEPS_qca=()
+DEPS_qca=(openssl)
 
 # url of the package
 # URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz
@@ -39,7 +39,7 @@ function prebuild_qca() {
 
 function shouldbuild_qca() {
  # If lib is newer than the sourcecode skip build
- if [ $BUILD_qca/build-$ARCH/libqca2.so -nt $BUILD_qca/.patched ]; then
+ if [ $BUILD_qca/build-$ARCH/lib/libqca-qt5.so -nt $BUILD_qca/.patched ]; then
   DO_BUILD=0
  fi
 }

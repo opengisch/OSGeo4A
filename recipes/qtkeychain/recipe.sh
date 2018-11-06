@@ -37,7 +37,7 @@ function prebuild_qtkeychain() {
 
 function shouldbuild_qtkeychain() {
  # If lib is newer than the sourcecode skip build
- if [ $BUILD_qtkeychain/build-$ARCH/libqtkeychain2.so -nt $BUILD_qtkeychain/.patched ]; then
+ if [ $BUILD_qtkeychain/build-$ARCH/libqt5keychain.so -nt $BUILD_qtkeychain/.patched ]; then
   DO_BUILD=0
  fi
 }

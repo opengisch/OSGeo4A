@@ -4,7 +4,7 @@
 VERSION_postgresql=10.1
 
 # dependencies of this recipe
-DEPS_postgresql=(iconv)
+DEPS_postgresql=(iconv openssl)
 
 # url of the package
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
@@ -51,7 +51,7 @@ function build_postgresql() {
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
   USE_DEV_URANDOM=1 \
-  try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX} --without-readline
+  try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX} --without-readline --with-openssl
   try $MAKESMP -C src/interfaces/libpq
 
   #simulate make install
