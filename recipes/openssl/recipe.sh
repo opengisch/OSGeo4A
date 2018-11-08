@@ -48,7 +48,8 @@ function shouldbuild_openssl() {
 function build_openssl() {
   # unfortunately config and Configure uses relative paths to this
   # se we need to do in-source build
-  try cd $BUILD_openssl
+  try cp -r $BUILD_openssl $BUILD_PATH/openssl/build-$ARCH
+  try cd $BUILD_PATH/openssl/build-$ARCH
 
   push_arm
 
@@ -79,15 +80,15 @@ function build_openssl() {
       --prefix=/  \
       $(eval echo $CFLAGS_WITHOUT_SYSROOT)
 
-  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile"
+  echo "patching openssl-${VERSION_openssl}/Makefile"
   # remove docs
-  try $SED '646,690d' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
-  try $SED '621,643d' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  try $SED '646,690d' Makefile
+  try $SED '621,643d' Makefile
   # remove "link-shared" target, since we do not want links
-  try $SED '346,352d' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  try $SED '346,352d' Makefile
   # remove so.x.y versions
-  try $SED 's/LIBVERSION=$(SHLIB_MAJOR).$(SHLIB_MINOR)//g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
-  try $SED 's/LIBCOMPATVERSIONS=";$(SHLIB_VERSION_HISTORY)"//g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Makefile
+  try $SED 's/LIBVERSION=$(SHLIB_MAJOR).$(SHLIB_MINOR)//g' Makefile
+  try $SED 's/LIBCOMPATVERSIONS=";$(SHLIB_VERSION_HISTORY)"//g' Makefile
 
   ${MAKESMP} depend
   ${MAKESMP} CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" build_libs
