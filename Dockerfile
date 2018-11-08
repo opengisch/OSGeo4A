@@ -1,4 +1,4 @@
-FROM opengisch/qt-crystax:5.11.2
+FROM opengisch/qt-crystax:5.11.2-2
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
