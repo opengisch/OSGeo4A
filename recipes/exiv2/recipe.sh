@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_exiv2=1.2.0
+VERSION_exiv2=0.26
 
 # dependencies of this recipe
 DEPS_exiv2=(expat iconv)
@@ -31,7 +31,7 @@ function prebuild_exiv2() {
 
 function shouldbuild_exiv2() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/exiv2/master/libs/$ARCH/exiv2.so -nt $BUILD_exiv2/.patched ]; then
+  if [ $BUILD_PATH/exiv2/build-$ARCH/exiv2/exiv2.so -nt $BUILD_exiv2/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -42,6 +42,8 @@ function build_exiv2() {
   try cd $BUILD_PATH/exiv2/build-$ARCH
   push_arm
   try cmake \
+      -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
+      -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
       -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
       -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
       -DANDROID=ON \
