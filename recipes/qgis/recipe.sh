@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=3.4.1
+VERSION_qgis=3.5
 
 # dependencies of this recipe
 DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkeychain exiv2)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/0af1ce40a8052f6c18fe3f8dae42cbe73e8058df.zip
+URL_qgis=https://github.com/3nids/QGIS/archive/18abcb580a0e8e06fbea3fb8d9a80be117b53e94.zip
 
 # md5 of the package
-MD5_qgis=c0f5dcbb6e5e10f9918ffe18fa396338
+MD5_qgis=9025d29519831e8923d7b09e6a43570b
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -33,11 +33,13 @@ function build_qgis() {
   push_arm
 
   try cmake \
+    -DCXX_EXTRA_FLAGS="-fno-var-tracking-assignments" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
     -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
     -DWITH_DESKTOP=OFF \
+    -DWITH_ANALYSIS=OFF \
     -DDISABLE_DEPRECATED=ON \
     -DWITH_QTWEBKIT=OFF \
     -DQT_LRELEASE_EXECUTABLE=`which lrelease` \
