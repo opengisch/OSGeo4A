@@ -7,10 +7,11 @@ VERSION_exiv2=0.26
 DEPS_exiv2=(expat iconv)
 
 # url of the package
-URL_exiv2=http://www.exiv2.org/builds/exiv2-0.26-trunk.tar.gz
+#URL_exiv2=http://www.exiv2.org/builds/exiv2-0.26-trunk.tar.gz
+URL_exiv2=https://github.com/Exiv2/exiv2/archive/d8a15e1d132e260dd333ebc5af1e6929257a6d0f.zip
 
 # md5 of the package
-MD5_exiv2=5399e3b570d7f9205f0e76d47582da4c
+MD5_exiv2=7a423fabb9bfbdaecbcaa24db1c5abd3
 
 # default build path
 BUILD_exiv2=$BUILD_PATH/exiv2/$(get_directory $URL_exiv2)
