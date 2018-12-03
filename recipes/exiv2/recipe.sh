@@ -4,7 +4,7 @@
 VERSION_exiv2=0.26
 
 # dependencies of this recipe
-DEPS_exiv2=(expat iconv)
+DEPS_exiv2=(expat iconv gettext)
 
 # url of the package
 #URL_exiv2=http://www.exiv2.org/builds/exiv2-0.26-trunk.tar.gz
