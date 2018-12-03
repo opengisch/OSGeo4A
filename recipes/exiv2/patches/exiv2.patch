@@ -1,0 +1,34 @@
+diff --git a/src/futils.cpp b/src/futils.cpp
+index a30acd98..af42b91d 100644
+--- a/src/futils.cpp
++++ b/src/futils.cpp
+@@ -55,7 +55,7 @@
+ 
+ #ifdef EXV_HAVE_STRERROR_R
+ #ifdef _GNU_SOURCE
+-extern char *strerror_r(int errnum, char *buf, size_t n);
++extern int strerror_r(int errnum, char *buf, size_t n);
+ #else
+ extern int strerror_r(int errnum, char *buf, size_t n);
+ #endif
+@@ -348,17 +348,19 @@ namespace Exiv2 {
+         std::ostringstream os;
+ #ifdef EXV_HAVE_STRERROR_R
+         const size_t n = 1024;
++/*
+ #ifdef _GNU_SOURCE
+         char *buf = 0;
+         char buf2[n];
+         std::memset(buf2, 0x0, n);
+         buf = strerror_r(error, buf2, n);
+ #else
++*/
+         char buf[n];
+         std::memset(buf, 0x0, n);
+         const int ret = strerror_r(error, buf, n);
+         enforce(ret != ERANGE, Exiv2::kerCallFailed);
+-#endif
++//#endif
+         os << buf;
+         // Issue# 908.
+         // report strerror() if strerror_r() returns empty

@@ -43,6 +43,7 @@ function build_exiv2() {
   try cd $BUILD_PATH/exiv2/build-$ARCH
   push_arm
   try cmake \
+      -DEXIV2_ENABLE_NLS=OFF \
       -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
       -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
       -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
