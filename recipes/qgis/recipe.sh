@@ -85,6 +85,7 @@ function build_qgis() {
     -DWITH_APIDOC=OFF \
     -DWITH_ASTYLE=OFF \
     -DWITH_QUICK=ON \
+    -DWITH_QT5SERIALPORT=OFF \
     -DANDROID_NDK=$ANDROIDNDK \
     -DANDROID_STL=gnustl_shared \
     -DANDROID_ABI=$ARCH \
