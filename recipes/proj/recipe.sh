@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=4.9
+VERSION_proj=5.2
 
 # dependencies of this recipe
 DEPS_proj=()
 
 # url of the package
-URL_proj=http://download.osgeo.org/proj/proj-4.9.0b2.tar.gz
+URL_proj=http://download.osgeo.org/proj/proj-5.2.0.tar.gz
 
 # md5 of the package
-MD5_proj=d43fd87b991831faaf7e6fb5570b86aa
+MD5_proj=ad285c7d03cbb138d9246e10e1f3191c
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
@@ -30,9 +30,6 @@ function prebuild_proj() {
 
   try cp $ROOT_PATH/.packages/config.sub $BUILD_proj
   try cp $ROOT_PATH/.packages/config.guess $BUILD_proj
-  try patch -p1 < $RECIPE_proj/patches/proj4.patch
-
-  touch .patched
 }
 
 function shouldbuild_proj() {
