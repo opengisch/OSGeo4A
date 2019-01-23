@@ -1,11 +1,9 @@
-FROM opengisch/qt-crystax:5.11.3
+FROM opengisch/qt-crystax:5.11.3_v2
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
 
 USER root
-
-RUN yes | sdkmanager --licenses && sdkmanager --verbose "platforms;android-21" "build-tools;28.0.2" tools platform-tools
 
 # For ndk-build (libzip) to work properly we need `file` installed
 RUN apt-get install -y file python3-six zip
