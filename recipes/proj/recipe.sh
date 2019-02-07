@@ -47,7 +47,10 @@ function build_proj() {
   try mkdir -p $BUILD_PATH/proj/build-$ARCH
   try cd $BUILD_PATH/proj/build-$ARCH
 	push_arm
-  try $BUILD_proj/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+  try $BUILD_proj/configure \
+    --prefix=$STAGE_PATH \
+    --host=x86_64 \
+    --build=arm \
   try $MAKESMP install
 	pop_arm
 }

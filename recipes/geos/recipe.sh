@@ -55,7 +55,6 @@ function build_geos() {
     -DANDROID_ABI=$ARCH \
     -DANDROID_NDK=$ANDROID_NDK \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
-    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build-$ARCH/geos_svn_revision.h
   try $MAKESMP

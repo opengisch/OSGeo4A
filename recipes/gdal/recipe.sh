@@ -53,7 +53,8 @@ function build_gdal() {
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try ${BUILD_PATH}/gdal/build-$ARCH/configure \
     --prefix=$STAGE_PATH \
-    --host=${TOOLCHAIN_PREFIX} \
+    --host=x86_64 \
+    --build=arm \
     --with-sqlite3=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \

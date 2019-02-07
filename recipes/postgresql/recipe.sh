@@ -51,7 +51,13 @@ function build_postgresql() {
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
   USE_DEV_URANDOM=1 \
-  try $BUILD_postgresql/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX} --without-readline --with-openssl
+  try $BUILD_postgresql/configure \
+    --prefix=$STAGE_PATH \
+    --host=x86_64 \
+    --build=arm \
+    --without-readline \
+    --with-openssl
+
   try $MAKESMP -C src/interfaces/libpq
 
   #simulate make install

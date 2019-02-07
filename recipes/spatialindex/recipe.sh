@@ -50,7 +50,10 @@ function build_spatialindex() {
   LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
   CXXFLAGS="${CXXFLAGS} -I${BUILD_spatialindex}/include" \
   LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
-    try $BUILD_spatialindex/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+    try $BUILD_spatialindex/configure \
+    --prefix=$STAGE_PATH \
+    --host=x86_64 \
+    --build=arm \
   try $MAKESMP
   try make install
 	pop_arm

@@ -47,7 +47,10 @@ function build_sqlite3() {
   try cd $BUILD_PATH/sqlite3/build-$ARCH
 	push_arm
   export CFLAGS="${CFLAGS} -DSQLITE_ENABLE_COLUMN_METADATA"
-  try $BUILD_sqlite3/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+  try $BUILD_sqlite3/configure \
+    --prefix=$STAGE_PATH \
+    --host=x86_64 \
+    --build=arm \
   try $MAKESMP install
 	pop_arm
 }
