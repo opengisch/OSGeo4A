@@ -218,25 +218,24 @@ function push_arm() {
   fi
 
   # Choose compiler version
-  if [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
-      export TOOLCHAIN_VERSION=4.4.3
-  elif  [ "X${ANDROIDNDKVER:0:2}" == "Xr9" ]; then
-      export TOOLCHAIN_VERSION=4.8
-  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ] || [ "X${ANDROIDNDKVER:0:3}" == "Xr12" ]; then
-      export TOOLCHAIN_VERSION=4.9
-  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr19" ]; then
-      export TOOLCHAIN_VERSION=4.9
-  #    ./toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++
-  else
-      echo "Error: Please report issue to enable support for newer ndk (${ANDROIDNDKVER:0:3})."
-      exit 1
-  fi
+#  if [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
+#      export TOOLCHAIN_VERSION=4.4.3
+#  elif  [ "X${ANDROIDNDKVER:0:2}" == "Xr9" ]; then
+#      export TOOLCHAIN_VERSION=4.8
+#  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ] || [ "X${ANDROIDNDKVER:0:3}" == "Xr12" ]; then
+#      export TOOLCHAIN_VERSION=4.9
+#  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr19" ]; then
+#      export TOOLCHAIN_VERSION=4.9
+#  else
+#      echo "Error: Please report issue to enable support for newer ndk (${ANDROIDNDKVER:0:3})."
+#      exit 1
+#  fi
 
   export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libstdc++/include -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX"
 
-  if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
-    CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
-  fi
+#  if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
+#    CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
+#  fi
 
   export CXXFLAGS="$CFLAGS"
 #                           -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libstdc++/libs/${ARCH}/include \
