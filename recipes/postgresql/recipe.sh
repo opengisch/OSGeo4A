@@ -47,14 +47,12 @@ function shouldbuild_postgresql() {
 function build_postgresql() {
   try mkdir -p $BUILD_PATH/postgresql/build-$ARCH
   try cd $BUILD_PATH/postgresql/build-$ARCH
-	push_arm
-  LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
-  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
+  push_arm
   USE_DEV_URANDOM=1 \
   try $BUILD_postgresql/configure \
     --prefix=$STAGE_PATH \
-    --host=x86_64 \
-    --build=$SHORTARCH \
+    --host=arm-linux-androideabi \
+    --build=x86_64 \
     --without-readline \
     --with-openssl
 
@@ -66,7 +64,7 @@ function build_postgresql() {
   try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $STAGE_PATH/include
   try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/include/pg_config_ext.h $STAGE_PATH/include/
   try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so $STAGE_PATH/lib/
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
