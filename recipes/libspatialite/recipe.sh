@@ -46,10 +46,8 @@ function shouldbuild_libspatialite() {
 function build_libspatialite() {
   try mkdir -p $BUILD_PATH/libspatialite/build-$ARCH
   try cd $BUILD_PATH/libspatialite/build-$ARCH
-	push_arm
-  CFLAGS="${CFLAGS}" \
-  LDFLAGS="${LDFLAGS} -lstdc++ -lgeos -lgeos_c -lsupc++ -llog " \
-  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
+  push_arm
+  LDFLAGS="$LDFLAGS -llog" \
     try $BUILD_libspatialite/configure \
     --prefix=$STAGE_PATH \
     --host=$TOOLCHAIN_PREFIX \
@@ -60,7 +58,7 @@ function build_libspatialite() {
 
   try $MAKESMP
   try make install &> install.log
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
