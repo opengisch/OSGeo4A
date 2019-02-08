@@ -159,6 +159,7 @@ function debug() {
 function get_directory() {
   case $1 in
     *.tar.gz) directory=$(basename $1 .tar.gz) ;;
+    *.tar.xz) directory=$(basename $1 .tar.xz) ;;
     *.tgz)    directory=$(basename $1 .tgz) ;;
     *.tar.bz2)  directory=$(basename $1 .tar.bz2) ;;
     *.tbz2)   directory=$(basename $1 .tbz2) ;;
@@ -202,7 +203,8 @@ function push_arm() {
 
   # Setup compiler toolchain based on CPU architecture
   if [ "X${ARCH}" == "Xx86" ]; then
-      export TOOLCHAIN_PREFIX=i686-linux-android
+      export TOOLCHAIN_FULL_PREFIX=i686-linux-androideabi21
+      export TOOLCHAIN_SHORT_PREFIX=i686-linux-androideabi
       export TOOLCHAIN_BASEDIR=x86
       export QT_ARCH_PREFIX=x86
       export QT_ANDROID=${QT_ANDROID_BASE}/android_x86
@@ -378,12 +380,6 @@ function run_prepare() {
 
   if [ "X$ANDROIDAPI" == "X" ]; then
     export ANDROIDAPI=14
-  fi
-
-  if [ "X$ANDROIDNDKVER" == "X" ]; then
-    error "No ANDROIDNDKVER enviroment set, abort"
-    error "(Must be something like 'r5b', 'r7'...)"
-    exit -1
   fi
 
   if [ "X$MODULES" == "X" ]; then
@@ -719,6 +715,13 @@ function run_get_packages() {
       *.zip )
         try unzip $pfilename
         root_directory=$(basename $(try unzip -l $pfilename|sed -n 5p|awk '{print $4}'))
+        if [ "X$root_directory" != "X$directory" ]; then
+          mv $root_directory $directory
+        fi
+        ;;
+      * )
+        try tar xf $pfilename
+        root_directory=$(basename $(try tar xf $pfilename|head -n1))
         if [ "X$root_directory" != "X$directory" ]; then
           mv $root_directory $directory
         fi
