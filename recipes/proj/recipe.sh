@@ -46,13 +46,14 @@ function shouldbuild_proj() {
 function build_proj() {
   try mkdir -p $BUILD_PATH/proj/build-$ARCH
   try cd $BUILD_PATH/proj/build-$ARCH
-	push_arm
+
+  push_arm
   try $BUILD_proj/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm \
+    --build=arm
   try $MAKESMP install
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
