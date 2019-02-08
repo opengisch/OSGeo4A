@@ -50,7 +50,7 @@ function build_sqlite3() {
   try $BUILD_sqlite3/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm \
+    --build=arm
   try $MAKESMP install
 	pop_arm
 }
