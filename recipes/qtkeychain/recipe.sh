@@ -31,6 +31,7 @@ function prebuild_qtkeychain() {
   try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/qtkeychain_qio.patch
   try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/qtkeychain_console.patch
   try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/cxx11.patch
+  try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/java.patch
 
   touch .patched
 }
@@ -47,12 +48,12 @@ function build_qtkeychain() {
  try mkdir -p $BUILD_qtkeychain/build-$ARCH
  try cd $BUILD_qtkeychain/build-$ARCH
 
-	push_arm
+  push_arm
 
  # configure
  try cmake \
   -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+  -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
   -DANDROID_ABI=$ARCH \
   -DANDROID_NDK=$ANDROID_NDK \
   -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
@@ -64,10 +65,11 @@ function build_qtkeychain() {
   -DWITH_nss_PLUGIN=OFF \
   -DWITH_pkcs11_PLUGIN=OFF \
   $BUILD_qtkeychain
- # try $MAKESMP
- try $MAKESMP install
 
-	pop_arm
+  # try $MAKESMP
+  try $MAKESMP install
+
+  pop_arm
 }
 
 # function called after all the compile have been done
