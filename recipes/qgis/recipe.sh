@@ -4,7 +4,7 @@
 VERSION_qgis=3.5
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkeychain exiv2)
+DEPS_qgis=(gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2)
 # DEPS_qgis=()
 
 # url of the package
