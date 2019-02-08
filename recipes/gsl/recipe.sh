@@ -49,8 +49,8 @@ function build_gsl() {
 	push_arm
   try $BUILD_gsl/configure \
     --prefix=$STAGE_PATH \
-    --host=x86_64 \
-    --build=$SHORTARCH
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64
   try $MAKESMP
   try make install
 	pop_arm

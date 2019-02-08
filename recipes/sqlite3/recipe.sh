@@ -49,8 +49,8 @@ function build_sqlite3() {
   export CFLAGS="${CFLAGS} -DSQLITE_ENABLE_COLUMN_METADATA"
   try $BUILD_sqlite3/configure \
     --prefix=$STAGE_PATH \
-    --host=x86_64 \
-    --build=$SHORTARCH
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64
   try $MAKESMP install
 	pop_arm
 }
