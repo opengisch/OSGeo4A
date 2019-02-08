@@ -53,7 +53,7 @@ function build_libspatialite() {
     try $BUILD_libspatialite/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm \
+    --build=$SHORTARCH \
     --target=android \
     --with-geosconfig=$STAGE_PATH/bin/geos-config \
     --enable-libxml2=no

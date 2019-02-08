@@ -52,7 +52,7 @@ function build_freexl() {
   try $BUILD_freexl/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm
+    --build=$SHORTARCH
   try $MAKESMP install
 
   pop_arm

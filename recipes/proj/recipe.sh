@@ -51,7 +51,7 @@ function build_proj() {
   try $BUILD_proj/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm
+    --build=$SHORTARCH
   try $MAKESMP install
   pop_arm
 }

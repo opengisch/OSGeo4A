@@ -54,7 +54,7 @@ function build_gdal() {
     try ${BUILD_PATH}/gdal/build-$ARCH/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm \
+    --build=$SHORTARCH \
     --with-sqlite3=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \

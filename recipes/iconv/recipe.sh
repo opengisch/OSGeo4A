@@ -54,7 +54,7 @@ function build_iconv() {
   try $BUILD_iconv/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm
+    --build=$SHORTARCH
   try $MAKESMP
   try make install
 

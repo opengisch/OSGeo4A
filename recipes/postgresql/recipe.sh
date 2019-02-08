@@ -54,7 +54,7 @@ function build_postgresql() {
   try $BUILD_postgresql/configure \
     --prefix=$STAGE_PATH \
     --host=x86_64 \
-    --build=arm \
+    --build=$SHORTARCH \
     --without-readline \
     --with-openssl
 
