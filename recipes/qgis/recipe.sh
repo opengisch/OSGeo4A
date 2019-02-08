@@ -35,8 +35,7 @@ function build_qgis() {
   try cmake \
     -DCXX_EXTRA_FLAGS="-fno-var-tracking-assignments" \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
-    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
     -DWITH_DESKTOP=OFF \
     -DWITH_ANALYSIS=OFF \
