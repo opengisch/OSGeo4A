@@ -46,17 +46,16 @@ function build_exiv2() {
   try cd $BUILD_PATH/exiv2/build-$ARCH
   push_arm
   try cmake \
-      -DEXIV2_ENABLE_NLS=OFF \
-      -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
-      -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
-      -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-      -DANDROID=ON \
-      -DANDROID_ABI=$ARCH \
-      -DANDROID_NDK=$ANDROID_NDK \
-      -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
-      -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
-      $BUILD_exiv2
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+    -DEXIV2_ENABLE_NLS=OFF \
+    -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
+    -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DANDROID=ON \
+    -DANDROID_ABI=$ARCH \
+    -DANDROID_NDK=$ANDROID_NDK \
+    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
+    $BUILD_exiv2
   try $MAKESMP
   try $MAKESMP install
   pop_arm
