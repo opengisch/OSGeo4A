@@ -33,7 +33,6 @@ function build_qgis() {
   push_arm
 
   try cmake \
-    -DCXX_EXTRA_FLAGS="-fno-var-tracking-assignments" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
@@ -86,7 +85,6 @@ function build_qgis() {
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
     -DANDROID_NDK=$ANDROIDNDK \
-    -DANDROID_STL=gnustl_shared \
     -DANDROID_ABI=$ARCH \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
