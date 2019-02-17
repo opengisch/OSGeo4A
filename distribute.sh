@@ -245,7 +245,7 @@ function push_arm() {
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/21"
 
-  export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
+  export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
   # search compiler in the path, to fail now instead of later.
   CC=$(which ${TOOLCHAIN_FULL_PREFIX}-clang)
