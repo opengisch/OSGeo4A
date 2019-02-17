@@ -33,7 +33,7 @@ function prebuild_openssl() {
 
 function shouldbuild_openssl() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_openssl/libssl.so -nt $BUILD_openssl/.patched ]; then
+  if [ $BUILD_openssl/libssl.so -nt $BUILD_PATH/openssl/openssl-${VERSION_openssl}/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -45,7 +45,7 @@ function build_openssl() {
 
   push_arm
   try $BUILD_openssl/Configure \
-    android-arm \
+    android-${SHORTARCH} \
     no-asm \
     --prefix=$STAGE_PATH \
     -D__ANDROID_API__=21
