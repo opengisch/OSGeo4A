@@ -1,16 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=5.3
+VERSION_proj=5.2
 
 # dependencies of this recipe
 DEPS_proj=(sqlite3)
 
 # url of the package
-URL_proj=https://github.com/OSGeo/proj.4/archive/a8cbe0c66974871f5a7bd7ef94001ebf461ac7ea.tar.gz
+URL_proj=https://github.com/OSGeo/proj.4/releases/download/5.2.0/proj-5.2.0.tar.gz
+# https://github.com/OSGeo/proj.4/archive/a8cbe0c66974871f5a7bd7ef94001ebf461ac7ea.tar.gz
 
 # md5 of the package
-MD5_proj=a7d111fb0253e5f7b0a531f0659bcad3
+MD5_proj=ad285c7d03cbb138d9246e10e1f3191c
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
@@ -28,6 +29,7 @@ function prebuild_proj() {
     return
   fi
 
+  patch -p1 < $RECIPE_proj/patches/notest.patch
   touch .patched
 }
 
