@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=5.2
+VERSION_proj=5.3
 
 # dependencies of this recipe
-DEPS_proj=()
+DEPS_proj=(sqlite3)
 
 # url of the package
-URL_proj=http://download.osgeo.org/proj/proj-5.2.0.tar.gz
+URL_proj=https://github.com/OSGeo/proj.4/archive/a8cbe0c66974871f5a7bd7ef94001ebf461ac7ea.tar.gz
 
 # md5 of the package
-MD5_proj=ad285c7d03cbb138d9246e10e1f3191c
+MD5_proj=a7d111fb0253e5f7b0a531f0659bcad3
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
@@ -28,8 +28,7 @@ function prebuild_proj() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_proj
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_proj
+  touch .patched
 }
 
 function shouldbuild_proj() {
@@ -45,10 +44,21 @@ function build_proj() {
   try cd $BUILD_PATH/proj/build-$ARCH
 
   push_arm
-  try $BUILD_proj/configure \
-    --prefix=$STAGE_PATH \
-    --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
+
+#  try $BUILD_proj/configure \
+#    --prefix=$STAGE_PATH \
+#    --host=$TOOLCHAIN_PREFIX \
+#    --build=x86_64
+  try cmake \
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DANDROID=ON \
+    -DANDROID_ABI=$ARCH \
+    -DANDROID_NDK=$ANDROID_NDK \
+    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
+    -DPROJ_TESTS=OFF \
+    -DEXE_SQLITE3=$(which sqlite3) \
+    $BUILD_proj
   try $MAKESMP install
   pop_arm
 }
