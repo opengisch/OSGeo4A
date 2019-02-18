@@ -49,8 +49,9 @@ function build_openssl() {
     no-asm \
     --prefix=$STAGE_PATH \
     -D__ANDROID_API__=21
-  try $MAKESMP
-  try make install &> install.log
+  # https://stackoverflow.com/questions/24204366/how-to-build-openssl-as-unversioned-shared-lib-for-android
+  try make CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
+  try make SHLIB_EXT=.so install_sw &> install.log
     
   pop_arm
 }
