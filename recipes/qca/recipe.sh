@@ -9,10 +9,11 @@ DEPS_qca=(openssl)
 # url of the package
 # URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz
 # URL_qca=http://quickgit.kde.org/?p=qca.git&a=snapshot&h=4f966b0217c10b6fd3c12caf7d2467759fbec7f7&fmt=tgz
-URL_qca=https://github.com/KDE/qca/archive/v${VERSION_qca}.tar.gz
+#URL_qca=https://github.com/KDE/qca/archive/v${VERSION_qca}.tar.gz
+URL_qca=https://github.com/KDE/qca/archive/32343842d359a60e3619f97aac983d587f6eca16.zip
 
 # md5 of the package
-MD5_qca=bd646d08fdc1d9be63331a836ecd528f
+MD5_qca=180212f7d8d9290b4eca19717b4809f6
 
 # default build path
 BUILD_qca=$BUILD_PATH/qca/$(get_directory $URL_qca)
@@ -53,12 +54,11 @@ function build_qca() {
 
  # configure
  try cmake \
+  -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
   -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
   -DANDROID_ABI=$ARCH \
   -DANDROID_NDK=$ANDROID_NDK \
   -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
-  -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
   -DQT4_BUILD=OFF \
   -DQCA_SUFFIX=qt5 \
   -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \

@@ -49,11 +49,10 @@ function build_gdal() {
   try cd $BUILD_PATH/gdal/build-$ARCH
 
   push_arm
-  LIBS="-lgnustl_shared -lsupc++ -lstdc++" \
-  LDFLAGS="${LDFLAGS} -L$ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}" \
     try ${BUILD_PATH}/gdal/build-$ARCH/configure \
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64 \
     --prefix=$STAGE_PATH \
-    --host=${TOOLCHAIN_PREFIX} \
     --with-sqlite3=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \

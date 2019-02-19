@@ -50,9 +50,8 @@ function build_libtiff() {
   try cd $BUILD_PATH/libtiff/build-$ARCH
   push_arm
   try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
-    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DANDROID_ABI=$ARCH \
     -DANDROID_NDK=$ANDROID_NDK \

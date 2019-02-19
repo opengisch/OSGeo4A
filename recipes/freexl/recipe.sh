@@ -49,7 +49,10 @@ function build_freexl() {
   push_arm
 
   export LDFLAGS="$LDFLAGS -liconv"
-  try $BUILD_freexl/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+  try $BUILD_freexl/configure \
+    --prefix=$STAGE_PATH \
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64
   try $MAKESMP install
 
   pop_arm

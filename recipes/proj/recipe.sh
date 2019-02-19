@@ -1,16 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=4.9
+VERSION_proj=5.2
 
 # dependencies of this recipe
-DEPS_proj=()
+DEPS_proj=(sqlite3)
 
 # url of the package
-URL_proj=http://download.osgeo.org/proj/proj-4.9.0b2.tar.gz
+URL_proj=https://github.com/OSGeo/proj.4/releases/download/5.2.0/proj-5.2.0.tar.gz
+# https://github.com/OSGeo/proj.4/archive/a8cbe0c66974871f5a7bd7ef94001ebf461ac7ea.tar.gz
 
 # md5 of the package
-MD5_proj=d43fd87b991831faaf7e6fb5570b86aa
+MD5_proj=ad285c7d03cbb138d9246e10e1f3191c
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
@@ -28,10 +29,7 @@ function prebuild_proj() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_proj
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_proj
-  try patch -p1 < $RECIPE_proj/patches/proj4.patch
-
+  patch -p1 < $RECIPE_proj/patches/notest.patch
   touch .patched
 }
 
@@ -46,10 +44,25 @@ function shouldbuild_proj() {
 function build_proj() {
   try mkdir -p $BUILD_PATH/proj/build-$ARCH
   try cd $BUILD_PATH/proj/build-$ARCH
-	push_arm
-  try $BUILD_proj/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+
+  push_arm
+
+#  try $BUILD_proj/configure \
+#    --prefix=$STAGE_PATH \
+#    --host=$TOOLCHAIN_PREFIX \
+#    --build=x86_64
+  try cmake \
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DANDROID=ON \
+    -DANDROID_ABI=$ARCH \
+    -DANDROID_NDK=$ANDROID_NDK \
+    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
+    -DPROJ_TESTS=OFF \
+    -DEXE_SQLITE3=$(which sqlite3) \
+    $BUILD_proj
   try $MAKESMP install
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done

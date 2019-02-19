@@ -159,6 +159,7 @@ function debug() {
 function get_directory() {
   case $1 in
     *.tar.gz) directory=$(basename $1 .tar.gz) ;;
+    *.tar.xz) directory=$(basename $1 .tar.xz) ;;
     *.tgz)    directory=$(basename $1 .tgz) ;;
     *.tar.bz2)  directory=$(basename $1 .tar.bz2) ;;
     *.tbz2)   directory=$(basename $1 .tbz2) ;;
@@ -191,11 +192,6 @@ function push_arm() {
   #export OFLAG="-Os"
   #export OFLAG="-O2"
 
-  export CFLAGS="-DANDROID -mandroid $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/crystax/libs/$ARCH"
-  if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
-    CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
-  fi
-
 
   # this must be something depending of the API level of Android
   PYPLATFORM=$($PYTHON -c 'from __future__ import print_function; import sys; print(sys.platform)')
@@ -207,11 +203,15 @@ function push_arm() {
 
   # Setup compiler toolchain based on CPU architecture
   if [ "X${ARCH}" == "Xx86" ]; then
+      export TOOLCHAIN_FULL_PREFIX=i686-linux-android21
+      export TOOLCHAIN_SHORT_PREFIX=i686-linux-android
       export TOOLCHAIN_PREFIX=i686-linux-android
       export TOOLCHAIN_BASEDIR=x86
       export QT_ARCH_PREFIX=x86
       export QT_ANDROID=${QT_ANDROID_BASE}/android_x86
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
+      export TOOLCHAIN_FULL_PREFIX=armv7a-linux-androideabi21
+      export TOOLCHAIN_SHORT_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_BASEDIR=arm-linux-androideabi
       export QT_ARCH_PREFIX=armv7
@@ -222,29 +222,35 @@ function push_arm() {
   fi
 
   # Choose compiler version
-  if [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
-      export TOOLCHAIN_VERSION=4.4.3
-  elif  [ "X${ANDROIDNDKVER:0:2}" == "Xr9" ]; then
-      export TOOLCHAIN_VERSION=4.8
-  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ] || [ "X${ANDROIDNDKVER:0:3}" == "Xr12" ]; then
-      export TOOLCHAIN_VERSION=4.9
-  else
-      echo "Error: Please report issue to enable support for newer ndk (${ANDROIDNDKVER:0:3})."
-      exit 1
-  fi
+#  if [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
+#      export TOOLCHAIN_VERSION=4.4.3
+#  elif  [ "X${ANDROIDNDKVER:0:2}" == "Xr9" ]; then
+#      export TOOLCHAIN_VERSION=4.8
+#  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ] || [ "X${ANDROIDNDKVER:0:3}" == "Xr12" ]; then
+#      export TOOLCHAIN_VERSION=4.9
+#  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr19" ]; then
+#      export TOOLCHAIN_VERSION=4.9
+#  else
+#      echo "Error: Please report issue to enable support for newer ndk (${ANDROIDNDKVER:0:3})."
+#      exit 1
+#  fi
 
-  export CXXFLAGS="$CFLAGS -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/include \
-                           -isystem $ANDROIDNDK/sources/cxx-stl/gnu-libstdc++/$TOOLCHAIN_VERSION/libs/${ARCH}/include \
-                           -isystem $ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH/usr/include"
+  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX"
 
-  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/sources/crystax/libs/$ARCH"
+#  if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
+#    CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
+#  fi
 
-  export PATH="$STAGE_PATH/bin:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86/bin/:$ANDROIDNDK/toolchains/$TOOLCHAIN_BASEDIR-$TOOLCHAIN_VERSION/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDNDK:$ANDROIDSDK/tools:$QT_ANDROID/bin:$PATH"
+  export CXXFLAGS="$CFLAGS"
+
+  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/21"
+
+  export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
   # search compiler in the path, to fail now instead of later.
-  CC=$(which $TOOLCHAIN_PREFIX-gcc)
+  CC=$(which ${TOOLCHAIN_FULL_PREFIX}-clang)
   if [ "X$CC" == "X" ]; then
-    error "Unable to find compiler ($TOOLCHAIN_PREFIX-gcc) !!"
+    error "Unable to find compiler ($TOOLCHAIN_FULL_PREFIX-clang) !!"
     error "1. Ensure that SDK/NDK paths are correct"
     error "2. Ensure that you've the Android API $ANDROIDAPI SDK Platform (via android tool)"
     exit 1
@@ -252,15 +258,15 @@ function push_arm() {
     debug "Compiler found at $CC"
   fi
 
-  export CC="$TOOLCHAIN_PREFIX-gcc $CFLAGS"
-  export CXX="$TOOLCHAIN_PREFIX-g++ $CXXFLAGS"
-  export AR="$TOOLCHAIN_PREFIX-ar" 
-  export RANLIB="$TOOLCHAIN_PREFIX-ranlib"
-  export LD="$TOOLCHAIN_PREFIX-ld"
-  export STRIP="$TOOLCHAIN_PREFIX-strip --strip-unneeded"
+  export CC="$TOOLCHAIN_FULL_PREFIX-clang $CFLAGS"
+  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++ $CXXFLAGS"
+  export AR="$TOOLCHAIN_SHORT_PREFIX-ar" 
+  export RANLIB="$TOOLCHAIN_SHORT_PREFIX-ranlib"
+  export LD="$TOOLCHAIN_SHORT_PREFIX-ld"
+  export STRIP="$TOOLCHAIN_SHORT_PREFIX-strip --strip-unneeded"
   export MAKESMP="make -j$CORES"
   export MAKE="make"
-  export READELF="$TOOLCHAIN_PREFIX-readelf"
+  export READELF="$TOOLCHAIN_SHORT_PREFIX-readelf"
 
   # export environment for Qt
   export ANDROID_NDK_ROOT=$ANDROIDNDK
@@ -374,12 +380,6 @@ function run_prepare() {
 
   if [ "X$ANDROIDAPI" == "X" ]; then
     export ANDROIDAPI=14
-  fi
-
-  if [ "X$ANDROIDNDKVER" == "X" ]; then
-    error "No ANDROIDNDKVER enviroment set, abort"
-    error "(Must be something like 'r5b', 'r7'...)"
-    exit -1
   fi
 
   if [ "X$MODULES" == "X" ]; then
@@ -715,6 +715,13 @@ function run_get_packages() {
       *.zip )
         try unzip $pfilename
         root_directory=$(basename $(try unzip -l $pfilename|sed -n 5p|awk '{print $4}'))
+        if [ "X$root_directory" != "X$directory" ]; then
+          mv $root_directory $directory
+        fi
+        ;;
+      * )
+        try tar xf $pfilename
+        root_directory=$(basename $(try tar xf $pfilename|head -n1))
         if [ "X$root_directory" != "X$directory" ]; then
           mv $root_directory $directory
         fi

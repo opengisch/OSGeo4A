@@ -1,0 +1,20 @@
+From 170100e8a357b2e7df9e616199ca06e5def96292 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Sun, 17 Feb 2019 22:10:54 +0100
+Subject: [PATCH] Remove tests subdir
+
+---
+ CMakeLists.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b100e62f1..c3c3cb6d5 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -164,5 +164,4 @@ add_subdirectory(nad)
+ add_subdirectory(src)
+ add_subdirectory(man)
+ add_subdirectory(cmake)
+-add_subdirectory(test)
+ 
+

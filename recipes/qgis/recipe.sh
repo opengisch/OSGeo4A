@@ -4,14 +4,14 @@
 VERSION_qgis=3.5
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qca libspatialite spatialindex expat gsl postgresql libzip qtkeychain exiv2)
+DEPS_qgis=(gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/3nids/QGIS/archive/1e90ffe3ffb629a174f00525733a9a042f8f2fa1.zip
+URL_qgis=https://github.com/qgis/QGIS/archive/b711ef01f801f8cf7d29ee599be5d5dd38583b62.tar.gz
 
 # md5 of the package
-MD5_qgis=240b4dec32f8ed5f026ed6f3be497293
+MD5_qgis=9d13f900646ff5fa6f36ca64ce1f29ab
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -33,10 +33,8 @@ function build_qgis() {
   push_arm
 
   try cmake \
-    -DCXX_EXTRA_FLAGS="-fno-var-tracking-assignments" \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
-    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
     -DWITH_DESKTOP=OFF \
     -DWITH_ANALYSIS=OFF \
@@ -87,7 +85,6 @@ function build_qgis() {
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
     -DANDROID_NDK=$ANDROIDNDK \
-    -DANDROID_STL=gnustl_shared \
     -DANDROID_ABI=$ARCH \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis

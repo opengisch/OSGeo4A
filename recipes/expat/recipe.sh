@@ -46,10 +46,16 @@ function shouldbuild_expat() {
 function build_expat() {
   try mkdir -p $BUILD_PATH/expat/build-$ARCH
   try cd $BUILD_PATH/expat/build-$ARCH
-	push_arm
-  try $BUILD_expat/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+
+  push_arm
+
+  try $BUILD_expat/configure \
+    --prefix=$STAGE_PATH \
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64
   try $MAKESMP install
-	pop_arm
+
+  pop_arm
 }
 
 # function called after all the compile have been done

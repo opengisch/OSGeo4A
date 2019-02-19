@@ -49,13 +49,12 @@ function build_geos() {
   push_arm
 #    -DANDROID_STL=gnustl_shared \
   try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DANDROID=ON \
     -DANDROID_ABI=$ARCH \
     -DANDROID_NDK=$ANDROID_NDK \
     -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
-    -DANDROID_TOOLCHAIN_VERSION=gcc-4.9 \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build-$ARCH/geos_svn_revision.h
   try $MAKESMP

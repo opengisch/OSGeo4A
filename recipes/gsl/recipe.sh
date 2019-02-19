@@ -47,7 +47,10 @@ function build_gsl() {
   mkdir $BUILD_PATH/gsl/build-$ARCH
   cd $BUILD_PATH/gsl/build-$ARCH
 	push_arm
-  try $BUILD_gsl/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+  try $BUILD_gsl/configure \
+    --prefix=$STAGE_PATH \
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64
   try $MAKESMP
   try make install
 	pop_arm

@@ -51,7 +51,10 @@ function build_iconv() {
 
   push_arm
 
-  try $BUILD_iconv/configure --prefix=$STAGE_PATH --host=${TOOLCHAIN_PREFIX}
+  try $BUILD_iconv/configure \
+    --prefix=$STAGE_PATH \
+    --host=$TOOLCHAIN_PREFIX \
+    --build=x86_64
   try $MAKESMP
   try make install
 
