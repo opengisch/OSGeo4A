@@ -27,6 +27,7 @@ function prebuild_openssl() {
   if [ -f .patched ]; then
     return
   fi
+  try patch -p1 < $RECIPE_openssl/patches/armeabi.patch
 
   touch .patched
 }
@@ -44,15 +45,21 @@ function build_openssl() {
   try cd $BUILD_PATH/openssl/build-$ARCH
 
   push_arm
-  try $BUILD_openssl/Configure \
-    android-${SHORTARCH} \
+
+  MACHINE=$QT_ARCH_PREFIX \
+  SYSTEM=android \
+  ARCH=$SHORTARCH \
+  try $BUILD_openssl/config \
+    shared \
     no-asm \
     --prefix=$STAGE_PATH \
     -D__ANDROID_API__=21
-  # https://stackoverflow.com/questions/24204366/how-to-build-openssl-as-unversioned-shared-lib-for-android
-  try make CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
+  try make SHLIB_EXT=".so" CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
+  mkdir -p $STAGE_PATH/lib
+  echo "place-holder make target for avoiding symlinks" >> $STAGE_PATH/lib/link-shared
   try make SHLIB_EXT=.so install_sw &> install.log
-    
+  rm $STAGE_PATH/lib/link-shared
+
   pop_arm
 }
 

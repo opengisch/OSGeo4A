@@ -1,0 +1,12 @@
+diff -Naur a/config openssl-1.1.1a/config
+--- a/config	2019-02-19 13:37:04.577935966 +0000
++++ openssl-1.1.1a/config	2019-02-19 13:37:17.058179008 +0000
+@@ -817,7 +817,7 @@
+   *-*-cygwin) OUT="Cygwin-${MACHINE}" ;;
+   x86-*-android|i?86-*-android) OUT="android-x86" ;;
+   armv[7-9]*-*-android)
+-      OUT="android-armeabi"
++      OUT="android-arm"
+       __CNF_CFLAGS="$__CNF_CFLAGS -march=armv7-a"
+       __CNF_CXXFLAGS="$__CNF_CXXFLAGS -march=armv7-a";;
+   arm*-*-android) OUT="android-armeabi" ;;
