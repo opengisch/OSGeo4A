@@ -23,6 +23,10 @@ export QT_ANDROID_BASE="/path/to/qt/sdk/Qt/5.11.2"
 # export O4A_qgis_DIR="/path/to/repository/qgis/QGIS"
 
 ### BUILD ###
+# Available architectures:
+#  - armeabi-v7a
+#  - x86
+#  - arm64-v8a (experimental)
 export ARCHES=("armeabi-v7a" "x86")
 #export ARCHES=("armeabi-v7a")
 
