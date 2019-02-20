@@ -53,7 +53,7 @@ function build_openssl() {
     shared \
     no-asm \
     --prefix=$STAGE_PATH \
-    -D__ANDROID_API__=21
+    -D__ANDROID_API__=$ANDROIDAPI
   try make SHLIB_EXT=".so" CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
   mkdir -p $STAGE_PATH/lib
   echo "place-holder make target for avoiding symlinks" >> $STAGE_PATH/lib/link-shared
