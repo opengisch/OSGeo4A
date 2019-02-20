@@ -42,7 +42,7 @@ function build_libzip() {
   try cd $BUILD_PATH/libzip/build-$ARCH
   push_arm
   ndk-build APP_STL=c++_shared \
-    APP_PLATFORM=android-21 \
+    APP_PLATFORM=android-$ANDROIDAPI \
     APP_ABI="${ARCH}" \
     NDK_TOOLCHAIN_VERSION=5 \
     NDK_PROJECT_PATH=$BUILD_libzip \
