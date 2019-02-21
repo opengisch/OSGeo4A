@@ -203,21 +203,31 @@ function push_arm() {
 
   # Setup compiler toolchain based on CPU architecture
   if [ "X${ARCH}" == "Xx86" ]; then
-      export TOOLCHAIN_FULL_PREFIX=i686-linux-android21
+      export TOOLCHAIN_FULL_PREFIX=i686-linux-android${ANDROIDAPI}
       export TOOLCHAIN_SHORT_PREFIX=i686-linux-android
       export TOOLCHAIN_PREFIX=i686-linux-android
       export TOOLCHAIN_BASEDIR=x86
       export QT_ARCH_PREFIX=x86
       export QT_ANDROID=${QT_ANDROID_BASE}/android_x86
+      export ANDROID_SYSTEM=android
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
-      export TOOLCHAIN_FULL_PREFIX=armv7a-linux-androideabi21
+      export TOOLCHAIN_FULL_PREFIX=armv7a-linux-androideabi${ANDROIDAPI}
       export TOOLCHAIN_SHORT_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_BASEDIR=arm-linux-androideabi
       export QT_ARCH_PREFIX=armv7
       export QT_ANDROID=${QT_ANDROID_BASE}/android_armv7
+      export ANDROID_SYSTEM=android
+  elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
+      export TOOLCHAIN_FULL_PREFIX=aarch64-linux-android${ANDROIDAPI}
+      export TOOLCHAIN_SHORT_PREFIX=aarch64-linux-android
+      export TOOLCHAIN_PREFIX=aarch64-linux-android
+      export TOOLCHAIN_BASEDIR=aarch64-linux-android
+      export QT_ARCH_PREFIX=arm64 # watch out when changing this, openssl depends on it
+      export QT_ANDROID=${QT_ANDROID_BASE}/android_aarch64
+      export ANDROID_SYSTEM=android64
   else
-      echo "Error: Please report issue to enable support for newer ndk (${ARCH})."
+      echo "Error: Please report issue to enable support for arch (${ARCH})."
       exit 1
   fi
 
@@ -235,15 +245,16 @@ function push_arm() {
 #      exit 1
 #  fi
 
-  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX"
+  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX -D__ANDROID_API__=$ANDROIDAPI"
 
 #  if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
 #    CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
 #  fi
 
   export CXXFLAGS="$CFLAGS"
+  export CPPFLAGS="$CFLAGS"
 
-  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/21"
+  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/$ANDROIDAPI"
 
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
@@ -395,8 +406,10 @@ function run_prepare() {
       export SHORTARCH="x86"
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
       export SHORTARCH="arm"
+  elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
+      export SHORTARCH="arm64"
   else
-      echo "Error: Please report issue to enable support for newer ndk (${ARCH})."
+      echo "Error: Please report issue to enable support for newer arch (${ARCH})."
       exit 1
   fi
 

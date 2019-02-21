@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_postgresql=10.1
+VERSION_postgresql=11.2
 
 # dependencies of this recipe
 DEPS_postgresql=(iconv openssl)
@@ -10,7 +10,7 @@ DEPS_postgresql=(iconv openssl)
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
 
 # md5 of the package
-MD5_postgresql=0a92328d9970bfb85dcecd011817238a
+MD5_postgresql=19d43be679cb0d55363feb8926af3a0f
 
 # default build path
 BUILD_postgresql=$BUILD_PATH/postgresql/$(get_directory $URL_postgresql)
@@ -32,13 +32,16 @@ function prebuild_postgresql() {
   try cp $ROOT_PATH/.packages/config.guess $BUILD_postgresql/conftools
   try patch -p1 < $RECIPE_postgresql/patches/libpq.patch
   try patch -p2 < $RECIPE_postgresql/patches/stdlib.patch
+  if [ $ANDROIDAPI -lt 26 ]; then
+  try patch -p1 < $RECIPE_postgresql/patches/langinfo.patch
+  fi
 
   touch .patched
 }
 
 function shouldbuild_postgresql() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so -nt $BUILD_postgresql/.patched ]; then
+  if [ $STAGE_PATH/lib/libpq.so -nt $BUILD_postgresql/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -48,6 +51,7 @@ function build_postgresql() {
   try mkdir -p $BUILD_PATH/postgresql/build-$ARCH
   try cd $BUILD_PATH/postgresql/build-$ARCH
   push_arm
+  CFLAGS="$CFLAGS -fno-builtin" \
   USE_DEV_URANDOM=1 \
   try $BUILD_postgresql/configure \
     --prefix=$STAGE_PATH \
@@ -64,6 +68,7 @@ function build_postgresql() {
   try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $STAGE_PATH/include
   try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/include/pg_config_ext.h $STAGE_PATH/include/
   try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so $STAGE_PATH/lib/
+
   pop_arm
 }
 

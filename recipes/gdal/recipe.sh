@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_gdal=2.2.3
+VERSION_gdal=2.4.0
 
 # dependencies of this recipe
 DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat)
@@ -10,7 +10,7 @@ DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat)
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
 
 # md5 of the package
-MD5_gdal=4099b7d4efebdd3b0411ed3b9a18a8b2
+MD5_gdal=f2c87eefd74f15ba652c92029f666a8f
 
 # default build path
 BUILD_gdal=$BUILD_PATH/gdal/$(get_directory $URL_gdal)
@@ -30,7 +30,7 @@ function prebuild_gdal() {
 
   try cp $ROOT_PATH/.packages/config.sub $BUILD_gdal
   try cp $ROOT_PATH/.packages/config.guess $BUILD_gdal
-  try patch -p1 < $RECIPE_gdal/patches/gdal.patch
+#  try patch -p1 < $RECIPE_gdal/patches/gdal.patch
   # try patch -p1 < $RECIPE_gdal/patches/memdebug.patch
 
   touch .patched
