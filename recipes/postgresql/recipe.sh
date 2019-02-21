@@ -32,13 +32,16 @@ function prebuild_postgresql() {
   try cp $ROOT_PATH/.packages/config.guess $BUILD_postgresql/conftools
   try patch -p1 < $RECIPE_postgresql/patches/libpq.patch
   try patch -p2 < $RECIPE_postgresql/patches/stdlib.patch
+  if [ $ANDROIDAPI -lt 26 ]; then
+  try patch -p1 < $RECIPE_postgresql/patches/langinfo.patch
+  fi
 
   touch .patched
 }
 
 function shouldbuild_postgresql() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so -nt $BUILD_postgresql/.patched ]; then
+  if [ $STAGE_PATH/lib/libpq.so -nt $BUILD_postgresql/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -65,6 +68,7 @@ function build_postgresql() {
   try cp -v $BUILD_postgresql/src/interfaces/libpq/libpq-fe.h $STAGE_PATH/include
   try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/include/pg_config_ext.h $STAGE_PATH/include/
   try cp -v $BUILD_PATH/postgresql/build-$ARCH/src/interfaces/libpq/libpq.so $STAGE_PATH/lib/
+
   pop_arm
 }
 
