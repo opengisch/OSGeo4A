@@ -252,6 +252,7 @@ function push_arm() {
 #  fi
 
   export CXXFLAGS="$CFLAGS"
+  export CPPFLAGS="$CFLAGS"
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/$ANDROIDAPI"
 
