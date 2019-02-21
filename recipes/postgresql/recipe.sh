@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_postgresql=10.1
+VERSION_postgresql=11.2
 
 # dependencies of this recipe
 DEPS_postgresql=(iconv openssl)
@@ -10,7 +10,7 @@ DEPS_postgresql=(iconv openssl)
 URL_postgresql=https://ftp.postgresql.org/pub/source/v${VERSION_postgresql}/postgresql-${VERSION_postgresql}.tar.bz2
 
 # md5 of the package
-MD5_postgresql=0a92328d9970bfb85dcecd011817238a
+MD5_postgresql=19d43be679cb0d55363feb8926af3a0f
 
 # default build path
 BUILD_postgresql=$BUILD_PATH/postgresql/$(get_directory $URL_postgresql)
@@ -48,6 +48,7 @@ function build_postgresql() {
   try mkdir -p $BUILD_PATH/postgresql/build-$ARCH
   try cd $BUILD_PATH/postgresql/build-$ARCH
   push_arm
+  CFLAGS="$CFLAGS -fno-builtin" \
   USE_DEV_URANDOM=1 \
   try $BUILD_postgresql/configure \
     --prefix=$STAGE_PATH \
