@@ -1,15 +1,15 @@
 ### Currently suggested versions ####
-export ANDROIDNDKVER=r12b
-export ANDROIDAPI=15 # min 15 max 21
+export ANDROIDNDKVER=r19
+export ANDROIDAPI=21 # min 15 max 21
 
 #### PATHS ####
 export ANDROIDSDK="/path/to/android-sdk"
-export ANDROIDNDK="/path/to/crystax-ndk"
+export ANDROIDNDK="/path/to/android-ndk"
 export QT_ANDROID_BASE="/path/to/qt/sdk/Qt/5.11.2"
 
 # For example:
 # export ANDROIDSDK="/opt/android/sdk"
-# export ANDROIDNDK="/opt/android/crystax-ndk-10.3.2"
+# export ANDROIDNDK="/opt/android-ndk-r19/"
 # export QT_ANDROID_BASE="/opt/Qt/5.11.2"
 
 # QGIS needs a bison 3. On MacOS you may need
