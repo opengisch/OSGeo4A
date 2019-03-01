@@ -49,7 +49,8 @@ function build_gdal() {
   try cd $BUILD_PATH/gdal/build-$ARCH
 
   push_arm
-    try ${BUILD_PATH}/gdal/build-$ARCH/configure \
+
+  try ${BUILD_PATH}/gdal/build-$ARCH/configure \
     --host=$TOOLCHAIN_PREFIX \
     --build=x86_64 \
     --prefix=$STAGE_PATH \
@@ -58,7 +59,7 @@ function build_gdal() {
     --with-pg=no \
     --with-expat=$STAGE_PATH
   try $MAKESMP
-  try make install &> install.log
+  try $MAKESMP install &> install.log
   pop_arm
 }
 

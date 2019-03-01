@@ -187,6 +187,7 @@ function push_arm() {
   export OLD_STRIP=$STRIP
   export OLD_MAKE=$MAKE
   export OLD_LD=$LD
+  export OLD_CMAKECMD=$CMAKECMD
 
   # to override the default optimization, set OFLAG
   #export OFLAG="-Os"
@@ -254,7 +255,7 @@ function push_arm() {
   export CXXFLAGS="$CFLAGS"
   export CPPFLAGS="$CFLAGS"
 
-  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/$ANDROIDAPI"
+  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/arm-linux-androideabi/$ANDROIDAPI"
 
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
@@ -278,6 +279,7 @@ function push_arm() {
   export MAKESMP="make -j$CORES"
   export MAKE="make"
   export READELF="$TOOLCHAIN_SHORT_PREFIX-readelf"
+  export CMAKECMD="cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake -DCMAKE_FIND_ROOT_PATH:PATH=$ANDROID_NDK;$QT_ANDROID;$BUILD_PATH;$STAGE_PATH -DANDROID_ABI=$ARCH -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI -DANDROID=ON"
 
   # export environment for Qt
   export ANDROID_NDK_ROOT=$ANDROIDNDK
@@ -308,6 +310,7 @@ function pop_arm() {
   export RANLIB=$OLD_RANLIB
   export STRIP=$OLD_STRIP
   export MAKE=$OLD_MAKE
+  export CMAKECMD=$OLD_CMAKECMD
 }
 
 function usage() {

@@ -11,7 +11,7 @@ Dependencies instructions
 - [Apache ant](http://ant.apache.org/bindownload.cgi) v1.8 or later
 - [Qt5 for android >= 5.11] Install ARMv7 arch support. Also read the [upstream Qt information on building Qt5 code for Android](http://doc.qt.io/qt-5/androidgs.html)
 - Android SDK ([Download from developer.android.com](https://developer.android.com/studio/index.html#downloads) just command line tools, API 15)
-- Android NDK ([Android NDK r19](https://developer.android.com/ndk/downloads)
+- Android NDK ([Android NDK r19+](https://developer.android.com/ndk/downloads)
 
 [Here](http://doc.qt.io/qt-5/androidgs.html) are more information on building QT5 code for android
 
@@ -30,6 +30,15 @@ cp config.conf.default config.conf
 # nano config.conf
 ./distribute.sh -dqgis -mqgis
 ```
+
+NDK-r19b
+--------
+To be able to build with r19b, override the toolchain file in the NDK
+```
+sudo mv /opt/android-ndk-r19b/build/cmake/android.toolchain.cmake /opt/android-ndk-r19b/build/cmake/android.toolchain.cmake.old
+sudo cp OSGeo4A/tools/android.toolchain.cmake.r19b /opt/android-ndk-r19b/build/cmake/android.toolchain.cmake
+```
+for details, see [issue 41](https://github.com/opengisch/OSGeo4A/issues/41)
 
 MacOS Specific instructions
 ---------------------------

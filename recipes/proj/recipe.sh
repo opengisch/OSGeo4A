@@ -35,7 +35,7 @@ function prebuild_proj() {
 
 function shouldbuild_proj() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/proj/build-$ARCH/src/.libs/libproj.so -nt $BUILD_proj/.patched ]; then
+  if [ $STAGE_PATH/lib/libproj.so -nt $BUILD_proj/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -51,13 +51,8 @@ function build_proj() {
 #    --prefix=$STAGE_PATH \
 #    --host=$TOOLCHAIN_PREFIX \
 #    --build=x86_64
-  try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+  try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-    -DANDROID=ON \
-    -DANDROID_ABI=$ARCH \
-    -DANDROID_NDK=$ANDROID_NDK \
-    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     -DPROJ_TESTS=OFF \
     -DEXE_SQLITE3=$(which sqlite3) \
     $BUILD_proj

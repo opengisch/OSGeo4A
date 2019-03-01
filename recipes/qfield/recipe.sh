@@ -31,8 +31,7 @@ function build_qfield() {
   try cd $BUILD_PATH/qfield/build
 	push_arm
   CMAKE_INCLUDE_PATH=$STAGE_PATH/include \
-     try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ROOT_PATH/tools/android.toolchain.cmake \
+     try $CMAKECMD \
     -DANDROID_STL=gnustl_shared \
     -DQGIS_ANALYSIS_LIBRARY:FILEPATH=$STAGE_PATH/lib/libqgis_analysis.so \
     -DQGIS_CORE_LIBRARY:FILEPATH=$STAGE_PATH/lib/libqgis_core.so\
@@ -46,7 +45,6 @@ function build_qfield() {
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DLIBRARY_OUTPUT_PATH_ROOT:PATH=$STAGE_PATH \
     -DENABLE_TESTS:BOOL=FALSE \
-    -DANDROID_NATIVE_API_LEVEL=19 \
     -DGIT_EXECUTABLE=`which git` \
     $BUILD_qfield
   try $MAKESMP

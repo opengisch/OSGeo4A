@@ -32,9 +32,7 @@ function build_qgis() {
 
   push_arm
 
-  try cmake \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+  try $CMAKECMD \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
     -DWITH_DESKTOP=OFF \
     -DWITH_ANALYSIS=OFF \
@@ -84,9 +82,6 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
-    -DANDROID_NDK=$ANDROIDNDK \
-    -DANDROID_ABI=$ARCH \
-    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_qgis
 
   try $MAKESMP install

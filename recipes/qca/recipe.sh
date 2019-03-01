@@ -53,12 +53,7 @@ function build_qca() {
 	push_arm
 
  # configure
- try cmake \
-  -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DANDROID_ABI=$ARCH \
-  -DANDROID_NDK=$ANDROID_NDK \
-  -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
+ try $CMAKECMD \
   -DQT4_BUILD=OFF \
   -DQCA_SUFFIX=qt5 \
   -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \

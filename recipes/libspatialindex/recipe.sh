@@ -35,7 +35,7 @@ function prebuild_libspatialindex() {
 
 function shouldbuild_libspatialindex() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/libspatialindex/build-$ARCH/.libs/libspatialindex.so -nt $BUILD_libspatialindex/.patched ]; then
+  if [ $STAGE_PATH/lib/libspatialindex.so -nt $BUILD_libspatialindex/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -47,13 +47,8 @@ function build_libspatialindex() {
 
   push_arm
 
-  try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+  try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-    -DANDROID=ON \
-    -DANDROID_ABI=$ARCH \
-    -DANDROID_NDK=$ANDROID_NDK \
-    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_libspatialindex
 
   try $MAKESMP

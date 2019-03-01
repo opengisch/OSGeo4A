@@ -35,7 +35,7 @@ function prebuild_zlib() {
 
 function shouldbuild_zlib() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/zlib/build-$ARCH/.libs/libzlib.so -nt $BUILD_zlib/.patched ]; then
+  if [ $STAGE_PATH/lib/libz.so -nt $BUILD_zlib/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -47,13 +47,8 @@ function build_zlib() {
 
   push_arm
 
-  try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+  try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-    -DANDROID=ON \
-    -DANDROID_ABI=$ARCH \
-    -DANDROID_NDK=$ANDROID_NDK \
-    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_zlib
   try $MAKESMP install
 

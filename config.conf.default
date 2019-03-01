@@ -9,7 +9,7 @@ export QT_ANDROID_BASE="/path/to/qt/sdk/Qt/5.11.2"
 
 # For example:
 # export ANDROIDSDK="/opt/android/sdk"
-# export ANDROIDNDK="/opt/android-ndk-r19/"
+# export ANDROIDNDK="/opt/android-ndk-r19b/"
 # export QT_ANDROID_BASE="/opt/Qt/5.11.2"
 
 # QGIS needs a bison 3. On MacOS you may need
