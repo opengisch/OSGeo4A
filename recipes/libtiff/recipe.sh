@@ -49,12 +49,8 @@ function build_libtiff() {
   try mkdir -p $BUILD_PATH/libtiff/build-$ARCH
   try cd $BUILD_PATH/libtiff/build-$ARCH
   push_arm
-  try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
-    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
+  try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-    -DANDROID_ABI=$ARCH \
-    -DANDROID_NDK=$ANDROID_NDK \
     $BUILD_libtiff
   try $MAKESMP install
   pop_arm

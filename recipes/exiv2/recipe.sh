@@ -35,7 +35,7 @@ function prebuild_exiv2() {
 
 function shouldbuild_exiv2() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/exiv2/build-$ARCH/exiv2/exiv2.so -nt $BUILD_exiv2/.patched ]; then
+  if [ $STAGE_PATH/lib/libexiv2.so -nt $BUILD_exiv2/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -45,16 +45,11 @@ function build_exiv2() {
   try mkdir -p $BUILD_PATH/exiv2/build-$ARCH
   try cd $BUILD_PATH/exiv2/build-$ARCH
   push_arm
-  try cmake \
-    -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake \
+  try $CMAKECMD \
     -DEXIV2_ENABLE_NLS=OFF \
     -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
     -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-    -DANDROID=ON \
-    -DANDROID_ABI=$ARCH \
-    -DANDROID_NDK=$ANDROID_NDK \
-    -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI \
     $BUILD_exiv2
   try $MAKESMP
   try $MAKESMP install

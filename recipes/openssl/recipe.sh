@@ -34,7 +34,7 @@ function prebuild_openssl() {
 
 function shouldbuild_openssl() {
   # If lib is newer than the sourcecode skip build
-  if [ $STAGE_PATH/liblibssl.so -nt $BUILD_PATH/openssl/openssl-${VERSION_openssl}/.patched ]; then
+  if [ $STAGE_PATH/lib/libssl.so -nt $BUILD_PATH/openssl/openssl-${VERSION_openssl}/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -52,12 +52,14 @@ function build_openssl() {
   try $BUILD_openssl/config \
     shared \
     no-asm \
+    no-makedepend \
     --prefix=$STAGE_PATH \
     -D__ANDROID_API__=$ANDROIDAPI
-  try make SHLIB_EXT=".so" CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
+
+  try $MAKESMP SHLIB_EXT=".so" CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
   mkdir -p $STAGE_PATH/lib
   echo "place-holder make target for avoiding symlinks" >> $STAGE_PATH/lib/link-shared
-  try make SHLIB_EXT=.so install_sw &> install.log
+  try $MAKESMP SHLIB_EXT=.so install &> install.log
   rm $STAGE_PATH/lib/link-shared
 
   pop_arm
