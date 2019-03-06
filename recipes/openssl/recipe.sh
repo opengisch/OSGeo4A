@@ -4,7 +4,9 @@
 # To see how to build OpenSSL 1.1.x, check  https://github.com/opengisch/OSGeo4A/pull/25
 
 # version of your package
-VERSION_openssl=1.1.1a
+# Best to stick with 1.0.x until QT's binaries are compiled against 1.1.x
+# https://github.com/opengisch/OSGeo4A/issues/44
+VERSION_openssl=1.0.2p
 
 # dependencies of this recipe
 DEPS_openssl=()
@@ -27,40 +29,55 @@ function prebuild_openssl() {
   if [ -f .patched ]; then
     return
   fi
-  try patch -p1 < $RECIPE_openssl/patches/armeabi.patch
+
+  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config"
+  try $SED 's/armv\[7-9\]\*-\*-android/armeabi-v7a\*-\*-android|armv\[7-9\]\*-\*-android/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config
+
+  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Configure"
+  LC_ALL=C try $SED 's/SHLIB_EXT=$shared_extension/SHLIB_EXT=.so/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Configure
 
   touch .patched
 }
 
 function shouldbuild_openssl() {
   # If lib is newer than the sourcecode skip build
-  if [ $STAGE_PATH/lib/libssl.so -nt $BUILD_PATH/openssl/openssl-${VERSION_openssl}/.patched ]; then
+  if [ $STAGE_PATH/lib/libproj.so -nt $BUILD_openssl/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_openssl() {
-  try mkdir -p $BUILD_PATH/openssl/build-$ARCH
+  # unfortunately config and Configure uses relative paths to this
+  # se we need to do in-source build
+  try cp -r $BUILD_openssl $BUILD_PATH/openssl/build-$ARCH
   try cd $BUILD_PATH/openssl/build-$ARCH
 
   push_arm
 
-  MACHINE=$QT_ARCH_PREFIX \
-  SYSTEM=android \
-  ARCH=$SHORTARCH \
-  try $BUILD_openssl/config \
-    shared \
-    no-asm \
-    no-makedepend \
-    --prefix=$STAGE_PATH \
-    -D__ANDROID_API__=$ANDROIDAPI
+  export SYSTEM=android
+  ./config shared no-hw --openssldir=/usr/local/ssl/$ANDROIDAPI/ --prefix=/
 
-  try $MAKESMP SHLIB_EXT=".so" CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" MAKE="make -e" all
-  mkdir -p $STAGE_PATH/lib
-  echo "place-holder make target for avoiding symlinks" >> $STAGE_PATH/lib/link-shared
-  try $MAKESMP SHLIB_EXT=.so install &> install.log
-  rm $STAGE_PATH/lib/link-shared
+  # remove install apps
+  try $SED '104,121d' apps/Makefile
+
+  # remove docs
+  try $SED '646,690d' Makefile
+  try $SED '621,643d' Makefile
+  # remove "link-shared" target, since we do not want links
+  try $SED '346,352d' Makefile
+  # remove so.x.y versions
+  try $SED 's/LIBVERSION=$(SHLIB_MAJOR).$(SHLIB_MINOR)//g' Makefile
+  try $SED 's/LIBCOMPATVERSIONS=";$(SHLIB_VERSION_HISTORY)"//g' Makefile
+
+  # remove -mandroid not recognized by clang
+  try $SED 's/-mandroid//g' Makefile
+
+  # ${MAKESMP} depend
+  ${MAKESMP} CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" build_libs
+
+  # install
+  try ${MAKE} INSTALL_PREFIX=$STAGE_PATH install_sw
 
   pop_arm
 }
