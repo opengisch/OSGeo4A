@@ -8,7 +8,7 @@ DEPS_qgis=(gdal qca libspatialite libspatialindex expat gsl postgresql libzip qt
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/fe39b26684dbc7438d7a155421dc0f1af045eae8.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/b5459794f8b877a6d1064fd504b7a3ccb3aaba9a.tar.gz
 
 # md5 of the package
 MD5_qgis=6f17047e9123f0365288339babe64e92
