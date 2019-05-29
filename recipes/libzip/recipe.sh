@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_libzip=1.2.0
+VERSION_libzip=1-5-2
 
 # dependencies of this recipe
-DEPS_libzip=()
+DEPS_libzip=(zlib)
 
 # url of the package
-URL_libzip=https://github.com/dec1/libzip-android/archive/master.zip
+URL_libzip=https://github.com/nih-at/libzip/archive/rel-${VERSION_libzip}.zip
 
 # md5 of the package
-MD5_libzip=2e3e7eeced687cb955263c370081d4ef
+MD5_libzip=e5d917a79134eba8f982f7a32435adc4
 
 # default build path
 BUILD_libzip=$BUILD_PATH/libzip/$(get_directory $URL_libzip)
@@ -31,7 +31,7 @@ function prebuild_libzip() {
 
 function shouldbuild_libzip() {
   # If lib is newer than the sourcecode skip build
-  if [ $BUILD_PATH/libzip/master/libs/$ARCH/libzip.so -nt $BUILD_libzip/.patched ]; then
+  if [ $BUILD_PATH/libzip/build-$ARCH/lib/libzip.so -nt $BUILD_libzip/.patched ]; then
     DO_BUILD=0
   fi
 }
@@ -41,16 +41,16 @@ function build_libzip() {
   try mkdir -p $BUILD_PATH/libzip/build-$ARCH
   try cd $BUILD_PATH/libzip/build-$ARCH
   push_arm
-  ndk-build APP_STL=c++_shared \
-    APP_PLATFORM=android-$ANDROIDAPI \
-    APP_ABI="${ARCH}" \
-    NDK_TOOLCHAIN_VERSION=5 \
-    NDK_PROJECT_PATH=$BUILD_libzip \
-    $@
+
+  # configure
+  try $CMAKECMD \
+  -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+  $BUILD_libzip
+
+  # try $MAKESMP
+  try $MAKESMP install
+
   pop_arm
-  cp $BUILD_PATH/libzip/master/libs/${ARCH}/*.so ${STAGE_PATH}/lib
-  cp $BUILD_PATH/libzip/master/jni/*.h ${STAGE_PATH}/include
-  rm -f ${STAGE_PATH}/include/config.h
 }
 
 # function called after all the compile have been done
