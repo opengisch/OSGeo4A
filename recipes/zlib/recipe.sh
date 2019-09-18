@@ -22,8 +22,8 @@ RECIPE_zlib=$RECIPES_PATH/zlib
 # (you can apply patch etc here.)
 function prebuild_zlib() {
   cd $BUILD_zlib
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_zlib
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_zlib
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_zlib
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_zlib
 
   # check marker
   if [ -f .patched ]; then

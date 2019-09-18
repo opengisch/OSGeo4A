@@ -4,7 +4,7 @@
 VERSION_qtkeychain=0.8.0
 
 # dependencies of this recipe
-DEPS_qtkeychain=()
+DEPS_qtkeychain=(zlib)
 
 # url of the package
 #URL_qtkeychain=https://github.com/frankosterfeld/qtkeychain/archive/v${VERSION_qtkeychain}.tar.gz
@@ -28,8 +28,6 @@ function prebuild_qtkeychain() {
     return
   fi
 
-  try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/qtkeychain_qio.patch
-  try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/qtkeychain_console.patch
   try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/cxx11.patch
   try patch --verbose --forward -p1 < $RECIPE_qtkeychain/patches/java.patch
 
@@ -48,7 +46,7 @@ function build_qtkeychain() {
  try mkdir -p $BUILD_qtkeychain/build-$ARCH
  try cd $BUILD_qtkeychain/build-$ARCH
 
-  push_arm
+ push_arm
 
  # configure
  try $CMAKECMD \
@@ -61,8 +59,7 @@ function build_qtkeychain() {
   -DWITH_pkcs11_PLUGIN=OFF \
   $BUILD_qtkeychain
 
-  # try $MAKESMP
-  try $MAKESMP install
+  try $MAKESMP VERBOSE=1 install
 
   pop_arm
 }
@@ -71,35 +68,3 @@ function build_qtkeychain() {
 function postbuild_qtkeychain() {
 	true
 }
-
-
-# -DBUILD_PLUGINS=auto
-# -DBUILD_SHARED_LIBS=ON
-# -DBUILD_TESTS=ON
-# -DBUILD_TOOLS=ON
-# -DCMAKE_BUILD_TYPE=Release
-# -DCMAKE_INSTALL_PREFIX=/usr/local
-# -DDEVELOPER_MODE=OFF
-# -DPKG_CONFIG_EXECUTABLE=/usr/bin/pkg-config \
-# -DPKGCONFIG_INSTALL_PREFIX=/usr/lib/x86_64-linux-gnu/pkgconfig
-# -DQCA_BINARY_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/bin
-# -DQCA_DOC_INSTALL_DIR=/usr/share/qt5/doc/html/qtkeychain
-# -DQCA_FEATURE_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features
-# -DQCA_INCLUDE_INSTALL_DIR=/usr/include/x86_64-linux-gnu/qt5
-# -DQCA_LIBRARY_INSTALL_DIR=/usr/lib/x86_64-linux-gnu
-# -DQCA_MAN_INSTALL_DIR=/usr/share/qt5/man
-# -DQCA_PLUGINS_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/plugins
-# -DQCA_PREFIX_INSTALL_DIR=/usr
-# -DQCA_PRIVATE_INCLUDE_INSTALL_DI=/usr/include/x86_64-linux-gnu/qt5
-# -DQCA_SUFFIX
-# -DQT4_BUILD=OFF
-# -DUSE_RELATIVE_PATHS=OFF
-# -DWITH_botan_PLUGIN
-# -DWITH_cyrus-sasl_PLUGIN
-# -DWITH_gcrypt_PLUGIN
-# -DWITH_gnupg_PLUGIN
-# -DWITH_logger_PLUGIN
-# -DWITH_nss_PLUGIN
-# -DWITH_ossl_PLUGIN
-# -DWITH_pkcs11_PLUGIN
-# -DWITH_softstore_PLUGIN

@@ -28,8 +28,8 @@ function prebuild_geos() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_geos
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_geos
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_geos
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_geos
   try patch -p1 < $RECIPE_geos/patches/geos.patch
 
   touch .patched

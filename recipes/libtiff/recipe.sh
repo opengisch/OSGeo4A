@@ -28,9 +28,8 @@ function prebuild_libtiff() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_libtiff/config
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_libtiff/config
-  # try patch -p1 < $RECIPE_libtiff/patches/libtiff.patch
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_libtiff/config
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_libtiff/config
 
   touch .patched
 }

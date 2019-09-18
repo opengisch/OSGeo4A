@@ -1,21 +1,26 @@
 #!/bin/bash
 
-# OpenSSL 1.1.x has new API, so ATM with the new API it is not possible to build QCA
-# To see how to build OpenSSL 1.1.x, check  https://github.com/opengisch/OSGeo4A/pull/25
+# OpenSSL 1.1.x has new API compared to 1.0.2
+# We need to stick with the version of SSL that is
+# compatible with Qt's binaries, otherwise
+# you got (runtime)
+# "qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initialization failed"
+#
+# https://blog.qt.io/blog/2019/06/17/qt-5-12-4-released-support-openssl-1-1-1/
+# see https://wiki.qt.io/Qt_5.12_Tools_and_Versions
+# Qt 5.12.3 OpenSSL 1.0.2b
+# Qt 5.12.4 OpenSSL 1.1.1
+# Qt 5.13.0 OpenSSL 1.1.1
+
 
 # version of your package
-# Best to stick with 1.0.x until QT's binaries are compiled against 1.1.x
-# https://github.com/opengisch/OSGeo4A/issues/44
-VERSION_openssl=1.0.2p
+VERSION_openssl=1.1.1
 
 # dependencies of this recipe
 DEPS_openssl=()
 
 # url of the package
 URL_openssl=https://www.openssl.org/source/openssl-${VERSION_openssl}.tar.gz
-
-# md5 of the package
-MD5_openssl=ac5eb30bf5798aa14b1ae6d0e7da58df
 
 # default recipe path
 RECIPE_openssl=$RECIPES_PATH/openssl
@@ -24,62 +29,62 @@ RECIPE_openssl=$RECIPES_PATH/openssl
 BUILD_openssl=$BUILD_PATH/openssl/$(get_directory $URL_openssl)
 
 # function called for preparing source code if needed
-# (you can apply patch etc here.)
 function prebuild_openssl() {
-  cd $BUILD_PATH/openssl/openssl-${VERSION_openssl}
-  # check marker
-  if [ -f .patched ]; then
-    return
-  fi
+  # echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config"
+  try ${SED} 's/android-armeabi/android-arm/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config
 
-  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config"
-  try $SED 's/armv\[7-9\]\*-\*-android/armeabi-v7a\*-\*-android|armv\[7-9\]\*-\*-android/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/config
-
-  echo "patching $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Configure"
-  LC_ALL=C try $SED 's/SHLIB_EXT=$shared_extension/SHLIB_EXT=.so/g' $BUILD_PATH/openssl/openssl-${VERSION_openssl}/Configure
+  # ad random seed & patch of rand_unix.c: https://mta.openssl.org/pipermail/openssl-users/2018-September/008860.html
+  PWD=`pwd`
+  cd $BUILD_PATH/openssl/openssl-${VERSION_openssl}/crypto/rand/
+  try patch -p1 rand_unix.c $RECIPE_openssl/patches/rand_unix.patch
+  cd $PWD
 
   touch .patched
 }
 
 function shouldbuild_openssl() {
   # If lib is newer than the sourcecode skip build
-  if [ $STAGE_PATH/lib/libopenssl.so -nt $BUILD_openssl/.patched ]; then
+  if [ $BUILD_PATH/openssl/build-$ARCH/libssl.so -nt $BUILD_openssl/.patched ]; then
     DO_BUILD=0
   fi
 }
 
 # function called to build the source code
 function build_openssl() {
-  # unfortunately config and Configure uses relative paths to this
-  # se we need to do in-source build
+  # try mkdir -p $BUILD_PATH/openssl/build-$ARCH
   try cp -r $BUILD_openssl $BUILD_PATH/openssl/build-$ARCH
   try cd $BUILD_PATH/openssl/build-$ARCH
 
   push_arm
 
-  export SYSTEM=android
-  ./config shared no-hw --openssldir=/usr/local/ssl/$ANDROIDAPI/ --prefix=/
+  export CROSS_COMPILE=$ANDROID_EABI-
+  # tools are prefixed in config
+  export CC=$NDK_TOOLCHAIN_BASENAMEgcc
+  export AR=$NDK_TOOLCHAIN_BASENAMEar
+  export CXX=$NDK_TOOLCHAIN_BASENAMEg++
+  export LINK=${CXX}
+  export LD=$NDK_TOOLCHAIN_BASENAMEld
+  export RANLIB=$NDK_TOOLCHAIN_BASENAMEranlib
+  export STRIP=$NDK_TOOLCHAIN_BASENAMEstrip
 
-  # remove install apps
-  try $SED '104,121d' apps/Makefile
+  # Setup compiler toolchain based on CPU architecture
+  if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
+      export SSL_ARCH=android-arm
+  elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
+      export SSL_ARCH=android-arm64
+  else
+      echo "Error: Please report issue to enable support for arch (${ARCH})."
+      exit 1
+  fi
 
-  # remove docs
-  try $SED '646,690d' Makefile
-  try $SED '621,643d' Makefile
-  # remove "link-shared" target, since we do not want links
-  try $SED '346,352d' Makefile
-  # remove so.x.y versions
-  try $SED 's/LIBVERSION=$(SHLIB_MAJOR).$(SHLIB_MINOR)//g' Makefile
-  try $SED 's/LIBCOMPATVERSIONS=";$(SHLIB_VERSION_HISTORY)"//g' Makefile
+  try ./Configure ${SSL_ARCH} -D__ANDROID_API__=$ANDROIDAPI no-engine --prefix=/
 
-  # remove -mandroid not recognized by clang
-  try $SED 's/-mandroid//g' Makefile
-
-  # ${MAKESMP} depend
-  ${MAKESMP} CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" build_libs
+  try $SED 's/SHLIB_EXT=.so.$(SHLIB_VERSION_NUMBER)/SHLIB_EXT=.so/g' Makefile
+  try ${MAKESMP} CALC_VERSIONS="SHLIB_COMPAT=; SHLIB_SOVER=" build_libs
 
   # install
-  try ${MAKE} INSTALL_PREFIX=$STAGE_PATH install_sw
+  try $SED 's/DESTDIR=/DESTDIR=$STAGE_PATH/g' Makefile
+  try ${MAKE} DESTDIR=$STAGE_PATH install_dev install_engines
 
   pop_arm
 }

@@ -4,14 +4,14 @@
 VERSION_qgis=3.7
 
 # dependencies of this recipe
-DEPS_qgis=(gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2)
+DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/b5459794f8b877a6d1064fd504b7a3ccb3aaba9a.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/1570e49b0b72552f3daaa4ead84ba92eef3d4b52.tar.gz
 
 # md5 of the package
-MD5_qgis=8d13878390608c4588aa9bd3bd405d01
+MD5_qgis=2ccce6c0461c8c845bc04ea02e4004ab
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -82,6 +82,7 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
+    -DNATIVE_CRSSYNC_BIN=/usr/bin/true \
     $BUILD_qgis
 
   try $MAKESMP install

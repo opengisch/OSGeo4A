@@ -1,10 +1,4 @@
 #!/bin/bash
-#------------------------------------------------------------------------------
-#
-# Python for android
-# https://github.com/tito/python-for-android
-#
-#------------------------------------------------------------------------------
 
 # By default use all available cores, override in config.conf if desired
 if [ -f /proc/cpuinfo ]; then
@@ -28,71 +22,28 @@ MODULES=
 # Resolve Python path
 PYTHON="$(which python3)"
 if [ "X$PYTHON" == "X" ]; then
-  PYTHON="$(which python2)"
-fi
-if [ "X$PYTHON" == "X" ]; then
-  PYTHON="$(which python)"
-fi
-
-# Resolve pip path
-PIP_NAME="$(which pip3)"
-if [ "X$PIP_NAME" == "X" ]; then
-  PIP_NAME="$(which pip3)"
-fi
-if [ "X$PIP_NAME" == "X" ]; then
-  PIP_NAME="$(which pip2)"
-fi
-if [ "X$PIP_NAME" == "X" ]; then
-  PIP_NAME="$(which pip)"
-fi
-
-# Resolve virtualenv path
-VIRTUALENV_NAME="$(which virtualenv-2.7)"
-if [ "X$VIRTUALENV_NAME" == "X" ]; then
-  VIRTUALENV_NAME="$(which virtualenv2.7)"
-fi
-if [ "X$VIRTUALENV_NAME" == "X" ]; then
-  VIRTUALENV_NAME="$(which virtualenv2)"
-fi
-if [ "X$VIRTUALENV_NAME" == "X" ]; then
-  VIRTUALENV_NAME="$(which virtualenv)"
-fi
-
-# Resolve Cython path
-CYTHON="$(which cython2)"
-if [ "X$CYTHON" == "X" ]; then
-        CYTHON="$(which cython)"
+    error "Unable to find python3"
+    exit 1
 fi
 
 # Paths
 ROOT_PATH="$(dirname $($PYTHON -c 'from __future__ import print_function; import os,sys;print(os.path.realpath(sys.argv[1]))' $0))"
-STAGE_PATH="${ROOT_PATH}/stage/$ARCH"
+ROOT_OUT_PATH="${ROOT_PATH}/../build-android"
+STAGE_PATH="${ROOT_OUT_PATH}/stage/$ARCH"
 RECIPES_PATH="$ROOT_PATH/recipes"
-BUILD_PATH="$ROOT_PATH/build"
-LIBS_PATH="$ROOT_PATH/build/libs"
-JAVACLASS_PATH="$ROOT_PATH/build/java"
-PACKAGES_PATH="${PACKAGES_PATH:-$ROOT_PATH/.packages}"
-SRC_PATH="$ROOT_PATH/src"
-JNI_PATH="$SRC_PATH/jni"
-DIST_PATH="$ROOT_PATH/dist/default"
-SITEPACKAGES_PATH="$BUILD_PATH/python-install/lib/python2.7/site-packages/"
-HOSTPYTHON="$BUILD_PATH/python-install/bin/python.host"
-CYTHON+=" -t"
+BUILD_PATH="${ROOT_OUT_PATH}/build"
+LIBS_PATH="${ROOT_OUT_PATH}/build/libs"
+PACKAGES_PATH="${PACKAGES_PATH:-$ROOT_OUT_PATH/.packages}"
 
 # Tools
 export LIBLINK_PATH="$BUILD_PATH/objects"
 export LIBLINK="$ROOT_PATH/src/tools/liblink"
-export BIGLINK="$ROOT_PATH/src/tools/biglink"
-export PIP=$PIP_NAME
-export VIRTUALENV=$VIRTUALENV_NAME
-
-export COPYLIBS=0
 
 MD5SUM=$(which md5sum)
 if [ "X$MD5SUM" == "X" ]; then
   MD5SUM=$(which md5)
   if [ "X$MD5SUM" == "X" ]; then
-    echo "Error: you need at least md5sum or md5 installed."
+    error "you need at least md5sum or md5 installed."
     exit 1
   else
     MD5SUM="$MD5SUM -r"
@@ -103,7 +54,7 @@ WGET=$(which wget)
 if [ "X$WGET" == "X" ]; then
   WGET=$(which curl)
   if [ "X$WGET" == "X" ]; then
-    echo "Error: you need at least wget or curl installed."
+    error "you need at least wget or curl installed."
     exit 1
   else
     WGET="$WGET -L -o"
@@ -188,11 +139,7 @@ function push_arm() {
   export OLD_MAKE=$MAKE
   export OLD_LD=$LD
   export OLD_CMAKECMD=$CMAKECMD
-
-  # to override the default optimization, set OFLAG
-  #export OFLAG="-Os"
-  #export OFLAG="-O2"
-
+  export OLD_ANDROID_CMAKE_LINKER_FLAGS=$ANDROID_CMAKE_LINKER_FLAGS
 
   # this must be something depending of the API level of Android
   PYPLATFORM=$($PYTHON -c 'from __future__ import print_function; import sys; print(sys.platform)')
@@ -225,38 +172,34 @@ function push_arm() {
       export TOOLCHAIN_PREFIX=aarch64-linux-android
       export TOOLCHAIN_BASEDIR=aarch64-linux-android
       export QT_ARCH_PREFIX=arm64 # watch out when changing this, openssl depends on it
-      export QT_ANDROID=${QT_ANDROID_BASE}/android_aarch64
+      export QT_ANDROID=${QT_ANDROID_BASE}/android_arm64_v8a
       export ANDROID_SYSTEM=android64
   else
       echo "Error: Please report issue to enable support for arch (${ARCH})."
       exit 1
   fi
 
-  # Choose compiler version
-#  if [ "X${ANDROIDNDKVER:0:2}" == "Xr7" ] || [ "X${ANDROIDNDKVER:0:2}" == "Xr8" ]; then
-#      export TOOLCHAIN_VERSION=4.4.3
-#  elif  [ "X${ANDROIDNDKVER:0:2}" == "Xr9" ]; then
-#      export TOOLCHAIN_VERSION=4.8
-#  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr10" ] || [ "X${ANDROIDNDKVER:0:3}" == "Xr12" ]; then
-#      export TOOLCHAIN_VERSION=4.9
-#  elif [ "X${ANDROIDNDKVER:0:3}" == "Xr19" ]; then
-#      export TOOLCHAIN_VERSION=4.9
-#  else
-#      echo "Error: Please report issue to enable support for newer ndk (${ANDROIDNDKVER:0:3})."
-#      exit 1
-#  fi
-
-  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX -D__ANDROID_API__=$ANDROIDAPI"
-
-#  if [ "X$ARCH" == "Xarmeabi-v7a" ]; then
-#    CFLAGS+=" -march=armv7-a -mfloat-abi=softfp -mfpu=vfp -mthumb"
-#  fi
+  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include"
+  export CFLAGS="$CFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include"
+  export CFLAGS="$CFLAGS -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX "
+  export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
 
   export CXXFLAGS="$CFLAGS"
   export CPPFLAGS="$CFLAGS"
 
-  export LDFLAGS="-lm -L$STAGE_PATH/lib -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/arm-linux-androideabi/$ANDROIDAPI"
+  export LDFLAGS="-lm -L$STAGE_PATH/lib"
+  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
+  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
+  export ANDROID_CMAKE_LINKER_FLAGS=""
+  if [ "X${ARCH}" == "Xarm64-v8a" ]; then
+    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$QT_ARCH_PREFIX/usr/lib"
+    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
+    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$STAGE_PATH/lib"
+    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$QT_ANDROID/lib"
+    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-lz"
+    export LDFLAGS="$LDFLAGS -Wl,-rpath=$STAGE_PATH/lib"
+  fi
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
   # search compiler in the path, to fail now instead of later.
@@ -279,7 +222,12 @@ function push_arm() {
   export MAKESMP="make -j$CORES"
   export MAKE="make"
   export READELF="$TOOLCHAIN_SHORT_PREFIX-readelf"
-  export CMAKECMD="cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake -DCMAKE_FIND_ROOT_PATH:PATH=$ANDROID_NDK;$QT_ANDROID;$BUILD_PATH;$STAGE_PATH -DANDROID_ABI=$ARCH -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI -DANDROID=ON"
+  export CMAKECMD="cmake"
+  export CMAKECMD="$CMAKECMD -DANDROID_LINKER_FLAGS=$ANDROID_CMAKE_LINKER_FLAGS"
+  export CMAKECMD="$CMAKECMD -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$ANDROIDNDK/build/cmake/android.toolchain.cmake"
+  export CMAKECMD="$CMAKECMD -DCMAKE_FIND_ROOT_PATH:PATH=$ANDROID_NDK;$QT_ANDROID;$BUILD_PATH;$STAGE_PATH"
+  export CMAKECMD="$CMAKECMD -DANDROID_ABI=$ARCH -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=$ANDROIDAPI -DANDROID=ON"
+
 
   # export environment for Qt
   export ANDROID_NDK_ROOT=$ANDROIDNDK
@@ -311,6 +259,7 @@ function pop_arm() {
   export STRIP=$OLD_STRIP
   export MAKE=$OLD_MAKE
   export CMAKECMD=$OLD_CMAKECMD
+  export ANDROID_CMAKE_LINKER_FLAGS=$OLD_ANDROID_CMAKE_LINKER_FLAGS
 }
 
 function usage() {
@@ -318,16 +267,11 @@ function usage() {
   echo 
   echo "Usage:   ./distribute.sh [options]"
   echo
-  echo "  -d directory           Name of the distribution directory"
   echo "  -h                     Show this help"
   echo "  -l                     Show a list of available modules"
   echo "  -m 'mod1 mod2'         Modules to include"
   echo "  -f                     Restart from scratch (remove the current build)"
   echo "  -x                     display expanded values (execute 'set -x')"
-  echo
-  echo "Advanced:"
-  echo "  -C                     Copy libraries instead of using biglink"
-  echo "                         (may not work before Android 4.3)"
   echo
   echo "For developers:"
   echo "  -u 'mod1 mod2'         Modules to update (if already compiled)"
@@ -417,8 +361,6 @@ function run_prepare() {
   fi
 
   export NDKPLATFORM="$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH"
-  #export ARCH="armeabi"
-  #export ARCH="armeabi-v7a" # not tested yet.
 
   info "Check mandatory tools"
   # ensure that some tools are existing
@@ -430,26 +372,12 @@ function run_prepare() {
     fi
   done
 
-  if [ "$COPYLIBS" == "1" ]; then
-    info "Library files will be copied to the distribution (no biglink)"
-    error "NOTICE: This option is still beta!"
-    error "\tIf you encounter an error 'Failed to locate needed libraries!' and"
-    error "\tthe libraries listed are not supposed to be provided by your app or"
-    error "\tits dependencies, please submit a bug report at"
-    error "\thttps://github.com/kivy/python-for-android/issues"
-  fi
-
   if [ $DO_CLEAN_BUILD -eq 1 ]; then
     info "Cleaning build"
     try rm -rf $STAGE_PATH
     try rm -rf $BUILD_PATH
     try rm -rf $SRC_PATH/obj
     try rm -rf $SRC_PATH/libs
-#   pushd $JNI_PATH
-#   push_arm
-#   try ndk-build clean
-#   pop_arm
-#   popd
   fi
 
   info "Distribution will be located at $STAGE_PATH"
@@ -463,16 +391,6 @@ function run_prepare() {
   test -d $PACKAGES_PATH || mkdir -p $PACKAGES_PATH
   test -d $BUILD_PATH || mkdir -p $BUILD_PATH
   test -d $LIBS_PATH || mkdir -p $LIBS_PATH
-  test -d $JAVACLASS_PATH || mkdir -p $JAVACLASS_PATH
-  test -d $LIBLINK_PATH || mkdir -p $LIBLINK_PATH
-
-  # create initial files
-  echo "target=android-$ANDROIDAPI" > $SRC_PATH/apk/project.properties
-  echo "sdk.dir=$ANDROIDSDK" > $SRC_PATH/apk/local.properties
-
-  # copy the initial blacklist in build
-  # try cp -a $SRC_PATH/blacklist.txt $BUILD_PATH
-  # try cp -a $SRC_PATH/whitelist.txt $BUILD_PATH
 
   # check arm env
   push_arm
@@ -595,10 +513,9 @@ function run_source_modules() {
 function run_get_packages() {
   info "Run get packages"
 
-  if [ ! -d "$BUILD_PATH/tmp" ]; then
-    try mkdir $BUILD_PATH/tmp
-    $WGET $ROOT_PATH/.packages/config.sub "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"
-    $WGET $ROOT_PATH/.packages/config.guess "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess"
+  if [ ! -f "$ROOT_OUT_PATH/.packages/config.sub" ]; then
+    $WGET $ROOT_OUT_PATH/.packages/config.sub "http://git.savannah.gnu.org/cgit/config.git/plain/config.sub"
+    $WGET $ROOT_OUT_PATH/.packages/config.guess "http://git.savannah.gnu.org/cgit/config.git/plain/config.guess"
   fi
 
   for module in $MODULES; do
@@ -805,165 +722,19 @@ function run_postbuild() {
   done
 }
 
-function run_pymodules_install() {
-  info "Run pymodules install"
-  if [ "X$PYMODULES" == "X" ]; then
-    debug "No pymodules to install"
-    return
-  fi
-
-  cd "$BUILD_PATH"
-
-  debug "We want to install: $PYMODULES"
-
-  debug "Check if $VIRTUALENV and $PIP are present"
-  for tool in $VIRTUALENV $PIP; do
-    which $tool &>/dev/null
-    if [ $? -ne 0 ]; then
-      error "Tool $tool is missing"
-      exit -1
-    fi
-  done
-
-  debug "Check if virtualenv is existing"
-  if [ ! -d venv ]; then
-    debug "Installing virtualenv"
-    try $VIRTUALENV --python=python2.7 venv
-  fi
-
-  debug "Create a requirement file for pure-python modules"
-  try echo "" > requirements.txt
-  for mod in $PYMODULES; do
-    echo $mod >> requirements.txt
-  done
-
-  debug "Install pure-python modules via pip in venv"
-  try bash -c "source venv/bin/activate && env CC=/bin/false CXX=/bin/false pip install --target '$SITEPACKAGES_PATH' --download-cache '$PACKAGES_PATH' -r requirements.txt"
-
-}
-
-function run_distribute() {
-  info "Run distribute"
-
-  if [ "X$LAYOUT" == "X" ]; then
-    debug "No layout specified."
-    return
-  fi
-
-  if [ ! -d "$ROOT_PATH/layouts/$LAYOUT" ]; then
-      error "Layout $LAYOUT not found. Specify with -a or create a soft link with the name default in the layouts folder."
-      exit -1
-  fi
-
-
-  debug "Create initial layout"
-  try mkdir -p $DIST_PATH
-  try cp $ROOT_PATH/src/apk/* $DIST_PATH -r
-  debug "Create customized layout"
-  try cp -r $ROOT_PATH/layouts/$LAYOUT/* $DIST_PATH
-  try mkdir -p $DIST_PATH/assets
-  pushd $STAGE_PATH/files
-  rm $DIST_PATH/assets/assets.zip
-  zip -r $DIST_PATH/assets/assets.zip share/resources/ share/svg/
-  popd
-  try cd $DIST_PATH
-
-# try cp -a $SRC_PATH/default.properties .
-# try cp -a $SRC_PATH/local.properties .
-# try cp -a $SRC_PATH/build.py .
-# try cp -a $SRC_PATH/buildlib .
-# try cp -a $SRC_PATH/src .
-# try cp -a $SRC_PATH/templates .
-# try cp -a $SRC_PATH/res .
-# try cp -a $BUILD_PATH/blacklist.txt .
-# try cp -a $BUILD_PATH/whitelist.txt .
-
-# debug "Copy python distribution"
-# $HOSTPYTHON -OO -m compileall $BUILD_PATH/python-install
-# try cp -a $BUILD_PATH/python-install .
-
-  debug "Copy libs for ${ARCH}"
-  try rm -rf libs
-  try mkdir -p libs/$ARCH
-  try cp -aL $STAGE_PATH/lib/*.so libs/$ARCH/
-
-# debug "Copy java files from various libs"
-# cp -a $BUILD_PATH/java/* src
-
-# debug "Fill private directory"
-# try cp -a python-install/lib private/
-# try mkdir -p private/include/python2.7
-
-# if [ "$COPYLIBS" == "1" ]; then
-#   if [ -s "libs/$ARCH/copylibs" ]; then
-#     try sh -c "cat libs/$ARCH/copylibs | xargs -d'\n' cp -t private/"
-#   fi
-# else
-#   try mv libs/$ARCH/libpymodules.so private/
-# fi
-# try cp python-install/include/python2.7/pyconfig.h private/include/python2.7/
-
-# debug "Reduce private directory from unwanted files"
-# try rm -f "$DIST_PATH"/private/lib/libpython2.7.so
-# try rm -rf "$DIST_PATH"/private/lib/pkgconfig
-# try cd "$DIST_PATH"/private/lib/python2.7
-# try find . | grep -E '*\.(py|pyc|so\.o|so\.a|so\.libs)$' | xargs rm
-
-  # we are sure that all of theses will be never used on android (well...)
-# try rm -rf ctypes
-# try rm -rf lib2to3
-# try rm -rf idlelib
-# try rm -rf config/libpython*.a
-# try rm -rf config/python.o
-# try rm -rf lib-dynload/_ctypes_test.so
-# try rm -rf lib-dynload/_testcapi.so
-
-  debug "Strip libraries"
-  push_arm
-  try find "${DIST_PATH}/libs/${ARCH}" -iname '*.so' -exec $STRIP {} \;
-  pop_arm
-}
-
-function run_build_apk() {
-  info "Build apk"
-  cd $DIST_PATH
-  try ant debug
-}
-
-function run_install_apk() {
-  info "Install apk"
-  cd $DIST_PATH
-  # TODO make the fielname generic
-  try $ANDROIDSDK/platform-tools/adb install -r bin/qgis-debug.apk
-}
-
-function run_biglink() {
-  push_arm
-  if [ "$COPYLIBS" == "0" ]; then
-    try $BIGLINK $LIBS_PATH/libpymodules.so $LIBLINK_PATH
-  else
-    try $BIGLINK $LIBS_PATH/copylibs $LIBLINK_PATH
-  fi
-  pop_arm
-}
 
 function run() {
   check_build_deps
   for ARCH in ${ARCHES[@]}; do
     cd ${ROOT_PATH}
-    STAGE_PATH="${ROOT_PATH}/stage/$ARCH"
+    STAGE_PATH="${ROOT_OUT_PATH}/stage/$ARCH"
     run_prepare
     run_source_modules
     run_get_packages
     run_prebuild
     run_build
-  # run_biglink
     run_postbuild
-  # run_pymodules_install
-  run_distribute
-  # run_build_apk
   done
-  #  run_install_apk
   info "All done !"
 }
 
@@ -973,39 +744,16 @@ function list_modules() {
   exit 0
 }
 
-# one method to deduplicate some symbol in libraries
-function arm_deduplicate() {
-  fn=$(basename $1)
-  echo "== Trying to remove duplicate symbol in $1"
-  push_arm
-  try mkdir ddp
-  try cd ddp
-  try $AR x $1
-  try $AR rc $fn *.o
-  try $RANLIB $fn
-  try mv -f $fn $1
-  try cd ..
-  try rm -rf ddp
-  pop_arm
-}
-
-
 # Do the build
 while getopts ":hCvlfxim:a:u:d:s" opt; do
   case $opt in
     h)
       usage
       ;;
-    C)
-      COPYLIBS=1
-      LIBLINK=${LIBLINK}-jb
-      BIGLINK=${BIGLINK}-jb
-      ;;
     l)
       list_modules
       ;;
     s)
-#      export ARCH=armeabi-v7a
       run_prepare
       run_source_modules
       push_arm
@@ -1024,9 +772,6 @@ while getopts ":hCvlfxim:a:u:d:s" opt; do
       ;;
     u)
       MODULES_UPDATE="$OPTARG"
-      ;;
-    d)
-      DIST_PATH="$ROOT_PATH/dist/$OPTARG"
       ;;
     f)
       DO_CLEAN_BUILD=1

@@ -47,10 +47,6 @@ function build_proj() {
 
   push_arm
 
-#  try $BUILD_proj/configure \
-#    --prefix=$STAGE_PATH \
-#    --host=$TOOLCHAIN_PREFIX \
-#    --build=x86_64
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DPROJ_TESTS=OFF \

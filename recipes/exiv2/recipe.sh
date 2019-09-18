@@ -46,12 +46,13 @@ function build_exiv2() {
   try cd $BUILD_PATH/exiv2/build-$ARCH
   push_arm
   try $CMAKECMD \
+    -DEXIV2_BUILD_EXIV2_COMMAND=OFF \
+    -DEXIV2_BUILD_SAMPLES=OFF \
+    -DEXIV2_BUILD_UNIT_TESTS=OFF \
+    -DEXIV2_BUILD_DOC=OFF \
     -DEXIV2_ENABLE_NLS=OFF \
-    -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
-    -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     $BUILD_exiv2
-  try $MAKESMP
   try $MAKESMP install
   pop_arm
 }

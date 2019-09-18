@@ -28,10 +28,8 @@ function prebuild_gdal() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_gdal
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_gdal
-#  try patch -p1 < $RECIPE_gdal/patches/gdal.patch
-  # try patch -p1 < $RECIPE_gdal/patches/memdebug.patch
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_gdal
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_gdal
 
   touch .patched
 }

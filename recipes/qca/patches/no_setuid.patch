@@ -1,0 +1,11 @@
+--- a/src/qca_core.cpp	2019-08-20 12:52:36.000000000 +0200
++++ b/src/qca_core.cpp	2019-08-20 12:53:12.000000000 +0200
+@@ -225,7 +225,7 @@
+ 
+ 	if(drop_root)
+ 	{
+-#ifdef Q_OS_UNIX
++#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID)
+ 		setuid(getuid());
+ #endif
+ 	}
