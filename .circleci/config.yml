@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: opengisch/qt-ndk:5.13.0
+
+    working_directory: ~
+
+    steps:
+      - checkout
+
+      - run: docker build .
