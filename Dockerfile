@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 USER root
 
 # For ndk-build (libzip) to work properly we need `file` installed
+RUN apt-get update
 RUN apt-get install -y file python3-six zip
 
 COPY .docker /usr/src/.docker
