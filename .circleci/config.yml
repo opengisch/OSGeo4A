@@ -10,4 +10,5 @@ jobs:
     steps:
       - checkout
 
-      - run: docker build .
+      # Build the image
+      - run: docker build -t opengisch/qfield-sdk:2019someday .
