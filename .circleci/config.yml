@@ -1,14 +1,21 @@
 version: 2
 jobs:
   build:
+    environment:
+      IMAGE_NAME: opengisch/qfield-sdk
     docker:
-      # specify the version you desire here
-      - image: opengisch/qt-ndk:5.13.0
-
-    working_directory: ~
-
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
-
-      # Build the image
-      - run: docker build -t opengisch/qfield-sdk:2019someday .
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: docker build -t $IMAGE_NAME:latest .
+workflows:
+  version: 2
+  build-master:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: circleci
