@@ -28,7 +28,9 @@ fi
 
 # Paths
 ROOT_PATH="$(dirname $($PYTHON -c 'from __future__ import print_function; import os,sys;print(os.path.realpath(sys.argv[1]))' $0))"
-ROOT_OUT_PATH="${ROOT_PATH}/../build-android"
+if [ "X$ROOT_OUT_PATH" == "X" ]; then
+    ROOT_OUT_PATH="${ROOT_PATH}/../build-android"
+fi
 STAGE_PATH="${ROOT_OUT_PATH}/stage/$ARCH"
 RECIPES_PATH="$ROOT_PATH/recipes"
 BUILD_PATH="${ROOT_OUT_PATH}/build"

@@ -1,4 +1,4 @@
-FROM opengisch/qt-ndk:5.12.1-2
+FROM opengisch/qt-ndk:5.13.0
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -14,4 +14,5 @@ COPY recipes /usr/src/recipes
 COPY layouts /usr/src/layouts
 COPY distribute.sh /usr/src/distribute.sh
 RUN mv /usr/src/.docker/config.conf /usr/src/config.conf
-RUN /usr/src/distribute.sh -m qgis && mv /usr/src/stage /home/osgeo4a && rm -rf /usr/src
+ENV ROOT_OUT_PATH=/home/osgeo4a
+RUN /usr/src/distribute.sh -m qgis && rm -rf /usr/src
