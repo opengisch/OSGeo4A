@@ -44,11 +44,10 @@
           - build:
               filters:
                 branches:
-                  only: master
+                  only: circleci
           - publish-latest:
               requires:
                 - build
               filters:
                 branches:
-                  only: master
-
+                  ignore: /.*/
