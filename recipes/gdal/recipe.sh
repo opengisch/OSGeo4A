@@ -30,6 +30,9 @@ function prebuild_gdal() {
 
   try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_gdal
   try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_gdal
+  # Remove bundled lib
+  try rm -rf $BUILD_gdal/frmts/zlib
+  try patch -p1 < $RECIPE_gdal/patches/gdal-zlib.patch
 
   touch .patched
 }
