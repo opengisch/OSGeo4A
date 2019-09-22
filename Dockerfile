@@ -15,5 +15,5 @@ COPY recipes /usr/src/recipes
 COPY layouts /usr/src/layouts
 COPY distribute.sh /usr/src/distribute.sh
 RUN mv /usr/src/.docker/config.conf /usr/src/config.conf
-ENV ROOT_OUT_PATH=/home/osgeo4a
-RUN /usr/src/distribute.sh -m qgis && rm -rf /usr/src
+ENV ROOT_OUT_PATH=/usr/src/build
+RUN /usr/src/distribute.sh -m qgis && cp -r /usr/src/build/stage /home/osgeo4a && rm -rf /usr/src
