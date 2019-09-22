@@ -22,6 +22,7 @@
               root: .
               paths:
                 - ./image.tar
+        parallelism: 3
       publish-latest:
         executor: docker-publisher
         steps:
@@ -46,9 +47,13 @@
               filters:
                 branches:
                   only: circleci
+                tags:
+                  only: /.*/
           - publish-latest:
               requires:
                 - build
               filters:
                 branches:
                   ignore: /.*/
+                tags:
+                  only: /.*/
