@@ -22,7 +22,6 @@
               root: .
               paths:
                 - ./image.tar
-        parallelism: 3
       publish-latest:
         executor: docker-publisher
         steps:
