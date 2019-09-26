@@ -4,7 +4,7 @@
 VERSION_gdal=2.4.0
 
 # dependencies of this recipe
-DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat)
+DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat zlib)
 
 # url of the package
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
@@ -28,10 +28,11 @@ function prebuild_gdal() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_gdal
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_gdal
-#  try patch -p1 < $RECIPE_gdal/patches/gdal.patch
-  # try patch -p1 < $RECIPE_gdal/patches/memdebug.patch
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_gdal
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_gdal
+  # Remove bundled lib
+  try rm -rf $BUILD_gdal/frmts/zlib
+  try patch -p1 < $RECIPE_gdal/patches/gdal-zlib.patch
 
   touch .patched
 }

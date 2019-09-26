@@ -28,8 +28,8 @@ function prebuild_libspatialindex() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_libspatialindex
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_libspatialindex
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_libspatialindex
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_libspatialindex
   touch .patched
 }
 

@@ -28,8 +28,8 @@ function prebuild_gsl() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_gsl
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_gsl
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_gsl
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_gsl
   try patch -p1 < $RECIPE_gsl/patches/gsl.patch
 
   touch .patched

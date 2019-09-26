@@ -28,8 +28,8 @@ function prebuild_expat() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_expat/conftools
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_expat/conftools
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_expat/conftools
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_expat/conftools
   try patch -p1 < $RECIPE_expat/patches/expat.patch
 
   touch .patched

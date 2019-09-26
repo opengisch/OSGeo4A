@@ -29,10 +29,10 @@ function prebuild_iconv() {
   fi
 
   try patch -p1 < $RECIPES_PATH/iconv/patches/libiconv.patch
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_iconv/build-aux
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_iconv/build-aux
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_iconv/libcharset/build-aux
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_iconv/libcharset/build-aux
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_iconv/build-aux
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_iconv/build-aux
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_iconv/libcharset/build-aux
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_iconv/libcharset/build-aux
 
   touch .patched
 }

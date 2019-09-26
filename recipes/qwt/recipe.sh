@@ -47,13 +47,15 @@ function build_qwt() {
   sed -i "s|^QWT_INSTALL_PREFIX =.*$|QWT_INSTALL_PREFIX = $STAGE_PATH|" qwtconfig.pri
   try mkdir -p $BUILD_PATH/qwt/build-$ARCH
   try cd $BUILD_PATH/qwt/build-$ARCH
-	push_arm
+
+  push_arm
   try qmake $BUILD_qwt
   # sed -i "s|\$(INSTALL_ROOT)/libs/.*/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|" src/Makefile
   try $MAKESMP
   sed -i "s|\$(INSTALL_ROOT)/libs/${ARCH}/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
-	pop_arm
+
+  pop_arm
 }
 
 # function called after all the compile have been done

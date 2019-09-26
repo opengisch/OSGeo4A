@@ -47,12 +47,15 @@ function shouldbuild_qwtpolar() {
 function build_qwtpolar() {
   try mkdir -p $BUILD_PATH/qwtpolar/build-$ARCH
   try cd $BUILD_PATH/qwtpolar/build-$ARCH
-	push_arm
+
+  push_arm
+
   try qmake $BUILD_qwtpolar
   try $MAKESMP
   sed -i "s|\$(INSTALL_ROOT)/libs/${ARCH}/|\$(INSTALL_ROOT)$STAGE_PATH/lib/|g" src/Makefile
   try make install
-	pop_arm
+
+  pop_arm
 }
 
 # function called after all the compile have been done

@@ -28,8 +28,8 @@ function prebuild_postgresql() {
     return
   fi
 
-  try cp $ROOT_PATH/.packages/config.sub $BUILD_postgresql/conftools
-  try cp $ROOT_PATH/.packages/config.guess $BUILD_postgresql/conftools
+  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_postgresql/conftools
+  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_postgresql/conftools
   try patch -p1 < $RECIPE_postgresql/patches/libpq.patch
   try patch -p2 < $RECIPE_postgresql/patches/stdlib.patch
   if [ $ANDROIDAPI -lt 26 ]; then
