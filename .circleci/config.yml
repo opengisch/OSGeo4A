@@ -38,6 +38,10 @@
                 docker push $IMAGE_NAME:latest
                 docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_TAG
                 docker push $IMAGE_NAME:$CIRCLE_TAG
+                mkdir /tmp/osgeo4a
+                docker run --rm --entrypoint tar $IMAGE_NAME:latest cC /home/osgeo4a . | tar xvC /tmp/osgeo4a
+                tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/ osgeo4a
+                ./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz $CIRCLE_TAG
     workflows:
       version: 2
       build:
