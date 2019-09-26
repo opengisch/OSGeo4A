@@ -45,7 +45,7 @@
           - build:
               filters:
                 branches:
-                  only: circleci
+                  only: master
                 tags:
                   only: /.*/
           - publish-latest:
