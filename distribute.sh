@@ -726,16 +726,14 @@ function run_postbuild() {
 
 function run() {
   check_build_deps
-  for ARCH in ${ARCHES[@]}; do
-    cd ${ROOT_PATH}
-    STAGE_PATH="${ROOT_OUT_PATH}/stage/$ARCH"
-    run_prepare
-    run_source_modules
-    run_get_packages
-    run_prebuild
-    run_build
-    run_postbuild
-  done
+  cd ${ROOT_PATH}
+  STAGE_PATH="${ROOT_OUT_PATH}/stage/$ARCH"
+  run_prepare
+  run_source_modules
+  run_get_packages
+  run_prebuild
+  run_build
+  run_postbuild
   info "All done !"
 }
 

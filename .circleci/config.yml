@@ -14,14 +14,29 @@
           - run:
               name: Build Docker image
               command: |
-                docker build -t $IMAGE_NAME:latest .
+                case $CIRCLE_NODE_INDEX in
+                0)
+                export ARCH='armeabi-v7a'
+                ;;
+                1)
+                export ARCH='arm64-v8a'
+                ;;
+                2)
+                export ARCH='x86'
+                ;;
+                esac
+                docker build --build-arg ARCH=${ARCH} -t $IMAGE_NAME:latest .
           - run:
-              name: Archive Docker image
-              command: docker save -o image.tar $IMAGE_NAME
+              name: Store SDK
+              command: |
+                mkdir /tmp/osgeo4a
+                docker run --rm --entrypoint tar $IMAGE_NAME:latest cC /home/osgeo4a . | tar xvC /tmp/osgeo4a
           - persist_to_workspace:
-              root: .
+              root: /tmp
               paths:
-                - ./image.tar
+                - osgeo4a
+        parallelism: 3
+
       publish-latest:
         executor: docker-publisher
         steps:
@@ -30,8 +45,10 @@
           - checkout
           - setup_remote_docker
           - run:
-              name: Load archived Docker image
-              command: docker load -i /tmp/workspace/image.tar
+              name: Recreate docker image
+              command: |
+                cp .docker/assemble/Dockerfile /tmp/workspace
+                docker build -t $IMAGE_NAME:latest /tmp/workspace
           - run:
               name: Install deploy requirements
               command: |
@@ -47,9 +64,8 @@
           - run:
               name: Publish SDK to Github Releases
               command: |
-                mkdir /tmp/osgeo4a
-                docker run --rm --entrypoint tar $IMAGE_NAME:latest cC /home/osgeo4a . | tar xvC /tmp/osgeo4a
-                tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/ osgeo4a
+                rm /tmp/workspace/Dockerfile
+                tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
                 ./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz $CIRCLE_TAG
     workflows:
       version: 2
