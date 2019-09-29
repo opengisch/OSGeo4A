@@ -49,10 +49,10 @@ function build_openssl() {
 
   try $BUILD_openssl/Configure shared ${SSL_ARCH} -D__ANDROID_API__=$ANDROIDAPI --prefix=/
   ${MAKE} depend
-  ${MAKE} DESTDIR=${STAGE_PATH} SHLIB_VERSION_NUMBER= SHLIB_EXT=.so build_libs
+  ${MAKE} DESTDIR=${STAGE_PATH} SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
 
   # install
-  try ${MAKE} SHLIB_VERSION_NUMBER= SHLIB_EXT=.so DESTDIR=$STAGE_PATH install_dev install_engines
+  try ${MAKE} SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so DESTDIR=$STAGE_PATH install_dev install_engines
 
   pop_arm
 }
