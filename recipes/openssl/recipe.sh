@@ -38,6 +38,8 @@ function build_openssl() {
       export SSL_ARCH=android-arm64
   elif [ "X${ARCH}" == "Xx86" ]; then
       export SSL_ARCH=android-x86
+  elif [ "X${ARCH}" == "Xx86_64" ]; then
+      export SSL_ARCH=android-x86_64
   else
       echo "Error: Please report issue to enable support for arch (${ARCH})."
       exit 1
