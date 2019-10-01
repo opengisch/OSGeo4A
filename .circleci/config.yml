@@ -24,6 +24,9 @@
                 2)
                 export ARCH='x86'
                 ;;
+                3)
+                export ARCH='x86_64'
+                ;;
                 esac
                 docker build --build-arg ARCH=${ARCH} -t $IMAGE_NAME:latest .
           - run:
@@ -35,7 +38,7 @@
               root: /tmp
               paths:
                 - osgeo4a
-        parallelism: 3
+        parallelism: 4
 
       publish-latest:
         executor: docker-publisher

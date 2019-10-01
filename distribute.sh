@@ -168,13 +168,21 @@ function push_arm() {
       export QT_ARCH_PREFIX=armv7
       export QT_ANDROID=${QT_ANDROID_BASE}/android_armv7
       export ANDROID_SYSTEM=android
-  elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
+      elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
       export TOOLCHAIN_FULL_PREFIX=aarch64-linux-android${ANDROIDAPI}
       export TOOLCHAIN_SHORT_PREFIX=aarch64-linux-android
       export TOOLCHAIN_PREFIX=aarch64-linux-android
       export TOOLCHAIN_BASEDIR=aarch64-linux-android
       export QT_ARCH_PREFIX=arm64 # watch out when changing this, openssl depends on it
       export QT_ANDROID=${QT_ANDROID_BASE}/android_arm64_v8a
+      export ANDROID_SYSTEM=android64
+  elif [ "X${ARCH}" == "Xx86_64" ]; then
+      export TOOLCHAIN_FULL_PREFIX=x86_64-linux-android${ANDROIDAPI}
+      export TOOLCHAIN_SHORT_PREFIX=x86_64-linux-android
+      export TOOLCHAIN_PREFIX=x86_64-linux-android
+      export TOOLCHAIN_BASEDIR=x86_64-linux-android
+      export QT_ARCH_PREFIX=x86_64 # watch out when changing this, openssl depends on it
+      export QT_ANDROID=${QT_ANDROID_BASE}/android_x86_64
       export ANDROID_SYSTEM=android64
   else
       echo "Error: Please report issue to enable support for arch (${ARCH})."
@@ -194,7 +202,7 @@ function push_arm() {
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
   export ANDROID_CMAKE_LINKER_FLAGS=""
-  if [ "X${ARCH}" == "Xarm64-v8a" ]; then
+  if [ "X${ARCH}" == "Xarm64-v8a" ] || [ "X${ARCH}" == "Xx86_64" ]; then
     ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$STAGE_PATH/lib"
     ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$QT_ANDROID/lib"
     ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$QT_ARCH_PREFIX/usr/lib"
@@ -356,6 +364,8 @@ function run_prepare() {
       export SHORTARCH="arm"
   elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
       export SHORTARCH="arm64"
+  elif [ "X${ARCH}" == "Xx86_64" ]; then
+      export SHORTARCH="x86_64"
   else
       echo "Error: Please report issue to enable support for newer arch (${ARCH})."
       exit 1
