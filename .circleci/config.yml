@@ -60,7 +60,6 @@
           - run:
               name: Publish Docker Image to Docker Hub
               command: |
-                export CIRCLE_TAG=test
                 echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                 docker push $IMAGE_NAME:latest
                 docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_TAG
@@ -68,7 +67,6 @@
           - run:
               name: Publish SDK to Github Releases
               command: |
-                export CIRCLE_TAG=test
                 rm /tmp/workspace/Dockerfile
                 tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
                 ./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz $CIRCLE_TAG
@@ -87,8 +85,7 @@
                 - build
               filters:
                 branches:
-                  only: master
-                  # ignore: /.*/
+                  ignore: /.*/
                 tags:
                   only: /.*/
               context: dockerhub_publish
