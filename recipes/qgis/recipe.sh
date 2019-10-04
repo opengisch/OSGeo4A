@@ -22,7 +22,14 @@ RECIPE_qgis=$RECIPES_PATH/qgis
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
 function prebuild_qgis() {
-  true
+  cd $BUILD_qgis
+  # check marker
+  if [ -f .patched ]; then
+    return
+  fi
+  patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
+
+  touch .patched
 }
 
 # function called to build the source code
