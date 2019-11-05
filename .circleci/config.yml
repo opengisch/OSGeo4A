@@ -28,7 +28,7 @@
                 export ARCH='x86_64'
                 ;;
                 esac
-                docker build --build-arg ARCH=${ARCH} -t $IMAGE_NAME:latest .
+                docker build --build-arg ARCHES=${ARCH} -t $IMAGE_NAME:latest .
           - run:
               name: Store SDK
               command: |
