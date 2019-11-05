@@ -27,7 +27,7 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
-  patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
+  #patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
 
   touch .patched
 }
