@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=6.2.0
+VERSION_proj=5.2
 
 # dependencies of this recipe
 DEPS_proj=(sqlite3)
 
 # url of the package
-URL_proj=https://github.com/OSGeo/proj.4/releases/download/${VERSION_proj}/proj-${VERSION_proj}.tar.gz
+URL_proj=https://github.com/OSGeo/proj.4/releases/download/5.2.0/proj-5.2.0.tar.gz
 # https://github.com/OSGeo/proj.4/archive/a8cbe0c66974871f5a7bd7ef94001ebf461ac7ea.tar.gz
 
 # md5 of the package
-MD5_proj=5cde556545828beaffbe50b1bb038480
+MD5_proj=ad285c7d03cbb138d9246e10e1f3191c
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
