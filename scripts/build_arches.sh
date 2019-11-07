@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 mkdir -p /home/osgeo4a
 IFS=' ' read -ra arches_array <<< "${ARCHES}"
 for ARCH in "${arches_array[@]}"
