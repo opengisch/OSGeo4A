@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_geos=3.7.2
+VERSION_geos=3.7.3
 
 # dependencies of this recipe
 DEPS_geos=()
 
 # url of the package
-URL_geos=https://download.osgeo.org/geos/geos-${VERSION_geos}.tar.bz2
+URL_geos=https://github.com/libgeos/geos/archive/${VERSION_geos}.tar.gz
 
 # md5 of the package
-MD5_geos=8caa4d19d311c1a78feb2f57505dc0e3
+MD5_geos=f9d167151f37ff120271c8ca6af6f877
 
 # default build path
 BUILD_geos=$BUILD_PATH/geos/$(get_directory $URL_geos)
