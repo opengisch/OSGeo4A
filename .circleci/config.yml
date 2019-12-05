@@ -69,7 +69,7 @@
               command: |
                 rm /tmp/workspace/Dockerfile
                 tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
-                echo echo "Built with https://github.com/opengisch/docker-qt-ndk/releases/tag/"$(awk -F ":" '/FROM/{print $2}' Dockerfile) >> /tmp/workspace/qt-ndk.txt
+                echo "Built with https://github.com/opengisch/docker-qt-ndk/releases/tag/"$(awk -F ":" '/FROM/{print $2}' Dockerfile) >> /tmp/workspace/qt-ndk.txt
                 ./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz $CIRCLE_TAG
     workflows:
       version: 2
