@@ -33,10 +33,11 @@ function build_openjpeg() {
   try mkdir -p $BUILD_PATH/openjpeg/build-$ARCH
   try cd $BUILD_PATH/openjpeg/build-$ARCH
   push_arm
-  try $BUILD_openjpeg/configure \
-    --prefix=$STAGE_PATH \
-    --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
+#    -DANDROID_STL=gnustl_shared \
+  try $CMAKECMD \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    $BUILD_openjpeg
+  try $MAKESMP
   try $MAKESMP install
   pop_arm
 }

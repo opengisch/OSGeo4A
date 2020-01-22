@@ -58,7 +58,8 @@ function build_gdal() {
     --with-sqlite3=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \
-    --with-expat=$STAGE_PATH
+    --with-expat=$STAGE_PATH \
+    --with-openjpeg=$STAGE_PATH
   try $MAKESMP
   try $MAKESMP install &> install.log
   pop_arm
