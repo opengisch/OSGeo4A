@@ -142,6 +142,7 @@ function push_arm() {
   export OLD_LD=$LD
   export OLD_CMAKECMD=$CMAKECMD
   export OLD_ANDROID_CMAKE_LINKER_FLAGS=$ANDROID_CMAKE_LINKER_FLAGS
+  export OLD_PKG_CONFIG_PATH=$PKG_CONFIG_PATH
 
   # this must be something depending of the API level of Android
   PYPLATFORM=$($PYTHON -c 'from __future__ import print_function; import sys; print(sys.platform)')
@@ -246,6 +247,8 @@ function push_arm() {
   # This will need to be updated to support Python versions other than 2.7
   export BUILDLIB_PATH="$BUILD_hostpython/build/lib.linux-`uname -m`-2.7/"
 
+  export PKG_CONFIG_PATH=$STAGE_PATH/lib/pkgconfig
+
   # Use ccache ?
   which ccache &>/dev/null
   if [ $? -eq 0 ]; then
@@ -269,6 +272,7 @@ function pop_arm() {
   export MAKE=$OLD_MAKE
   export CMAKECMD=$OLD_CMAKECMD
   export ANDROID_CMAKE_LINKER_FLAGS=$OLD_ANDROID_CMAKE_LINKER_FLAGS
+  export PKG_CONFIG_PATH=$OLD_PKG_CONFIG_PATH
 }
 
 function usage() {
