@@ -28,7 +28,10 @@ function prebuild_qgis() {
     return
   fi
   # reintroduce with proj6 (but do not delete legacy.h file in the patch)
-  #patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
+  # patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
+
+  patch -p1 < $RECIPE_qgis/patches/0001-Modernize-iterators-in-offline-editing.patch 
+  patch -p1 < $RECIPE_qgis/patches/0002-Check-table-name-when-adding-features-in-offline-edi.patch
 
   touch .patched
 }

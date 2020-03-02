@@ -1,0 +1,43 @@
+From ef4ae4a64ae6d98927012776cc8341700ad49443 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Mon, 2 Mar 2020 07:04:55 +0100
+Subject: [PATCH 2/2] Check table name when adding features in offline editing
+
+---
+ src/core/qgsofflineediting.cpp | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/src/core/qgsofflineediting.cpp b/src/core/qgsofflineediting.cpp
+index 44b542152d..73eac1be6e 100644
+--- a/src/core/qgsofflineediting.cpp
++++ b/src/core/qgsofflineediting.cpp
+@@ -1480,7 +1480,8 @@ void QgsOfflineEditing::committedFeaturesAdded( const QString &qgisLayerId, cons
+ 
+   // get new feature ids from db
+   QgsMapLayer *layer = QgsProject::instance()->mapLayer( qgisLayerId );
+-  QgsDataSourceUri uri = QgsDataSourceUri( layer->source() );
++  QString dataSourceString = layer->source();
++  QgsDataSourceUri uri = QgsDataSourceUri( dataSourceString );
+ 
+   QString offlinePath = QgsProject::instance()->readPath( QgsProject::instance()->readEntry( PROJECT_ENTRY_SCOPE_OFFLINE, PROJECT_ENTRY_KEY_OFFLINE_DB_PATH ) );
+   QString tableName;
+@@ -1491,7 +1492,15 @@ void QgsOfflineEditing::committedFeaturesAdded( const QString &qgisLayerId, cons
+   }
+   else
+   {
+-    tableName = uri.param( offlinePath + "|layername" );
++    if ( dataSourceString.indexOf( QLatin1String( "|layername=" ) ) != -1 )
++    {
++      QRegularExpression regex( QStringLiteral( "\\|layername=([^|]*)" ) );
++      tableName = regex.match( dataSourceString ).captured( 1 );
++    }
++    else
++    {
++      showWarning( tr( "Could not deduce table name from data source %1." ).arg( dataSourceString ) );
++    }
+   }
+ 
+   // only store feature ids
+-- 
+2.24.1
+

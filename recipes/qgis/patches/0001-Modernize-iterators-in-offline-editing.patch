@@ -1,0 +1,51 @@
+From d9f27676a1d32ac79c40db43de3e47594e59b294 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Mon, 2 Mar 2020 07:04:51 +0100
+Subject: [PATCH 1/2] Modernize iterators in offline editing
+
+---
+ src/core/qgsofflineediting.cpp | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/src/core/qgsofflineediting.cpp b/src/core/qgsofflineediting.cpp
+index 74065deaff..44b542152d 100644
+--- a/src/core/qgsofflineediting.cpp
++++ b/src/core/qgsofflineediting.cpp
+@@ -1453,9 +1453,8 @@ void QgsOfflineEditing::committedAttributesAdded( const QString &qgisLayerId, co
+   int layerId = getOrCreateLayerId( database.get(), qgisLayerId );
+   int commitNo = getCommitNo( database.get() );
+ 
+-  for ( QList<QgsField>::const_iterator it = addedAttributes.begin(); it != addedAttributes.end(); ++it )
++  for ( const QgsField &field : addedAttributes )
+   {
+-    QgsField field = *it;
+     QString sql = QStringLiteral( "INSERT INTO 'log_added_attrs' VALUES ( %1, %2, '%3', %4, %5, %6, '%7' )" )
+                   .arg( layerId )
+                   .arg( commitNo )
+@@ -1516,19 +1515,19 @@ void QgsOfflineEditing::committedFeaturesRemoved( const QString &qgisLayerId, co
+   // insert log
+   int layerId = getOrCreateLayerId( database.get(), qgisLayerId );
+ 
+-  for ( QgsFeatureIds::const_iterator it = deletedFeatureIds.begin(); it != deletedFeatureIds.end(); ++it )
++  for ( QgsFeatureId id : deletedFeatureIds )
+   {
+-    if ( isAddedFeature( database.get(), layerId, *it ) )
++    if ( isAddedFeature( database.get(), layerId, id ) )
+     {
+       // remove from added features log
+-      QString sql = QStringLiteral( "DELETE FROM 'log_added_features' WHERE \"layer_id\" = %1 AND \"fid\" = %2" ).arg( layerId ).arg( *it );
++      QString sql = QStringLiteral( "DELETE FROM 'log_added_features' WHERE \"layer_id\" = %1 AND \"fid\" = %2" ).arg( layerId ).arg( id );
+       sqlExec( database.get(), sql );
+     }
+     else
+     {
+       QString sql = QStringLiteral( "INSERT INTO 'log_removed_features' VALUES ( %1, %2)" )
+                     .arg( layerId )
+-                    .arg( *it );
++                    .arg( id );
+       sqlExec( database.get(), sql );
+     }
+   }
+-- 
+2.24.1
+
