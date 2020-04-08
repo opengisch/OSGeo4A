@@ -8,10 +8,10 @@ DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libz
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/d69519a91ea10f776d65b1bb54e181d4a7a2d3d8.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/e3211a0434061d57a84a777855c77ffe90c57747.tar.gz
 
 # md5 of the package
-MD5_qgis=d5dd09849cf04a0d8ee2e7f835a9272f
+MD5_qgis=6b5494c4e181bfc22c5b5de49e6a59e4
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -74,6 +74,7 @@ function build_qgis() {
     -DPOSTGRES_INCLUDE_DIR=$STAGE_PATH/include \
     -DPOSTGRES_LIBRARY=$STAGE_PATH/lib/libpq.so \
     -DPYTHON_EXECUTABLE=`which python3` \
+    -DZLIB_LIBRARY_RELEASE:FILEPATH=$STAGE_PATH/lib/libz.so \
     -DWITH_BINDINGS=OFF \
     -DWITH_INTERNAL_SPATIALITE=OFF \
     -DWITH_GRASS=OFF \
@@ -94,7 +95,7 @@ function build_qgis() {
     -DWITH_QT5SERIALPORT=OFF \
     -DProtobuf_PROTOC_EXECUTABLE=/usr/bin/protoc \
     -DNATIVE_CRSSYNC_BIN=/usr/bin/true \
-    -DANDROID_LINKER_FLAGS="-landroid -llog" \
+    -DANDROID_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS -landroid -llog" \
     $BUILD_qgis
 
   try $MAKESMP install
