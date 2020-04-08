@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # version of your package
-VERSION_qgis=3.11
+VERSION_qgis=3.13
 
 # dependencies of this recipe
-DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2)
+DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2 protobuf)
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/29db15a439e61765ba77fd71748ee644fded4f2a.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/d69519a91ea10f776d65b1bb54e181d4a7a2d3d8.tar.gz
 
 # md5 of the package
-MD5_qgis=c79ebad93bb6d1191435fccc57b5e11f
+MD5_qgis=d5dd09849cf04a0d8ee2e7f835a9272f
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -65,6 +65,8 @@ function build_qgis() {
     -DGSL_INCLUDE_DIR=$STAGE_PATH/include/gsl \
     -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
     -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
+    -DQCA_LIBRARY=$STAGE_PATH/lib/libqca-qt5_$ARCH.so \
+    -DQTKEYCHAIN_LIBRARY=$STAGE_PATH/lib/libqt5keychain_$ARCH.so \
     -DSQLITE3_INCLUDE_DIR=$STAGE_PATH/include \
     -DSQLITE3_LIBRARY=$STAGE_PATH/lib/libsqlite3.so \
     -DPOSTGRES_CONFIG= \
@@ -90,7 +92,9 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
+    -DProtobuf_PROTOC_EXECUTABLE=/usr/bin/protoc \
     -DNATIVE_CRSSYNC_BIN=/usr/bin/true \
+    -DANDROID_LINKER_FLAGS="-landroid -llog" \
     $BUILD_qgis
 
   try $MAKESMP install
