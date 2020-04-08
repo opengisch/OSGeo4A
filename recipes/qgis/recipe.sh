@@ -65,6 +65,8 @@ function build_qgis() {
     -DGSL_INCLUDE_DIR=$STAGE_PATH/include/gsl \
     -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
     -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
+    -DQCA_LIBRARY=$STAGE_PATH/lib/libqca-qt5_$ARCH.so \
+    -DQTKEYCHAIN_LIBRARY=$STAGE_PATH/lib/libqt5keychain_$ARCH.so \
     -DSQLITE3_INCLUDE_DIR=$STAGE_PATH/include \
     -DSQLITE3_LIBRARY=$STAGE_PATH/lib/libsqlite3.so \
     -DPOSTGRES_CONFIG= \

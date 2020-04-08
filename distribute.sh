@@ -159,7 +159,6 @@ function push_arm() {
       export TOOLCHAIN_PREFIX=i686-linux-android
       export TOOLCHAIN_BASEDIR=x86
       export QT_ARCH_PREFIX=x86
-      export QT_ANDROID=${QT_ANDROID_BASE}/android_x86
       export ANDROID_SYSTEM=android
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
       export TOOLCHAIN_FULL_PREFIX=armv7a-linux-androideabi${ANDROIDAPI}
@@ -167,7 +166,6 @@ function push_arm() {
       export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_BASEDIR=arm-linux-androideabi
       export QT_ARCH_PREFIX=armv7
-      export QT_ANDROID=${QT_ANDROID_BASE}/android_armv7
       export ANDROID_SYSTEM=android
       elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
       export TOOLCHAIN_FULL_PREFIX=aarch64-linux-android${ANDROIDAPI}
@@ -175,7 +173,6 @@ function push_arm() {
       export TOOLCHAIN_PREFIX=aarch64-linux-android
       export TOOLCHAIN_BASEDIR=aarch64-linux-android
       export QT_ARCH_PREFIX=arm64 # watch out when changing this, openssl depends on it
-      export QT_ANDROID=${QT_ANDROID_BASE}/android_arm64_v8a
       export ANDROID_SYSTEM=android64
   elif [ "X${ARCH}" == "Xx86_64" ]; then
       export TOOLCHAIN_FULL_PREFIX=x86_64-linux-android${ANDROIDAPI}
@@ -183,12 +180,13 @@ function push_arm() {
       export TOOLCHAIN_PREFIX=x86_64-linux-android
       export TOOLCHAIN_BASEDIR=x86_64-linux-android
       export QT_ARCH_PREFIX=x86_64 # watch out when changing this, openssl depends on it
-      export QT_ANDROID=${QT_ANDROID_BASE}/android_x86_64
       export ANDROID_SYSTEM=android64
   else
       echo "Error: Please report issue to enable support for arch (${ARCH})."
       exit 1
   fi
+
+  export QT_ANDROID=${QT_ANDROID_BASE}/android
 
   export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include"
   export CFLAGS="$CFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include"
