@@ -1,4 +1,4 @@
-FROM opengisch/qt-ndk:5.13.1-1
+FROM qt-ndk
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 
 ENV DEBIAN_FRONTEND noninteractive

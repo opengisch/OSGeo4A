@@ -1,13 +1,6 @@
-FROM opengisch/qt-ndk:5.14.2
+FROM qt-ndk
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
-
 ARG ARCHES
-ENV DEBIAN_FRONTEND noninteractive
-
-USER root
-
-# For ndk-build (libzip) to work properly we need `file` installed
-RUN apt update && apt install -y file python3-six zip pkg-config protobuf-compiler
 
 COPY .docker /usr/src/.docker
 COPY tools /usr/src/tools
