@@ -2,13 +2,16 @@
 
 
 # version of your package
-VERSION_openssl=1.1.1c
+VERSION_openssl=1.1.1f
 
 # dependencies of this recipe
 DEPS_openssl=()
 
 # url of the package
 URL_openssl=https://www.openssl.org/source/openssl-${VERSION_openssl}.tar.gz
+
+# md5 of the package
+MD5_openssl=3f486f2f4435ef14b81814dbbc7b48bb
 
 # default recipe path
 RECIPE_openssl=$RECIPES_PATH/openssl
