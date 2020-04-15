@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_protobuf=3.0.2 # Has to match host version
+VERSION_protobuf=3.6.1 # Has to match host version
 
 # dependencies of this recipe
 DEPS_protobuf=(zlib)
@@ -11,7 +11,7 @@ DEPS_protobuf=(zlib)
 URL_protobuf=https://github.com/protocolbuffers/protobuf/archive/v${VERSION_protobuf}/protobuf-cpp-${VERSION_protobuf}.tar.gz
 
 # md5 of the package
-MD5_protobuf=7349a7f43433d72c6d805c6ca22b7eeb
+MD5_protobuf=e8ce2659ea4f5df1a1e0dbd107dd61d9
 
 # default build path
 BUILD_protobuf=$BUILD_PATH/protobuf/$(get_directory $URL_protobuf)
