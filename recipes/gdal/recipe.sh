@@ -4,7 +4,7 @@
 VERSION_gdal=2.4.0
 
 # dependencies of this recipe
-DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat zlib openjpeg)
+DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat zlib openjpeg libspatialite)
 
 # url of the package
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
@@ -56,6 +56,7 @@ function build_gdal() {
     --build=x86_64 \
     --prefix=$STAGE_PATH \
     --with-sqlite3=$STAGE_PATH \
+    --with-spatialite=$STAGE_PATH \
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \
     --with-expat=$STAGE_PATH \
