@@ -14,7 +14,7 @@
           - run:
               name: Build Docker image
               command: |
-                docker build -t qt-ndk .docker/qt-ndk
+                docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
 
                 case $CIRCLE_NODE_INDEX in
                 0)
@@ -52,7 +52,7 @@
           - run:
               name: Recreate qt base image
               command: |
-                docker build -t qt-ndk .docker/qt-ndk
+                docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
           - run:
               name: Recreate docker image
               command: |
