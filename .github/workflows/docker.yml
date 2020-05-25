@@ -1,0 +1,32 @@
+name: Build OSGeo4A
+
+on: [push, pull_request, release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Extract tag
+        id: extract_tag
+        run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
+      - name: Build
+        run: |
+          export ARCHES=(armeabi-v7a arm64-v8a x86 x86_64)
+          docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+          docker build --build-arg ARCHES=${ARCHES} -t opengisch/qfield-sdk:latest .
+      - name: Deploy
+        run: |
+          if: if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+          env:
+            DOCKERHUB_USERNAME: ${{ secrets.DockerhubUsername }}
+            DOCKERHUB_TOKEN: ${{ secrets.DockerhubToken }}
+          run: |
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push opengisch/qfield-sdk:latest
+            docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_tag.outputs.ref }}
+            docker push opengisch/qfield-sdk:${{ steps.extract_tag.outputs.ref }}
+            # TODO: fix uploading to github releases
+            #tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
+            #./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz ${{ steps.extract_tag.outputs.ref }}
