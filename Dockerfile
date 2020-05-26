@@ -10,4 +10,4 @@ COPY distribute.sh /usr/src/distribute.sh
 COPY scripts/build_arches.sh /usr/src/build_arches.sh
 RUN mv /usr/src/.docker/config.conf /usr/src/config.conf
 ENV ROOT_OUT_PATH=/usr/src/build
-RUN ARCHES=$ARCHES /usr/src/build_arches.sh
+RUN ARCHES="${ARCHES}" /usr/src/build_arches.sh
