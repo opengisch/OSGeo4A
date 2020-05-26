@@ -23,11 +23,11 @@ jobs:
       - name: Create target specific SDK
         run: |
           mkdir /tmp/osgeo4a
-          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest cC /home/osgeo4a . | tar xvC /tmp/osgeo4a
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/osgeo4a . > /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
       - uses: actions/upload-artifact@master
         with:
           name: sdk-${{ matrix.arch }}
-          path: /tmp/osgeo4a
+          path: /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
 
   deploy:
     needs: build
