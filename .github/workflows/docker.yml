@@ -13,7 +13,7 @@ jobs:
         run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
       - name: Build
         run: |
-          export ARCHES=(armeabi-v7a arm64-v8a x86 x86_64)
+          export ARCHES="armeabi-v7a arm64-v8a x86 x86_64"
           docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
           docker build --build-arg ARCHES="${ARCHES}" -t opengisch/qfield-sdk:latest .
       - name: Deploy
