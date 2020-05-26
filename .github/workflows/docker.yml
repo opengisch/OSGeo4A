@@ -5,6 +5,9 @@ on: [push, pull_request, release]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [armeabi-v7a, arm64-v8a, x86, x86_64]
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -12,10 +15,52 @@ jobs:
         id: extract_tag
         run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
       - name: Build
+        env:
+          ARCH: ${{ matrix.arch }}
         run: |
-          export ARCHES="armeabi-v7a arm64-v8a x86 x86_64"
           docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
-          docker build --build-arg ARCHES="${ARCHES}" -t opengisch/qfield-sdk:latest .
+          docker build --build-arg ARCHES="${ARCH}" -t opengisch/qfield-sdk:latest .
+      - name: Create target specific SDK
+        run: |
+          mkdir /tmp/osgeo4a
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest cC /home/osgeo4a . | tar xvC /tmp/osgeo4a
+      - uses: actions/upload-artifact@master
+        with:
+          name: sdk-${{ matrix.arch }}
+          path: /tmp/osgeo4a
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-armeabi-v7a
+          path: /tmp/workspace/osgeo4a
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-arm64-v8a
+          path: /tmp/workspace/osgeo4a
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-x86
+          path: /tmp/workspace/osgeo4a
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-x86_64
+          path: /tmp/workspace/osgeo4a
+
+      - name: Recreate qt base image
+        run: |
+          docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+      - name: Recreate docker image
+        run: |
+          cp .docker/assemble/Dockerfile /tmp/workspace
+          docker build -t opengisch/qfield-sdk:latest /tmp/workspace
+
       - name: Deploy
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
         run: |
