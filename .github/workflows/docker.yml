@@ -17,8 +17,8 @@ jobs:
           docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
           docker build --build-arg ARCHES="${ARCHES}" -t opengisch/qfield-sdk:latest .
       - name: Deploy
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
         run: |
-          if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
           env:
             DOCKERHUB_USERNAME: ${{ secrets.DockerhubUsername }}
             DOCKERHUB_TOKEN: ${{ secrets.DockerhubToken }}
