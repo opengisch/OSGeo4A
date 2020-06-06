@@ -39,19 +39,19 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: sdk-armeabi-v7a
-          path: /tmp/workspace/osgeo4a
+          path: /tmp/workspace
       - uses: actions/download-artifact@master
         with:
           name: sdk-arm64-v8a
-          path: /tmp/workspace/osgeo4a
+          path: /tmp/workspace
       - uses: actions/download-artifact@master
         with:
           name: sdk-x86
-          path: /tmp/workspace/osgeo4a
+          path: /tmp/workspace
       - uses: actions/download-artifact@master
         with:
           name: sdk-x86_64
-          path: /tmp/workspace/osgeo4a
+          path: /tmp/workspace
 
       - name: Recreate qt base image
         run: |
