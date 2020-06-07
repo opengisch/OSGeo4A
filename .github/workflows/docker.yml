@@ -11,9 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Extract branch or tag name
-        id: extract_ref
-        run: echo ::set-output name=ref::${GITHUB_REF#refs/*/}
       - name: Build
         env:
           ARCH: ${{ matrix.arch }}
@@ -35,6 +32,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+
+      - name: Extract branch or tag name
+        id: extract_ref
+        run: echo ::set-output name=ref::${GITHUB_REF#refs/*/}
 
       - uses: actions/download-artifact@master
         with:
