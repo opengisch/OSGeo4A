@@ -62,15 +62,14 @@ jobs:
           docker build -t opengisch/qfield-sdk:latest /tmp/workspace
 
       - name: Deploy to dockerhub
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          env:
-            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          run: |
-            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push opengisch/qfield-sdk:latest
-            docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
-            docker push opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          docker push opengisch/qfield-sdk:latest
+          docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
+          docker push opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
 
       - name: Create release sdk package
         run: |
