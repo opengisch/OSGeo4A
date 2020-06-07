@@ -11,9 +11,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Extract tag
-        id: extract_tag
-        run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
+      - name: Extract branch or tag name
+        id: extract_ref
+        run: echo ::set-output name=ref::${${GITHUB_REF#refs/tags/}#refs/heads/}
       - name: Build
         env:
           ARCH: ${{ matrix.arch }}
@@ -61,8 +61,7 @@ jobs:
           cp .docker/assemble/Dockerfile /tmp/workspace
           docker build -t opengisch/qfield-sdk:latest /tmp/workspace
 
-      - name: Deploy
-        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+      - name: Deploy to dockerhub
         run: |
           env:
             DOCKERHUB_USERNAME: ${{ secrets.DockerhubUsername }}
@@ -70,8 +69,23 @@ jobs:
           run: |
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push opengisch/qfield-sdk:latest
-            docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_tag.outputs.ref }}
-            docker push opengisch/qfield-sdk:${{ steps.extract_tag.outputs.ref }}
+            docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
+            docker push opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
+
+      - name: Create release sdk package
+        run: |
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest cC /opt/ . | tar xvC /tmp/workspace
+          tar -zcvf qfield-sdk.tar.gz /tmp/workspace
+
+      - name: Deploy to github release
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: qfield-sdk.tar.gz
             # TODO: fix uploading to github releases
             #tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
             #./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz ${{ steps.extract_tag.outputs.ref }}
