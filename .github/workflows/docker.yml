@@ -64,8 +64,8 @@ jobs:
       - name: Deploy to dockerhub
         run: |
           env:
-            DOCKERHUB_USERNAME: ${{ secrets.DockerhubUsername }}
-            DOCKERHUB_TOKEN: ${{ secrets.DockerhubToken }}
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           run: |
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push opengisch/qfield-sdk:latest
