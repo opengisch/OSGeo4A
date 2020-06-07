@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_geos=3.7.3
+VERSION_geos=3.8.1
 
 # dependencies of this recipe
 DEPS_geos=()
@@ -10,7 +10,7 @@ DEPS_geos=()
 URL_geos=https://github.com/libgeos/geos/archive/${VERSION_geos}.tar.gz
 
 # md5 of the package
-MD5_geos=f9d167151f37ff120271c8ca6af6f877
+MD5_geos=22d1bc7d276fecc7e1b5f55c47632d6a
 
 # default build path
 BUILD_geos=$BUILD_PATH/geos/$(get_directory $URL_geos)
@@ -30,7 +30,6 @@ function prebuild_geos() {
 
   try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_geos
   try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_geos
-  try patch -p1 < $RECIPE_geos/patches/geos.patch
 
   touch .patched
 }
@@ -50,6 +49,7 @@ function build_geos() {
 #    -DANDROID_STL=gnustl_shared \
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DDISABLE_GEOS_INLINE=ON \
     $BUILD_geos
   echo '#define GEOS_SVN_REVISION 0' > $BUILD_PATH/geos/build-$ARCH/geos_svn_revision.h
   try $MAKESMP
