@@ -93,6 +93,7 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
+    -DWITH_QGIS_PROCESS=OFF \
     -DProtobuf_PROTOC_EXECUTABLE=/usr/bin/protoc \
     -DNATIVE_CRSSYNC_BIN=/usr/bin/true \
     -DANDROID_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS -landroid -llog" \
