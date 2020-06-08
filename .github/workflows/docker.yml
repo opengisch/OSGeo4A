@@ -74,10 +74,21 @@ jobs:
 
       - name: Create release sdk package
         run: |
-          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest cC /opt/ . | tar xvC /tmp/workspace
-          tar -zcvf qfield-sdk.tar.gz /tmp/workspace
+          rm -rf /tmp/workspace
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /opt/ . > buildchain.tar.gz
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/ . > qfield-sdk.tar.gz
 
-      - name: Deploy to github release
+      - name: Deploy buildchain to github release
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: buildchain.tar.gz
+
+      - name: Deploy qfield-sdk to github release
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
 
         uses: actions/upload-release-asset@v1
@@ -86,6 +97,3 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: qfield-sdk.tar.gz
-            # TODO: fix uploading to github releases
-            #tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
-            #./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz ${{ steps.extract_tag.outputs.ref }}
