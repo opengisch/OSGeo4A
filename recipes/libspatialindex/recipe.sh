@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_libspatialindex=1.9.0
+VERSION_libspatialindex=1.9.3
 
 # dependencies of this recipe
 DEPS_libspatialindex=()
@@ -10,7 +10,7 @@ DEPS_libspatialindex=()
 URL_libspatialindex=https://github.com/libspatialindex/libspatialindex/archive/${VERSION_libspatialindex}.tar.gz
 
 # md5 of the package
-MD5_libspatialindex=aa658bf627cd57b5277d204bac0605fc
+MD5_libspatialindex=b0cad679ee475cce370d8731d47b174a
 
 # default build path
 BUILD_libspatialindex=$BUILD_PATH/libspatialindex/$(get_directory $URL_libspatialindex)
