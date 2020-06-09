@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_sqlite3=3270100
+VERSION_sqlite3=3320200
 
 # dependencies of this recipe
 DEPS_sqlite3=()
 
 # url of the package
-URL_sqlite3=http://www.sqlite.org/2019/sqlite-autoconf-${VERSION_sqlite3}.tar.gz
+URL_sqlite3=http://www.sqlite.org/2020/sqlite-autoconf-${VERSION_sqlite3}.tar.gz
 
 # md5 of the package
-MD5_sqlite3=cb72c5f93235cd56b18ee2aa1504cdaf
+MD5_sqlite3=eb498918a33159cdf8104997aad29e83
 
 # default build path
 BUILD_sqlite3=$BUILD_PATH/sqlite3/$(get_directory $URL_sqlite3)
