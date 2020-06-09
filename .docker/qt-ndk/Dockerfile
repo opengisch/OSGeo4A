@@ -3,6 +3,7 @@ MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 ARG QT_VERSION
 ARG NDK_VERSION=r21
 ARG SDK_PLATFORM=android-21
+ARG NDK_PLATFORM_NUMBER=21
 ARG SDK_BUILD_TOOLS=28.0.3
 ARG SDK_PACKAGES="tools platform-tools"
 
@@ -13,7 +14,8 @@ ENV ANDROID_HOME /opt/android-sdk
 ENV ANDROID_SDK_ROOT ${ANDROID_HOME}
 ENV ANDROID_NDK_ROOT /opt/android-ndk
 ENV ANDROID_NDK_HOST linux-x86_64
-ENV ANDROID_NDK_PLATFORM android-21
+ENV ANDROID_NDK_PLATFORM android-${NDK_PLATFORM_NUMBER}
+ENV ANDROID_NDK_PLATFORM_NUMBER ${NDK_PLATFORM_NUMBER}
 ENV QMAKESPEC android-clang
 ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${PATH}
 
@@ -24,7 +26,9 @@ ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platfor
 #  * make, default-jdk, ant - basic build requirements
 #  * libsm6, libice6, libxext6, libxrender1, libfontconfig1, libdbus-1-3 - dependencies of Qt bundle run-file
 #  * libc6:i386, libncurses5:i386, libstdc++6:i386, libz1:i386 - dependencides of android sdk binaries
-RUN dpkg --add-architecture i386 && apt-get -qq update && apt-get -qq dist-upgrade && apt-get install -qq -y --no-install-recommends \
+RUN dpkg --add-architecture i386 \
+    && apt update -qq \
+    && apt install -y -qq --no-install-recommends \
     git \
     openssh-client \
     ca-certificates \
@@ -48,9 +52,6 @@ RUN dpkg --add-architecture i386 && apt-get -qq update && apt-get -qq dist-upgra
     libstdc++6:i386 \
     libz1:i386 \
     libxkbcommon-x11-0 \
-    && apt-get -qq clean
-
-RUN apt-get install -qq -y --no-install-recommends \
     bzip2 \
     unzip \
     gcc \
@@ -65,7 +66,8 @@ RUN apt-get install -qq -y --no-install-recommends \
     python3-six \
     zip \
     pkg-config \
-    protobuf-compiler
+    protobuf-compiler \
+    && apt-get -qq clean
 
 COPY install-qt.sh /tmp/qt/
 
@@ -100,7 +102,8 @@ RUN mkdir /tmp/android \
     && mv /tmp/android-ndk-${NDK_VERSION} ${ANDROID_NDK_ROOT} \
     && cd / \
     && rm -rf /tmp/android \
-    && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "$ANDROID_NDK_PLATFORM" -type d -exec rm -r {} +
+    && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "$ANDROID_NDK_PLATFORM" -type d -exec rm -r {} + \
+    && find ${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/*/* -maxdepth 0 ! -name "$ANDROID_NDK_PLATFORM_NUMBER" -type d -exec rm -r {} +
 
 # Reconfigure locale
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
