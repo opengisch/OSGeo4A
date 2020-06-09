@@ -27,7 +27,7 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
-  patch -p1 < $RECIPE_qgis/patches/0001-Revert-Fix-segfault-when-adding-a-layer.patch
+  patch -p1 < $RECIPE_qgis/patches/0001-fix_missing_table_name.patch
 
   touch .patched
 }
