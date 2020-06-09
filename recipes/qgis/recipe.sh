@@ -27,8 +27,7 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
-  # reintroduce with proj6 (but do not delete legacy.h file in the patch)
-  #patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
+  patch -p1 < $RECIPE_qgis/patches/0001-Revert-Fix-segfault-when-adding-a-layer.patch
 
   touch .patched
 }

@@ -1,0 +1,37 @@
+From 946361345c646997e020566a43f2e64c10707fb6 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Tue, 9 Jun 2020 08:23:22 +0200
+Subject: [PATCH] Revert "Fix segfault when adding a layer"
+
+This reverts commit 07eca3e6702f16785f64686dcbf568de1564eb4f.
+---
+ src/core/qgssqliteutils.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/core/qgssqliteutils.cpp b/src/core/qgssqliteutils.cpp
+index 96db18daee..d00bf780e9 100644
+--- a/src/core/qgssqliteutils.cpp
++++ b/src/core/qgssqliteutils.cpp
+@@ -126,7 +126,7 @@ QSet<QString> QgsSqliteUtils::uniqueFields( sqlite3 *connection, const QString &
+   QSet<QString> uniqueFieldsResults;
+   char *zErrMsg = 0;
+   std::vector<std::string> rows;
+-  QString sql = QgsSqlite3Mprintf( "select sql from sqlite_master where type='table' and name=%q", quotedIdentifier( tableName ).toStdString().c_str() );
++  QString sql = sqlite3_mprintf( "select sql from sqlite_master where type='table' and name=%q", quotedIdentifier( tableName ).toStdString().c_str() );
+   auto cb = [ ](
+               void *data /* Data provided in the 4th argument of sqlite3_exec() */,
+               int /* The number of columns in row */,
+@@ -171,8 +171,8 @@ QSet<QString> QgsSqliteUtils::uniqueFields( sqlite3 *connection, const QString &
+   rows.clear();
+ 
+   // Search indexes:
+-  sql = QgsSqlite3Mprintf( "SELECT sql FROM sqlite_master WHERE type='index' AND"
+-                           " tbl_name='%q' AND sql LIKE 'CREATE UNIQUE INDEX%%'" );
++  sql = sqlite3_mprintf( "SELECT sql FROM sqlite_master WHERE type='index' AND"
++                         " tbl_name='%q' AND sql LIKE 'CREATE UNIQUE INDEX%%'" );
+   rc = sqlite3_exec( connection, sql.toUtf8(), cb, ( void * )&rows, &zErrMsg );
+   if ( rc != SQLITE_OK )
+   {
+-- 
+2.25.4
+
