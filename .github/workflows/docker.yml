@@ -33,6 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Show diskspace
+        run: df -h
+
       - name: Extract branch or tag name
         id: extract_ref
         run: echo ::set-output name=ref::${GITHUB_REF#refs/*/}
@@ -54,13 +57,22 @@ jobs:
           name: sdk-x86_64
           path: /tmp/workspace
 
+      - name: Show diskspace
+        run: df -h
+
       - name: Recreate qt base image
         run: |
           docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+      - name: Show diskspace
+        run: df -h
+
       - name: Recreate docker image
         run: |
           cp .docker/assemble/Dockerfile /tmp/workspace
           docker build -t opengisch/qfield-sdk:latest /tmp/workspace
+
+      - name: Show diskspace
+        run: df -h
 
       - name: Deploy to dockerhub
         env:
