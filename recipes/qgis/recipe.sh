@@ -8,10 +8,10 @@ DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libz
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/59ce5c8d653e8de0f2c4e92863d248ea23510b44.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/954ab15276bdf3f9dc3b3689f71565aab9ce2d4b.tar.gz
 
 # md5 of the package
-MD5_qgis=10145d87cf49505c58295f76ce94c5c8
+MD5_qgis=93c774cb52c221f80d0d3a48069d37f3
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -27,7 +27,6 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
-  patch -p1 < $RECIPE_qgis/patches/0001-fix_missing_table_name.patch
 
   touch .patched
 }
