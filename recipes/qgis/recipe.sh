@@ -8,10 +8,10 @@ DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libz
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/410ec85eb73cee873832668651e155faf4b3058b.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/7d58502b3b0a615ba1f6a4a8adab5465e18caf56.tar.gz
 
 # md5 of the package
-MD5_qgis=3fb5baaf027ff398906d74ec2f6aba15
+MD5_qgis=8d2e9bdf0d69b5b919ecd6174e64e4e5
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -27,8 +27,6 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
-  # reintroduce with proj6 (but do not delete legacy.h file in the patch)
-  #patch -p1 < $RECIPE_qgis/patches/0001-Use-qrc-for-crs-mapping.patch
 
   touch .patched
 }
@@ -41,6 +39,7 @@ function build_qgis() {
   push_arm
 
   try $CMAKECMD \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
     -DWITH_DESKTOP=OFF \
     -DWITH_ANALYSIS=ON \
@@ -65,6 +64,8 @@ function build_qgis() {
     -DGSL_INCLUDE_DIR=$STAGE_PATH/include/gsl \
     -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
     -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
+    -DQCA_LIBRARY=$STAGE_PATH/lib/libqca-qt5_$ARCH.so \
+    -DQTKEYCHAIN_LIBRARY=$STAGE_PATH/lib/libqt5keychain_$ARCH.so \
     -DSQLITE3_INCLUDE_DIR=$STAGE_PATH/include \
     -DSQLITE3_LIBRARY=$STAGE_PATH/lib/libsqlite3.so \
     -DPOSTGRES_CONFIG= \
@@ -91,6 +92,7 @@ function build_qgis() {
     -DWITH_ASTYLE=OFF \
     -DWITH_QUICK=ON \
     -DWITH_QT5SERIALPORT=OFF \
+    -DWITH_QGIS_PROCESS=OFF \
     -DProtobuf_PROTOC_EXECUTABLE=/usr/bin/protoc \
     -DNATIVE_CRSSYNC_BIN=/usr/bin/true \
     -DANDROID_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS -landroid -llog" \

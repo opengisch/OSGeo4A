@@ -14,6 +14,8 @@
           - run:
               name: Build Docker image
               command: |
+                docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+
                 case $CIRCLE_NODE_INDEX in
                 0)
                 export ARCH='armeabi-v7a'
@@ -48,6 +50,10 @@
           - checkout
           - setup_remote_docker
           - run:
+              name: Recreate qt base image
+              command: |
+                docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+          - run:
               name: Recreate docker image
               command: |
                 cp .docker/assemble/Dockerfile /tmp/workspace
@@ -68,7 +74,6 @@
               name: Publish SDK to Github Releases
               command: |
                 rm /tmp/workspace/Dockerfile
-                echo "Built with https://github.com/opengisch/docker-qt-ndk/releases/tag/"$(awk -F ":" '/FROM/{print $2}' Dockerfile) >> /tmp/workspace/qt-ndk.txt
                 tar -zcf /tmp/osgeo4a.tar.gz -C /tmp/workspace osgeo4a
                 ./scripts/upload_release_asset.py /tmp/osgeo4a.tar.gz $CIRCLE_TAG
     workflows:

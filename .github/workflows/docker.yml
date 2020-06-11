@@ -1,0 +1,99 @@
+name: Build OSGeo4A
+
+on: [push, pull_request, release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [armeabi-v7a, arm64-v8a, x86, x86_64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+          docker build --build-arg ARCHES="${ARCH}" -t opengisch/qfield-sdk:latest .
+      - name: Create target specific SDK
+        run: |
+          mkdir /tmp/osgeo4a
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/osgeo4a . > /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
+      - uses: actions/upload-artifact@master
+        with:
+          name: sdk-${{ matrix.arch }}
+          path: /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Extract branch or tag name
+        id: extract_ref
+        run: echo ::set-output name=ref::${GITHUB_REF#refs/*/}
+
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-armeabi-v7a
+          path: /tmp/workspace
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-arm64-v8a
+          path: /tmp/workspace
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-x86
+          path: /tmp/workspace
+      - uses: actions/download-artifact@master
+        with:
+          name: sdk-x86_64
+          path: /tmp/workspace
+
+      - name: Recreate qt base image
+        run: |
+          docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+      - name: Recreate docker image
+        run: |
+          cp .docker/assemble/Dockerfile /tmp/workspace
+          docker build -t opengisch/qfield-sdk:latest /tmp/workspace
+
+      - name: Deploy to dockerhub
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          docker push opengisch/qfield-sdk:latest
+          docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
+          docker push opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
+
+      - name: Create release sdk package
+        run: |
+          rm -rf /tmp/workspace
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /opt/ . > buildchain.tar.gz
+          docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/ . > qfield-sdk.tar.gz
+
+      - name: Deploy buildchain to github release
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: buildchain.tar.gz
+
+      - name: Deploy qfield-sdk to github release
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: qfield-sdk.tar.gz
