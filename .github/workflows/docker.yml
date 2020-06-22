@@ -72,9 +72,18 @@ jobs:
           docker tag opengisch/qfield-sdk:latest opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
           docker push opengisch/qfield-sdk:${{ steps.extract_ref.outputs.ref }}
 
-      - name: Create release sdk package
+      - name: Free additional space
         run: |
           rm -rf /tmp/workspace
+          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
+          du -a /usr/share | sort -n -r | head -n 10
+          du -a /usr/local/share | sort -n -r | head -n 10
+          df -h
+          sudo apt clean
+          df -h
+
+      - name: Create release sdk package
+        run: |
           docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /opt/ . > buildchain.tar.gz
           docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/ . > qfield-sdk.tar.gz
 
