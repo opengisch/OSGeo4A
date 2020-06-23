@@ -46,8 +46,9 @@ function build_libpng() {
 
   # configure
   try $CMAKECMD \
-  -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-  $BUILD_libpng
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DHAVE_LD_VERSION_SCRIPT=OFF \
+    $BUILD_libpng
 
   # try $MAKESMP
   try make genfiles
