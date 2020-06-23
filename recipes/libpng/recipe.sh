@@ -27,8 +27,6 @@ function prebuild_libpng() {
   if [ -f .patched ]; then
     return
   fi
-
-  try patch -p1 < $RECIPE_libpng/patches/android_vers.patch
 }
 
 function shouldbuild_libpng() {
