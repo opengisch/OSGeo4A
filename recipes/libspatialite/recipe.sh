@@ -48,6 +48,7 @@ function build_libspatialite() {
   try cd $BUILD_PATH/libspatialite/build-$ARCH
   push_arm
   LDFLAGS="$LDFLAGS -llog" \
+  CFLAGS="-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H" \
     try $BUILD_libspatialite/configure \
     --prefix=$STAGE_PATH \
     --host=$TOOLCHAIN_PREFIX \
