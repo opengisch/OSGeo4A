@@ -76,7 +76,7 @@ jobs:
         run: |
           df -h
           rm -rf /tmp/workspace
-          sudo apt remove llvm-*
+          sudo apt remove llvm-* ghc-* google-chrome-* dotnet-sdk-*
           dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
           du -a /usr/share | sort -n -r | head -n 10
           du -a /usr/local/share | sort -n -r | head -n 10
