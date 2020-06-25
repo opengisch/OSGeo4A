@@ -1,6 +1,15 @@
 name: Build OSGeo4A
 
-on: [push, pull_request, release]
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  release:
+    types:
+      - created
 
 jobs:
   build:
