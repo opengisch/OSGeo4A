@@ -4,7 +4,7 @@
 VERSION_libpng=1.6.37
 
 # dependencies of this recipe
-DEPS_libpng=(zlib)
+DEPS_libpng=()
 
 # url of the package
 URL_libpng=ftp://ftp.simplesystems.org/pub/png/src/libpng16/libpng-${VERSION_libpng}.tar.gz

@@ -4,7 +4,7 @@
 VERSION_libzip=1-5-2
 
 # dependencies of this recipe
-DEPS_libzip=(zlib)
+DEPS_libzip=()
 
 # url of the package
 URL_libzip=https://github.com/nih-at/libzip/archive/rel-${VERSION_libzip}.zip
