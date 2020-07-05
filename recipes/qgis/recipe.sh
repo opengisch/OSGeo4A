@@ -73,7 +73,6 @@ function build_qgis() {
     -DPOSTGRES_INCLUDE_DIR=$STAGE_PATH/include \
     -DPOSTGRES_LIBRARY=$STAGE_PATH/lib/libpq.so \
     -DPYTHON_EXECUTABLE=`which python3` \
-    -DZLIB_LIBRARY_RELEASE:FILEPATH=$STAGE_PATH/lib/libz.so \
     -DWITH_BINDINGS=OFF \
     -DWITH_INTERNAL_SPATIALITE=OFF \
     -DWITH_GRASS=OFF \
