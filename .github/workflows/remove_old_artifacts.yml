@@ -1,0 +1,19 @@
+name: Remove old artifacts
+
+on:
+  schedule:
+    # Every 60 minutes
+    - cron: '*/60 * * * *'
+
+jobs:
+  remove_old_artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Remove old artifacts
+      uses: c-hive/gha-remove-artifacts@v1
+      with:
+        age: '480 minutes'
+        # skip-tags: true
+        skip-recent: 2
