@@ -2,7 +2,7 @@
 
 # version of your package
 
-VERSION_qca=2.2.1
+VERSION_qca=2.3.1
 
 # dependencies of this recipe
 DEPS_qca=(openssl zlib)
@@ -14,7 +14,7 @@ URL_qca=https://github.com/KDE/qca/archive/v${VERSION_qca}.tar.gz
 #URL_qca=https://github.com/KDE/qca/archive/32343842d359a60e3619f97aac983d587f6eca16.zip
 
 # md5 of the package
-MD5_qca=6116b6d0ad81d166edc26b14a1dbf39e
+MD5_qca=96c4769d51140e03087266cf705c2b86
 
 # default build path
 BUILD_qca=$BUILD_PATH/qca/$(get_directory $URL_qca)
