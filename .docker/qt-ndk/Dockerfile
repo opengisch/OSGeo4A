@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 ARG QT_VERSION
-ARG NDK_VERSION=r21
+ARG NDK_VERSION=r21d
 ARG SDK_PLATFORM=android-21
 ARG SDK_BUILD_TOOLS=28.0.3
 ARG SDK_PACKAGES="tools platform-tools"
