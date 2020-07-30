@@ -1,0 +1,38 @@
+name: Build QGIS
+
+on:
+  push:
+    branches:
+      - '**'
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Extract branch or tag name
+        id: extract_ref
+        run: echo ::set-output name=ref::${GITHUB_REF#refs/*/}
+
+      - name: Extract QGIS url
+        id: extract_qgis
+        run: |
+          export $(grep URL_qgis= recipes/qgis/recipe.sh)
+          echo ::set-output name=url::$URL_qgis
+
+      - name: Build
+        run: |
+          docker build --build-arg QGIS_URL=${{ steps.extract_qgis.outputs.url }} -t opengisch/qfield-test-docker:${{ steps.extract_ref.outputs.ref }} .docker/qgis-linux
+
+      - name: Deploy to dockerhub
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          docker push opengisch/qfield-test-docker:${{ steps.extract_ref.outputs.ref }}
