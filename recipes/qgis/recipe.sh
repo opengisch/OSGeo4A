@@ -39,6 +39,7 @@ function build_qgis() {
   push_arm
 
   try $CMAKECMD \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_DISABLE_FIND_PACKAGE_HDF5=TRUE \
     -DWITH_DESKTOP=OFF \
     -DWITH_ANALYSIS=ON \

@@ -47,6 +47,7 @@ function build_proj() {
   push_arm
 
   try $CMAKECMD \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DPROJ_TESTS=OFF \
     -DEXE_SQLITE3=$(which sqlite3) \
