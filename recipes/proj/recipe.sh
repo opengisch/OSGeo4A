@@ -46,6 +46,7 @@ function build_proj() {
 
   push_arm
 
+  CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
   try $CMAKECMD \
     -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
