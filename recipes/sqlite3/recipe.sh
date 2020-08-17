@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_sqlite3=3320200
+VERSION_sqlite3=3330000
 
 # dependencies of this recipe
 DEPS_sqlite3=()
 
 # url of the package
-URL_sqlite3=http://www.sqlite.org/2020/sqlite-autoconf-${VERSION_sqlite3}.tar.gz
+URL_sqlite3=http://www.sqlite.org/2020/sqlite-amalgamation-${VERSION_sqlite3}.zip
 
 # md5 of the package
-MD5_sqlite3=eb498918a33159cdf8104997aad29e83
+MD5_sqlite3=944829c3d88a958be935480b8e56b1fb
 
 # default build path
 BUILD_sqlite3=$BUILD_PATH/sqlite3/$(get_directory $URL_sqlite3)
@@ -28,8 +28,8 @@ function prebuild_sqlite3() {
     return
   fi
 
-  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_sqlite3
-  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_sqlite3
+  try cp $RECIPES_PATH/sqlite3/CMakeLists.txt $BUILD_sqlite3
+  try cp $RECIPES_PATH/sqlite3/sqlite3_config.h.in $BUILD_sqlite3
 
   touch .patched
 }
@@ -47,15 +47,14 @@ function build_sqlite3() {
   try cd $BUILD_PATH/sqlite3/build-$ARCH
 	push_arm
   export CFLAGS="${CFLAGS} -DSQLITE_ENABLE_COLUMN_METADATA"
-  try $BUILD_sqlite3/configure \
-    --prefix=$STAGE_PATH \
-    --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
+  try $CMAKECMD \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    $BUILD_sqlite3
   try $MAKESMP install
-	pop_arm
+  pop_arm
 }
 
 # function called after all the compile have been done
 function postbuild_sqlite3() {
-	true
+  true
 }
