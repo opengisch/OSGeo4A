@@ -10,7 +10,7 @@ DEPS_libpng=()
 URL_libpng=https://sourceforge.net/projects/libpng/files/libpng16/${VERSION_libpng}/libpng-${VERSION_libpng}.tar.xz/download#.tar.xz
 
 # md5 of the package
-MD5_libpng=6c7519f6c75939efa0ed3053197abd54
+MD5_libpng=015e8e15db1eecde5f2eb9eb5b6e59e9
 
 # default build path
 BUILD_libpng=$BUILD_PATH/libpng/$(get_directory $URL_libpng)
