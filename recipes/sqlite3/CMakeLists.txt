@@ -30,6 +30,7 @@ add_library(${PROJECT_NAME} SHARED sqlite3.c)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_NAME   sqlite3
     PUBLIC_HEADER sqlite3.h
+    PUBLIC_HEADER sqlite3ext.h
     DEBUG_POSTFIX d
     )
 target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
