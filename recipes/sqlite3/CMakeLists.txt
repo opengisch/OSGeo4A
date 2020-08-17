@@ -18,6 +18,8 @@ option(SQLITE_ENABLE_JSON1        "enables JSON SQL functins"                   
 option(SQLITE_ENABLE_RBU          "enables resumable bulk update extension"      OFF)
 option(SQLITE_ENABLE_RTREE        "enables R*TRee index extension"               OFF)
 option(SQLITE_RECOMMENDED_OPTIONS "compile by SQLite3 recommended options"       ON)
+option(SQLITE_ENABLE_COLUMN_METADATA "enables column metadata"                   ON)
+
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Release or Debug?" FORCE)
@@ -48,6 +50,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC # inject user's options
         $<$<BOOL:${SQLITE_ENABLE_JSON1}>:SQLITE_ENABLE_JSON1>
         $<$<BOOL:${SQLITE_ENABLE_RBU}>:SQLITE_ENABLE_RBU>
         $<$<BOOL:${SQLITE_ENABLE_RTREE}>:SQLITE_ENABLE_RTREE>
+	$<$<BOOL:${SQLITE_ENABLE_COLUMN_METADATA}>:SQLITE_ENABLE_COLUMN_METADATA>
         $<$<BOOL:${SQLITE_RECOMMENDED_OPTIONS}>:
             SQLITE_DQS=0
             SQLITE_DEFAULT_MEMSTATUS=0
