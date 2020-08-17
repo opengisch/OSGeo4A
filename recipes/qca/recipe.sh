@@ -53,7 +53,6 @@ function build_qca() {
 
  # configure
  try $CMAKECMD \
-  -DCMAKE_BUILD_TYPE=Debug \
   -DQT4_BUILD=OFF \
   -DQCA_SUFFIX=qt5 \
   -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
