@@ -57,7 +57,6 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC # inject user's options
             SQLITE_DEFAULT_WAL_SYNCHRONOUS=1
             SQLITE_LIKE_DOESNT_MATCH_BLOBS
             SQLITE_MAX_EXPR_DEPTH=0
-            SQLITE_OMIT_DECLTYPE
             SQLITE_OMIT_DEPRECATED
             SQLITE_OMIT_PROGRESS_CALLBACK
             SQLITE_OMIT_SHARED_CACHE

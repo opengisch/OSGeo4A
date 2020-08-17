@@ -46,7 +46,6 @@ function build_sqlite3() {
   try mkdir -p $BUILD_PATH/sqlite3/build-$ARCH
   try cd $BUILD_PATH/sqlite3/build-$ARCH
 	push_arm
-  export CFLAGS="${CFLAGS} -DSQLITE_ENABLE_COLUMN_METADATA"
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     $BUILD_sqlite3
