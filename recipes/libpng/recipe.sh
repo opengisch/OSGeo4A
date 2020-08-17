@@ -16,7 +16,7 @@ FILENAME_libpng=libpng-${VERSION_libpng}.tar.xz
 MD5_libpng=015e8e15db1eecde5f2eb9eb5b6e59e9
 
 # default build path
-BUILD_libpng=$BUILD_PATH/libpng/$(get_directory $URL_libpng)
+BUILD_libpng=$BUILD_PATH/libpng/$(get_directory $FILENAME_libpng)
 
 # default recipe path
 RECIPE_libpng=$RECIPES_PATH/libpng
