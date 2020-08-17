@@ -196,6 +196,10 @@ function push_arm() {
   export CXXFLAGS="$CFLAGS"
   export CPPFLAGS="$CFLAGS"
 
+  if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
+    CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
+  fi
+
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
@@ -553,6 +557,8 @@ function run_get_packages() {
     url=${!url}
     md5="MD5_$module"
     md5=${!md5}
+    filename="FILENAME_$module"
+    filename=${!filename}
 
     if [ ! -d "$BUILD_PATH/$module" ]; then
       try mkdir -p $BUILD_PATH/$module
@@ -567,7 +573,10 @@ function run_get_packages() {
       continue
     fi
 
-    filename=$(basename $url)
+    if [ "X$filename" == "X" ]; then
+      filename=$(basename $url)
+    fi
+
     marker_filename=".mark-$filename"
     do_download=1
 
