@@ -557,6 +557,8 @@ function run_get_packages() {
     url=${!url}
     md5="MD5_$module"
     md5=${!md5}
+    filename="FILENAME_$module"
+    filename=${!filename}
 
     if [ ! -d "$BUILD_PATH/$module" ]; then
       try mkdir -p $BUILD_PATH/$module
@@ -571,7 +573,10 @@ function run_get_packages() {
       continue
     fi
 
-    filename=$(basename $url)
+    if [ "X$filename" == "X" ]; then
+      filename=$(basename $url)
+    fi
+
     marker_filename=".mark-$filename"
     do_download=1
 
