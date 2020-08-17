@@ -198,6 +198,7 @@ function push_arm() {
 
   if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
     CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
+    CFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
   fi
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
