@@ -7,7 +7,7 @@ VERSION_libpng=1.6.37
 DEPS_libpng=()
 
 # url of the package
-URL_libpng=ftp://ftp.simplesystems.org/pub/png/src/libpng16/libpng-${VERSION_libpng}.tar.gz
+URL_libpng=https://sourceforge.net/projects/libpng/files/libpng16/${VERSION_libpng}/libpng-${VERSION_libpng}.tar.xz/download#.tar.xz
 
 # md5 of the package
 MD5_libpng=6c7519f6c75939efa0ed3053197abd54
