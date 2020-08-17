@@ -9,14 +9,14 @@ include(GNUInstallDirs)
 #------------------------------------------------------------------------------
 # build options and optional modules:
 option(SQLITE_ENABLE_DBSTAT_VTAB  "enables dbstat virtual table"                 OFF)
-option(SQLITE_ENABLE_FTS3         "enables full text searches version 3"         OFF)
-option(SQLITE_ENABLE_FTS4         "enables full text searches version 3 & 4"     OFF)
-option(SQLITE_ENABLE_FTS5         "enables full text searches version 5"         OFF)
-option(SQLITE_ENABLE_GEOPOLY      "enables Geopoly extention"                    OFF)
+option(SQLITE_ENABLE_FTS3         "enables full text searches version 3"         ON)
+option(SQLITE_ENABLE_FTS4         "enables full text searches version 3 & 4"     ON)
+option(SQLITE_ENABLE_FTS5         "enables full text searches version 5"         ON)
+option(SQLITE_ENABLE_GEOPOLY      "enables Geopoly extention"                    ON)
 option(SQLITE_ENABLE_ICU          "enables international components for unicode" OFF)
 option(SQLITE_ENABLE_JSON1        "enables JSON SQL functins"                    ON)
 option(SQLITE_ENABLE_RBU          "enables resumable bulk update extension"      OFF)
-option(SQLITE_ENABLE_RTREE        "enables R*TRee index extension"               OFF)
+option(SQLITE_ENABLE_RTREE        "enables R*TRee index extension"               ON)
 option(SQLITE_RECOMMENDED_OPTIONS "compile by SQLite3 recommended options"       ON)
 option(SQLITE_ENABLE_COLUMN_METADATA "enables column metadata"                   ON)
 
@@ -52,7 +52,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC # inject user's options
         $<$<BOOL:${SQLITE_ENABLE_RTREE}>:SQLITE_ENABLE_RTREE>
 	$<$<BOOL:${SQLITE_ENABLE_COLUMN_METADATA}>:SQLITE_ENABLE_COLUMN_METADATA>
         $<$<BOOL:${SQLITE_RECOMMENDED_OPTIONS}>:
-            SQLITE_DQS=0
+            SQLITE_DQS=3
             SQLITE_DEFAULT_MEMSTATUS=0
             SQLITE_DEFAULT_WAL_SYNCHRONOUS=1
             SQLITE_LIKE_DOESNT_MATCH_BLOBS
