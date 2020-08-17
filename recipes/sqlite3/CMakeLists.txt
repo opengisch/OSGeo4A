@@ -27,10 +27,13 @@ endif()
 
 # SQLite3 as static library:
 add_library(${PROJECT_NAME} SHARED sqlite3.c)
+set(PUBLIC_HDRS
+    sqlite3.h
+    sqlite3ext.h
+)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_NAME   sqlite3
-    PUBLIC_HEADER sqlite3.h
-    PUBLIC_HEADER sqlite3ext.h
+    PUBLIC_HEADER "${PUBLIC_HDRS}"
     DEBUG_POSTFIX d
     )
 target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
