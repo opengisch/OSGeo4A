@@ -72,8 +72,8 @@ COPY install-qt.sh /tmp/qt/
 RUN /tmp/qt/install-qt.sh --version ${QT_VERSION} --target android --directory "${QT_PATH}" --toolchain any \
       qtbase \
       qtsensors \
-      qtquickcontrols2 \
       qtquickcontrols \
+      qtquickcontrols2 \
       qtmultimedia \
       qtlocation \
       qtimageformats \
@@ -81,8 +81,9 @@ RUN /tmp/qt/install-qt.sh --version ${QT_VERSION} --target android --directory "
       qtdeclarative \
       qtandroidextras \
       qttools \
-      qtimageformats \
-      qtsvg
+      qtsvg \
+      qtwebview \
+      qtcharts
 
 # Download & unpack android SDK
 # ENV JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
