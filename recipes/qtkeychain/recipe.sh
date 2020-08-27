@@ -50,13 +50,7 @@ function build_qtkeychain() {
 
  # configure
  try $CMAKECMD \
-  -DQT4_BUILD=OFF \
-  -DQCA_SUFFIX=qt5 \
   -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-  -DBUILD_TESTS=OFF \
-  -DBUILD_TOOLS=OFF \
-  -DWITH_nss_PLUGIN=OFF \
-  -DWITH_pkcs11_PLUGIN=OFF \
   $BUILD_qtkeychain
 
   try $MAKESMP VERBOSE=1 install
