@@ -49,8 +49,8 @@ To build on MacOS Mojave 10.14.x, you need java8, not default java 10, since
 you would get `Could not determine java version from '10.0.2' during gradle install step`
 with Qt 5.12.0
 
-- `brew tap caskroom/versions` 
-- `brew cask install java8`  
+- `brew tap homebrew/cask-versions` 
+- `brew cask install adoptopenjdk/openjdk/adoptopenjdk8`  
 
 To build QGIS, you need relatively new version of bison (3.x). MacOS ships with bison 2.x
 so it is required to install one newer and add to PATH
