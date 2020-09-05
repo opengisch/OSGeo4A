@@ -1,0 +1,71 @@
+From 6b22ff7e19dd74d18b201d33c16d6675554fe569 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Sat, 5 Sep 2020 15:22:40 +0200
+Subject: [PATCH] paldebug
+
+---
+ src/core/pal/problem.cpp | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/src/core/pal/problem.cpp b/src/core/pal/problem.cpp
+index 25fde7031f..de59bd34e2 100644
+--- a/src/core/pal/problem.cpp
++++ b/src/core/pal/problem.cpp
+@@ -561,23 +561,28 @@ inline Chain *Problem::chain( int seed )
+ 
+ void Problem::chain_search()
+ {
++    QTextStream cerr( stderr );
++    cerr << "PAL: chain_search\n";
+   if ( mFeatureCount == 0 )
+     return;
+ 
+   int i;
+   int seed;
+-  bool *ok = new bool[mFeatureCount];
++  std::vector<bool> ok( mFeatureCount );
+   int fid;
+   int lid;
+   int popit = 0;
+ 
+   Chain *retainedChain = nullptr;
+ 
+-  std::fill( ok, ok + mFeatureCount, false );
++  std::fill( ok.begin(), ok.end(), false );
++
++  cerr << "PAL: init\n";
+ 
+   //initialization();
+   init_sol_falp();
+ 
++  cerr << "PAL: cost\n";
+   //check_solution();
+   solution_cost();
+ 
+@@ -591,6 +596,7 @@ void Problem::chain_search()
+ 
+     //check_solution();
+ 
++      cerr << QStringLiteral( "Iter %1\n" ).arg( iter );
+     for ( seed = ( iter + 1 ) % mFeatureCount;
+           ok[seed] && seed != iter;
+           seed = ( seed + 1 ) % mFeatureCount )
+@@ -645,13 +651,13 @@ void Problem::chain_search()
+       // no chain or the one is not god enough
+       ok[seed] = true;
+     }
+-
++    cerr << "PAL: delete\n";
+     delete_chain( retainedChain );
+     popit++;
+   }
+ 
++  cerr << "PAL: finished\n";
+   solution_cost();
+-  delete[] ok;
+ }
+ 
+ QList<LabelPosition *> Problem::getSolution( bool returnInactive, QList<LabelPosition *> *unlabeled )
+-- 
+2.26.2
+
