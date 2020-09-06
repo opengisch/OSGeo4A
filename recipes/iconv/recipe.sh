@@ -49,16 +49,20 @@ function build_iconv() {
   try mkdir -p $BUILD_PATH/iconv/build-$ARCH
   try cd $BUILD_PATH/iconv/build-$ARCH
 
-  push_arm
-
-  try $BUILD_iconv/configure \
-    --prefix=$STAGE_PATH \
-    --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
-  try $MAKESMP
-  try make install
-
-  pop_arm
+  if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
+    cp -r $RECIPES_PATH/iconv/usr/* $STAGE_PATH
+  else
+    push_arm
+  
+    try $BUILD_iconv/configure \
+      --prefix=$STAGE_PATH \
+      --host=$TOOLCHAIN_PREFIX \
+      --build=x86_64
+    try $MAKESMP
+    try make install
+  
+    pop_arm
+  fi
 }
 
 # function called after all the compile have been done
