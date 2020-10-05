@@ -47,6 +47,7 @@ function build_geos() {
   try cd $BUILD_PATH/geos/build-$ARCH
   push_arm
 #    -DANDROID_STL=gnustl_shared \
+  CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DDISABLE_GEOS_INLINE=ON \
