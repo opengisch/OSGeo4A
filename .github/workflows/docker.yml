@@ -24,7 +24,8 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}
         run: |
-          docker build --build-arg QT_VERSION=$(cat qt_version.txt) -t qt-ndk .docker/qt-ndk
+          QT_VERSION=$(cat qt_version.txt)
+          docker build --cache-from opengisch/qt-ndk:${QT_VERSION} --build-arg QT_VERSION=${QT_VERSION} -t qt-ndk .docker/qt-ndk
           docker build --build-arg ARCHES="${ARCH}" -t opengisch/qfield-sdk:latest .
       - name: Create target specific SDK
         run: |
