@@ -28,7 +28,8 @@ RUN dnf -y install \
     libspatialite-devel \
     protobuf-lite-devel \
     libpq-devel \
-    qt5-qtwebview-devel
+    qt5-qtwebview-devel \
+    bluez-libs-devel
 
 
 RUN curl -LJ -o QGIS.tar.gz $QGIS_URL && \
