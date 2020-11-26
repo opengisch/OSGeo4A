@@ -4,7 +4,7 @@
 VERSION_gdal=3.2.0
 
 # dependencies of this recipe
-DEPS_gdal=(iconv sqlite3 geos libtiff postgresql expat zlib openjpeg libspatialite webp libpng)
+DEPS_gdal=(iconv sqlite3 geos postgresql expat zlib openjpeg libspatialite webp libpng)
 
 # url of the package
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
