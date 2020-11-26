@@ -59,7 +59,10 @@ function build_gdal() {
     --with-geos=$STAGE_PATH/bin/geos-config \
     --with-pg=no \
     --with-expat=$STAGE_PATH \
-    --with-openjpeg=$STAGE_PATH
+    --with-openjpeg=$STAGE_PATH \
+    --with-jpeg=internal \
+    --with-libtiff=internal \
+    --with-geotiff=internal
   try $MAKESMP
   try $MAKESMP install &> install.log
   pop_arm
