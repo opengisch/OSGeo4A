@@ -83,6 +83,7 @@ RUN /tmp/qt/install-qt.sh --version ${QT_VERSION} --target android --directory "
       qttools \
       qtsvg \
       qtwebview \
+      qtbluetooth \
       qtconnectivity \
       qtcharts
 
