@@ -4,7 +4,7 @@
 VERSION_qgis=3.13
 
 # dependencies of this recipe
-DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2 protobuf)
+DEPS_qgis=(zlib gdal qca libspatialite libspatialindex expat gsl postgresql libzip qtkeychain exiv2 protobuf libzstd)
 # DEPS_qgis=()
 
 # url of the package
