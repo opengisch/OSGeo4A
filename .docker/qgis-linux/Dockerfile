@@ -28,6 +28,7 @@ RUN dnf -y install \
     libspatialite-devel \
     protobuf-lite-devel \
     libpq-devel \
+    libzstd-devel \
     qt5-qtwebview-devel
 
 
