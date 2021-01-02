@@ -15,6 +15,7 @@ ENV ANDROID_HOME /opt/android-sdk
 ENV ANDROID_SDK_ROOT ${ANDROID_HOME}
 ENV ANDROID_NDK_ROOT /opt/android-ndk
 ENV ANDROID_NDK_HOST linux-x86_64
+ENV SDK_BUILD_TOOLS=$SDK_BUILD_TOOLS
 
 # The minimum supported android platform (e.g. 21 => Android 5)
 ENV ANDROID_PLATFORM ${ANDROID_PLATFORM}
