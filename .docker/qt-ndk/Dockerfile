@@ -5,6 +5,8 @@ ARG NDK_VERSION=r21d
 ARG SDK_PLATFORM=android-29
 ARG SDK_BUILD_TOOLS=29.0.2
 ARG SDK_PACKAGES="tools platform-tools"
+# The ANDROID_PLATFORM specifies the minimum API level supported by the application or library. This value corresponds to the application's minSdkVersion.
+ARG ANDROID_PLATFORM=21
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV QT_PATH /opt/Qt
@@ -13,7 +15,14 @@ ENV ANDROID_HOME /opt/android-sdk
 ENV ANDROID_SDK_ROOT ${ANDROID_HOME}
 ENV ANDROID_NDK_ROOT /opt/android-ndk
 ENV ANDROID_NDK_HOST linux-x86_64
-ENV ANDROID_NDK_PLATFORM android-21
+
+# The minimum supported android platform (e.g. 21 => Android 5)
+ENV ANDROID_PLATFORM ${ANDROID_PLATFORM}
+# The target android platform (e.g. 29 => Android 10)
+ENV ANDROID_SDK_PLATFORM ${SDK_PLATFORM}
+# The minimum supported android platform with android- prefix (e.g. android-21)
+ENV ANDROID_NDK_PLATFORM android-${ANDROID_PLATFORM}
+
 ENV QMAKESPEC android-clang
 ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${PATH}
 
