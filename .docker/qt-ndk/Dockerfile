@@ -2,6 +2,7 @@ FROM ubuntu:20.04
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
 ARG QT_VERSION
 ARG NDK_VERSION=r21d
+ARG NDK_VERSION_ID=21.3.6528147
 ARG SDK_PLATFORM=android-29
 ARG SDK_BUILD_TOOLS=29.0.2
 ARG SDK_PACKAGES="tools platform-tools"
@@ -13,7 +14,7 @@ ENV QT_PATH /opt/Qt
 ENV QT_ANDROID_BASE ${QT_PATH}/${QT_VERSION}
 ENV ANDROID_HOME /opt/android-sdk
 ENV ANDROID_SDK_ROOT ${ANDROID_HOME}
-ENV ANDROID_NDK_ROOT /opt/android-ndk
+ENV ANDROID_NDK_ROOT=/opt/android-sdk/ndk/${NDK_VERSION_ID}
 ENV ANDROID_NDK_HOST linux-x86_64
 ENV SDK_BUILD_TOOLS=$SDK_BUILD_TOOLS
 
@@ -103,15 +104,7 @@ RUN curl -Lo /tmp/sdk-tools.zip 'https://dl.google.com/android/repository/sdk-to
     && mkdir -p ${ANDROID_HOME} \
     && unzip /tmp/sdk-tools.zip -d ${ANDROID_HOME} \
     && rm -f /tmp/sdk-tools.zip \
-    && yes | sdkmanager --licenses && sdkmanager --verbose "platforms;${SDK_PLATFORM}" "build-tools;${SDK_BUILD_TOOLS}" ${SDK_PACKAGES}
-
-# Download & unpack android NDK & remove any platform which is not used
-RUN mkdir /tmp/android \
-    && curl -Lo /tmp/android/ndk.zip "https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip" \
-    && unzip /tmp/android/ndk.zip -d /tmp \
-    && mv /tmp/android-ndk-${NDK_VERSION} ${ANDROID_NDK_ROOT} \
-    && cd / \
-    && rm -rf /tmp/android \
+    && yes | sdkmanager --licenses && sdkmanager --verbose "platforms;${SDK_PLATFORM}" "build-tools;${SDK_BUILD_TOOLS}" "ndk;${NDK_VERSION_ID}" ${SDK_PACKAGES} \
     && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "$ANDROID_NDK_PLATFORM" -type d -exec rm -r {} +
 
 # Reconfigure locale
