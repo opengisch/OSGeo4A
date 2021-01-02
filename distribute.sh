@@ -188,9 +188,8 @@ function push_arm() {
 
   export QT_ANDROID=${QT_ANDROID_BASE}/android
 
-  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include"
+  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer -I$STAGE_PATH/include"
   export CFLAGS="$CFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include"
-  export CFLAGS="$CFLAGS -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX"
   export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
 
   export CXXFLAGS="$CFLAGS -stdlib=libc++"
@@ -203,7 +202,6 @@ function push_arm() {
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
-  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
   export ANDROID_CMAKE_LINKER_FLAGS=""
   if [ "X${ARCH}" == "Xarm64-v8a" ] || [ "X${ARCH}" == "Xx86_64" ]; then
@@ -226,8 +224,8 @@ function push_arm() {
     debug "Compiler found at $CC"
   fi
 
-  export CC="$TOOLCHAIN_FULL_PREFIX-clang $CFLAGS"
-  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++ $CXXFLAGS"
+  export CC="$TOOLCHAIN_FULL_PREFIX-clang --sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot $CFLAGS"
+  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++ --sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot $CXXFLAGS"
   export AR="$TOOLCHAIN_SHORT_PREFIX-ar" 
   export RANLIB="$TOOLCHAIN_SHORT_PREFIX-ranlib"
   export LD="$TOOLCHAIN_SHORT_PREFIX-ld"
@@ -377,8 +375,6 @@ function run_prepare() {
       echo "Error: Please report issue to enable support for newer arch (${ARCH})."
       exit 1
   fi
-
-  export NDKPLATFORM="$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH"
 
   info "Check mandatory tools"
   # ensure that some tools are existing
