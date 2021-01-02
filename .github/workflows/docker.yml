@@ -28,15 +28,18 @@ jobs:
           docker build --cache-from opengisch/qt-ndk:${QT_VERSION} --build-arg QT_VERSION=${QT_VERSION} -t qt-ndk .docker/qt-ndk
           docker build --build-arg ARCHES="${ARCH}" -t opengisch/qfield-sdk:latest .
       - name: Create target specific SDK
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           mkdir /tmp/osgeo4a
           docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/osgeo4a . > /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
       - uses: actions/upload-artifact@master
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           name: sdk-${{ matrix.arch }}
           path: /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
 
   deploy:
+    if: ${{ github.event_name != 'pull_request' }}
     needs: build
     runs-on: ubuntu-latest
     steps:
