@@ -29,7 +29,7 @@ function prebuild_exiv2() {
     return
   fi
 
-  try patch -p1 < $RECIPE_exiv2/patches/exiv2.patch
+#  try patch -p1 < $RECIPE_exiv2/patches/exiv2.patch
   touch .patched
 }
 
@@ -51,6 +51,7 @@ function build_exiv2() {
     -DEXIV2_BUILD_UNIT_TESTS=OFF \
     -DEXIV2_BUILD_DOC=OFF \
     -DEXIV2_ENABLE_NLS=OFF \
+    -DIconv_IS_BUILT_IN=OFF \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     $BUILD_exiv2
   try $MAKESMP install
