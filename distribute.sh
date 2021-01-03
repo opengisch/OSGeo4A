@@ -188,7 +188,8 @@ function push_arm() {
 
   export QT_ANDROID=${QT_ANDROID_BASE}/android
 
-  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer -I$STAGE_PATH/include"
+  export CFLAGS="--sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot"
+  export CFLAGS="$CFLAGS -DANDROID $OFLAG -fomit-frame-pointer -I$STAGE_PATH/include"
   export CFLAGS="$CFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include"
   export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
 
@@ -224,7 +225,7 @@ function push_arm() {
     debug "Compiler found at $CC"
   fi
 
-  export CC="$TOOLCHAIN_FULL_PREFIX-clang --sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot $CFLAGS"
+  export CC="$TOOLCHAIN_FULL_PREFIX-clang"
   export CXX="$TOOLCHAIN_FULL_PREFIX-clang++ --sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot $CXXFLAGS"
   export AR="$TOOLCHAIN_SHORT_PREFIX-ar" 
   export RANLIB="$TOOLCHAIN_SHORT_PREFIX-ranlib"
