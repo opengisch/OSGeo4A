@@ -2,7 +2,7 @@
 
 
 # version of your package
-VERSION_openssl=1.1.1f
+VERSION_openssl=1.1.1g
 
 # dependencies of this recipe
 DEPS_openssl=()
@@ -11,7 +11,7 @@ DEPS_openssl=()
 URL_openssl=https://www.openssl.org/source/openssl-${VERSION_openssl}.tar.gz
 
 # md5 of the package
-MD5_openssl=3f486f2f4435ef14b81814dbbc7b48bb
+MD5_openssl=76766e98997660138cdaf13a187bd234
 
 # default recipe path
 RECIPE_openssl=$RECIPES_PATH/openssl
@@ -33,6 +33,8 @@ function shouldbuild_openssl() {
 
 # function called to build the source code
 function build_openssl() {
+  try mkdir $BUILD_PATH/openssl/build-$ARCH/
+  try cd $BUILD_PATH/openssl/build-$ARCH/
 
   # Setup compiler toolchain based on CPU architecture
   if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
