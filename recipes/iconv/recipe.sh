@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_iconv=1.14
+VERSION_iconv=1.16
 
 # dependencies of this recipe
 DEPS_iconv=()
@@ -10,7 +10,7 @@ DEPS_iconv=()
 URL_iconv=http://ftpmirror.gnu.org/gnu/libiconv/libiconv-${VERSION_iconv}.tar.gz
 
 # md5 of the package
-MD5_iconv=e34509b1623cec449dfeb73d7ce9c6c6
+MD5_iconv=7d2a800b952942bb2880efb00cfd524c
 
 # default build path
 BUILD_iconv=$BUILD_PATH/iconv/$(get_directory $URL_iconv)
@@ -21,20 +21,7 @@ RECIPE_iconv=$RECIPES_PATH/iconv
 # function called for preparing source code if needed
 # (you can apply patch etc here.)
 function prebuild_iconv() {
-  cd $BUILD_iconv
-
-  # check marker
-  if [ -f .patched ]; then
-    return
-  fi
-
-  try patch -p1 < $RECIPES_PATH/iconv/patches/libiconv.patch
-  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_iconv/build-aux
-  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_iconv/build-aux
-  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_iconv/libcharset/build-aux
-  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_iconv/libcharset/build-aux
-
-  touch .patched
+  true
 }
 
 function shouldbuild_iconv() {
