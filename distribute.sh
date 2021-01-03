@@ -189,8 +189,9 @@ function push_arm() {
   export QT_ANDROID=${QT_ANDROID_BASE}/android
 
   export CFLAGS="--sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot"
-  export CFLAGS="$CFLAGS -DANDROID $OFLAG -fomit-frame-pointer -I$STAGE_PATH/include"
-  export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
+  export CFLAGS+=" -DANDROID $OFLAG -fomit-frame-pointer -isystem $STAGE_PATH/include"
+  export CFLAGS+=" -D__ANDROID_API__=$ANDROIDAPI"
+  export CFLAGS+=" -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
   export CXXFLAGS="$CFLAGS -stdlib=libc++"
 
@@ -200,6 +201,7 @@ function push_arm() {
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
+  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
   export ANDROID_CMAKE_LINKER_FLAGS=""
   if [ "X${ARCH}" == "Xarm64-v8a" ] || [ "X${ARCH}" == "Xx86_64" ]; then
@@ -207,7 +209,7 @@ function push_arm() {
     ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$QT_ANDROID/lib"
     ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$QT_ARCH_PREFIX/usr/lib"
     ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
-    export LDFLAGS="-Wl,-rpath=$STAGE_PATH/lib -Wl,-rpath=$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH $LDFLAGS"
+    export LDFLAGS="-Wl,-rpath=$STAGE_PATH/lib -Wl,-rpath=$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -Wl,-rpath=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI $LDFLAGS"
   fi
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
@@ -223,7 +225,7 @@ function push_arm() {
   fi
 
   export CC="$TOOLCHAIN_FULL_PREFIX-clang"
-  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++ --sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot $CXXFLAGS"
+  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++"
   export AR="$TOOLCHAIN_SHORT_PREFIX-ar" 
   export RANLIB="$TOOLCHAIN_SHORT_PREFIX-ranlib"
   export LD="$TOOLCHAIN_SHORT_PREFIX-ld"
