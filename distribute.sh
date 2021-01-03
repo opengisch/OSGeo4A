@@ -193,7 +193,6 @@ function push_arm() {
   export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
 
   export CXXFLAGS="$CFLAGS -stdlib=libc++"
-  export CPPFLAGS="$CFLAGS"
 
   if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
     CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
