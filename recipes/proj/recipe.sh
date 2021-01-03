@@ -50,7 +50,6 @@ function build_proj() {
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DPROJ_TESTS=OFF \
     -DEXE_SQLITE3=$(which sqlite3) \
-    -DWITH_CURL=OFF \
     $BUILD_proj
   try $MAKESMP install
   pop_arm
