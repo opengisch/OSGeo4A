@@ -190,7 +190,6 @@ function push_arm() {
 
   export CFLAGS="--sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot"
   export CFLAGS="$CFLAGS -DANDROID $OFLAG -fomit-frame-pointer -I$STAGE_PATH/include"
-  export CFLAGS="$CFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include"
   export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
 
   export CXXFLAGS="$CFLAGS -stdlib=libc++"
@@ -198,7 +197,6 @@ function push_arm() {
 
   if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
     CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
-    CFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
   fi
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
