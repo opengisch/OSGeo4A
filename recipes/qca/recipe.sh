@@ -5,7 +5,7 @@
 VERSION_qca=2.2.1
 
 # dependencies of this recipe
-DEPS_qca=(openssl zlib)
+DEPS_qca=(openssl)
 
 # url of the package
 # URL_qca=http://delta.affinix.com/download/qca/2.0/qca-${VERSION_qca}.tar.gz

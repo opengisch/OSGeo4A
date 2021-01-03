@@ -4,7 +4,7 @@
 VERSION_protobuf=3.6.1 # Has to match host version
 
 # dependencies of this recipe
-DEPS_protobuf=(zlib)
+DEPS_protobuf=()
 
 # url of the package
 #URL_protobuf=http://www.protobuf.org/builds/protobuf-0.26-trunk.tar.gz
