@@ -200,8 +200,9 @@ function push_arm() {
   fi
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
-  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
-  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
+  export LDFLAGS+=" -fuse-ld=lld"
+  export LDFLAGS+=" -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
+  export LDFLAGS+=" -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
   export ANDROID_CMAKE_LINKER_FLAGS="-fuse-ld=lld"
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"

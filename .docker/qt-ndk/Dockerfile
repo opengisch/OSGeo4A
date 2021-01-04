@@ -78,6 +78,9 @@ RUN apt-get install -qq -y --no-install-recommends \
     python3-six \
     zip \
     pkg-config \
+    ninja-build \
+    jq \
+    bc \
     protobuf-compiler
 
 COPY install-qt.sh /tmp/qt/
