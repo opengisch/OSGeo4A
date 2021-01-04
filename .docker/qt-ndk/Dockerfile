@@ -107,7 +107,7 @@ RUN curl -Lo /tmp/sdk-tools.zip 'https://dl.google.com/android/repository/sdk-to
     && unzip /tmp/sdk-tools.zip -d ${ANDROID_HOME} \
     && rm -f /tmp/sdk-tools.zip \
     && yes | sdkmanager --licenses && sdkmanager --verbose "platforms;android-${ANDROID_TARGET_PLATFORM}" "build-tools;${SDK_BUILD_TOOLS}" "ndk;${NDK_VERSION_ID}" ${SDK_PACKAGES} \
-    && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "android-$ANDROID_TARGET_PLATFORM" -type d -exec rm -r {} +
+    && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "android-$ANDROID_MINIMUM_PLATFORM" -type d -exec rm -r {} +
 
 # Reconfigure locale
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales

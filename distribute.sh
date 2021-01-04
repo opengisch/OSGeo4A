@@ -154,28 +154,28 @@ function push_arm() {
 
   # Setup compiler toolchain based on CPU architecture
   if [ "X${ARCH}" == "Xx86" ]; then
-      export TOOLCHAIN_FULL_PREFIX=i686-linux-android${ANDROIDAPI}
+      export TOOLCHAIN_FULL_PREFIX=i686-linux-android${ANDROID_TARGET_API}
       export TOOLCHAIN_SHORT_PREFIX=i686-linux-android
       export TOOLCHAIN_PREFIX=i686-linux-android
       export TOOLCHAIN_BASEDIR=x86
       export QT_ARCH_PREFIX=x86
       export ANDROID_SYSTEM=android
   elif [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
-      export TOOLCHAIN_FULL_PREFIX=armv7a-linux-androideabi${ANDROIDAPI}
+      export TOOLCHAIN_FULL_PREFIX=armv7a-linux-androideabi${ANDROID_TARGET_API}
       export TOOLCHAIN_SHORT_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_PREFIX=arm-linux-androideabi
       export TOOLCHAIN_BASEDIR=arm-linux-androideabi
       export QT_ARCH_PREFIX=armv7
       export ANDROID_SYSTEM=android
       elif [ "X${ARCH}" == "Xarm64-v8a" ]; then
-      export TOOLCHAIN_FULL_PREFIX=aarch64-linux-android${ANDROIDAPI}
+      export TOOLCHAIN_FULL_PREFIX=aarch64-linux-android${ANDROID_TARGET_API}
       export TOOLCHAIN_SHORT_PREFIX=aarch64-linux-android
       export TOOLCHAIN_PREFIX=aarch64-linux-android
       export TOOLCHAIN_BASEDIR=aarch64-linux-android
       export QT_ARCH_PREFIX=arm64 # watch out when changing this, openssl depends on it
       export ANDROID_SYSTEM=android64
   elif [ "X${ARCH}" == "Xx86_64" ]; then
-      export TOOLCHAIN_FULL_PREFIX=x86_64-linux-android${ANDROIDAPI}
+      export TOOLCHAIN_FULL_PREFIX=x86_64-linux-android${ANDROID_TARGET_API}
       export TOOLCHAIN_SHORT_PREFIX=x86_64-linux-android
       export TOOLCHAIN_PREFIX=x86_64-linux-android
       export TOOLCHAIN_BASEDIR=x86_64-linux-android
