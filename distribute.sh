@@ -203,14 +203,7 @@ function push_arm() {
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
   export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
-  export ANDROID_CMAKE_LINKER_FLAGS=""
-  if [ "X${ARCH}" == "Xarm64-v8a" ] || [ "X${ARCH}" == "Xx86_64" ]; then
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath-link,$STAGE_PATH/lib"
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath-link,$QT_ANDROID/lib"
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath-link,$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$QT_ARCH_PREFIX/usr/lib"
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath-link,$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
-    export LDFLAGS="-Wl,-rpath-link,$STAGE_PATH/lib -Wl,-rpath-link,$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -Wl,-rpath-link,$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI $LDFLAGS"
-  fi
+  export ANDROID_CMAKE_LINKER_FLAGS="-fuse-ld=lld"
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
   # search compiler in the path, to fail now instead of later.
