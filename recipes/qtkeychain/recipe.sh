@@ -4,7 +4,7 @@
 VERSION_qtkeychain=0.8.0
 
 # dependencies of this recipe
-DEPS_qtkeychain=(zlib)
+DEPS_qtkeychain=()
 
 # url of the package
 #URL_qtkeychain=https://github.com/frankosterfeld/qtkeychain/archive/v${VERSION_qtkeychain}.tar.gz

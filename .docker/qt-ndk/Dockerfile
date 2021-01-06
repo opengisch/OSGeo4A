@@ -1,19 +1,32 @@
 FROM ubuntu:20.04
 MAINTAINER Matthias Kuhn <matthias@opengis.ch>
+
 ARG QT_VERSION
+
 ARG NDK_VERSION=r21d
-ARG SDK_PLATFORM=android-21
-ARG SDK_BUILD_TOOLS=28.0.3
+ARG NDK_VERSION_ID=21.3.6528147
+
+ARG SDK_BUILD_TOOLS=29.0.2
 ARG SDK_PACKAGES="tools platform-tools"
+
+# The ANDROID_MINIMUM_PLATFORM specifies the minimum API level supported by the application or library. This value corresponds to the application's minSdkVersion.
+ARG ANDROID_MINIMUM_PLATFORM=21
+ARG ANDROID_TARGET_PLATFORM=29
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV QT_PATH /opt/Qt
 ENV QT_ANDROID_BASE ${QT_PATH}/${QT_VERSION}
 ENV ANDROID_HOME /opt/android-sdk
 ENV ANDROID_SDK_ROOT ${ANDROID_HOME}
-ENV ANDROID_NDK_ROOT /opt/android-ndk
+ENV ANDROID_NDK_ROOT=/opt/android-sdk/ndk/${NDK_VERSION_ID}
 ENV ANDROID_NDK_HOST linux-x86_64
-ENV ANDROID_NDK_PLATFORM android-21
+ENV SDK_BUILD_TOOLS=$SDK_BUILD_TOOLS
+
+# !! The minimum supported android platform (e.g. 21 => Android 5) !!
+ENV ANDROID_MINIMUM_PLATFORM ${ANDROID_MINIMUM_PLATFORM}
+# !! The target android platform (e.g. 29 => Android 10) !!
+ENV ANDROID_TARGET_PLATFORM ${ANDROID_TARGET_PLATFORM}
+
 ENV QMAKESPEC android-clang
 ENV PATH ${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${PATH}
 
@@ -65,6 +78,9 @@ RUN apt-get install -qq -y --no-install-recommends \
     python3-six \
     zip \
     pkg-config \
+    ninja-build \
+    jq \
+    bc \
     protobuf-compiler
 
 COPY install-qt.sh /tmp/qt/
@@ -93,16 +109,8 @@ RUN curl -Lo /tmp/sdk-tools.zip 'https://dl.google.com/android/repository/sdk-to
     && mkdir -p ${ANDROID_HOME} \
     && unzip /tmp/sdk-tools.zip -d ${ANDROID_HOME} \
     && rm -f /tmp/sdk-tools.zip \
-    && yes | sdkmanager --licenses && sdkmanager --verbose "platforms;${SDK_PLATFORM}" "build-tools;${SDK_BUILD_TOOLS}" ${SDK_PACKAGES}
-
-# Download & unpack android NDK & remove any platform which is not used
-RUN mkdir /tmp/android \
-    && curl -Lo /tmp/android/ndk.zip "https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip" \
-    && unzip /tmp/android/ndk.zip -d /tmp \
-    && mv /tmp/android-ndk-${NDK_VERSION} ${ANDROID_NDK_ROOT} \
-    && cd / \
-    && rm -rf /tmp/android \
-    && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "$ANDROID_NDK_PLATFORM" -type d -exec rm -r {} +
+    && yes | sdkmanager --licenses && sdkmanager --verbose "platforms;android-${ANDROID_TARGET_PLATFORM}" "build-tools;${SDK_BUILD_TOOLS}" "ndk;${NDK_VERSION_ID}" ${SDK_PACKAGES} \
+    && find ${ANDROID_NDK_ROOT}/platforms/* -maxdepth 0 ! -name "android-$ANDROID_MINIMUM_PLATFORM" -type d -exec rm -r {} +
 
 # Reconfigure locale
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_expat=2.0.1
+VERSION_expat=2.2.10
 
 # dependencies of this recipe
 DEPS_expat=()
@@ -10,7 +10,7 @@ DEPS_expat=()
 URL_expat=http://freefr.dl.sourceforge.net/project/expat/expat/$VERSION_expat/expat-${VERSION_expat}.tar.gz
 
 # md5 of the package
-MD5_expat=ee8b492592568805593f81f8cdf2a04c
+MD5_expat=bbd8baaf328fc8e906fbb0efc3a5be1e
 
 # default build path
 BUILD_expat=$BUILD_PATH/expat/$(get_directory $URL_expat)
@@ -27,10 +27,6 @@ function prebuild_expat() {
   if [ -f .patched ]; then
     return
   fi
-
-  try cp $ROOT_OUT_PATH/.packages/config.sub $BUILD_expat/conftools
-  try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_expat/conftools
-  try patch -p1 < $RECIPE_expat/patches/expat.patch
 
   touch .patched
 }
@@ -49,10 +45,10 @@ function build_expat() {
 
   push_arm
 
-  try $BUILD_expat/configure \
-    --prefix=$STAGE_PATH \
-    --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
+  try $CMAKECMD \
+    -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    $BUILD_expat
+  
   try $MAKESMP install
 
   pop_arm

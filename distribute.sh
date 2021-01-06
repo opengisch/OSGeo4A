@@ -188,31 +188,20 @@ function push_arm() {
 
   export QT_ANDROID=${QT_ANDROID_BASE}/android
 
-  export CFLAGS="-DANDROID $OFLAG -fomit-frame-pointer --sysroot $NDKPLATFORM -I$STAGE_PATH/include"
-  export CFLAGS="$CFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH -isystem $ANDROIDNDK/sources/cxx-stl/llvm-libc++/include"
-  export CFLAGS="$CFLAGS -isystem $ANDROIDNDK/sysroot/usr/include -isystem $ANDROIDNDK/sysroot/usr/include/$TOOLCHAIN_SHORT_PREFIX"
-  export CFLAGS="$CFLAGS -D__ANDROID_API__=$ANDROIDAPI"
+  export CFLAGS="--sysroot=$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot"
+  export CFLAGS+=" -DANDROID $OFLAG -fomit-frame-pointer -isystem $STAGE_PATH/include"
+  export CFLAGS+=" -D__ANDROID_API__=$ANDROIDAPI"
+  export CFLAGS+=" -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
   export CXXFLAGS="$CFLAGS -stdlib=libc++"
-  export CPPFLAGS="$CFLAGS"
-
-  if [ "X${ARCH}" == "Xarmeabi-v7a" ]; then
-    CXXFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
-    CFLAGS+=" -lunwind -Wl,--exclude-libs=libunwind.a"
-  fi
 
   export LDFLAGS="-lm -L$STAGE_PATH/lib"
-  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
-  export LDFLAGS="$LDFLAGS -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
+  export LDFLAGS+=" -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libunwind.a"
+  export LDFLAGS+=" -fuse-ld=lld"
+  export LDFLAGS+=" -L$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
+  export LDFLAGS+=" -L$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/sysroot/usr/lib/$TOOLCHAIN_PREFIX/$ANDROIDAPI"
 
-  export ANDROID_CMAKE_LINKER_FLAGS=""
-  if [ "X${ARCH}" == "Xarm64-v8a" ] || [ "X${ARCH}" == "Xx86_64" ]; then
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$STAGE_PATH/lib"
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$QT_ANDROID/lib"
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$QT_ARCH_PREFIX/usr/lib"
-    ANDROID_CMAKE_LINKER_FLAGS="$ANDROID_CMAKE_LINKER_FLAGS;-Wl,-rpath=$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH"
-    export LDFLAGS="-Wl,-rpath=$STAGE_PATH/lib -Wl,-rpath=$ANDROIDNDK/sources/cxx-stl/llvm-libc++/libs/$ARCH $LDFLAGS"
-  fi
+  export ANDROID_CMAKE_LINKER_FLAGS="-fuse-ld=lld"
   export PATH="$ANDROIDNDK/toolchains/llvm/prebuilt/$PYPLATFORM-x86_64/bin/:$ANDROIDSDK/tools:$ANDROIDNDK:$QT_ANDROID/bin:$PATH"
 
   # search compiler in the path, to fail now instead of later.
@@ -226,8 +215,8 @@ function push_arm() {
     debug "Compiler found at $CC"
   fi
 
-  export CC="$TOOLCHAIN_FULL_PREFIX-clang $CFLAGS"
-  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++ $CXXFLAGS"
+  export CC="$TOOLCHAIN_FULL_PREFIX-clang"
+  export CXX="$TOOLCHAIN_FULL_PREFIX-clang++"
   export AR="$TOOLCHAIN_SHORT_PREFIX-ar" 
   export RANLIB="$TOOLCHAIN_SHORT_PREFIX-ranlib"
   export LD="$TOOLCHAIN_SHORT_PREFIX-ld"
@@ -377,8 +366,6 @@ function run_prepare() {
       echo "Error: Please report issue to enable support for newer arch (${ARCH})."
       exit 1
   fi
-
-  export NDKPLATFORM="$ANDROIDNDK/platforms/android-$ANDROIDAPI/arch-$SHORTARCH"
 
   info "Check mandatory tools"
   # ensure that some tools are existing
