@@ -27,6 +27,7 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
+  patch -p1 < $RECIPE_qgis/patches/0001-nmea-geoid.patch
 
   touch .patched
 }
