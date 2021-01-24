@@ -1,0 +1,84 @@
+From 74d053242eaecc029e2855e02f73aef3196c8c88 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Mon, 11 Jan 2021 18:36:59 +0100
+Subject: [PATCH 1/2] Add new field for geoid-ellipsoid diff
+
+---
+ .../gps/qgsgpsconnection.sip.in               |   2 +
+ src/core/gps/qgsgpsconnection.h               |   6 +
+ src/core/gps/qgsnmeaconnection.cpp            |   1 +
+ 3 files changed, 9 insertions(+)
+
+diff --git a/python/core/auto_generated/gps/qgsgpsconnection.sip.in b/python/core/auto_generated/gps/qgsgpsconnection.sip.in
+index d3207050c2..e24fb797c3 100644
+--- a/python/core/auto_generated/gps/qgsgpsconnection.sip.in
++++ b/python/core/auto_generated/gps/qgsgpsconnection.sip.in
+@@ -64,6 +64,8 @@ Encapsulates information relating to a GPS position fix.
+ 
+     double elevation;
+ 
++    double elevation_diff;
++
+     double speed;
+ 
+ 
+diff --git a/src/core/gps/qgsgpsconnection.h b/src/core/gps/qgsgpsconnection.h
+index 64cdb99bcb..d443855588 100644
+--- a/src/core/gps/qgsgpsconnection.h
++++ b/src/core/gps/qgsgpsconnection.h
+@@ -128,6 +128,12 @@ class CORE_EXPORT QgsGpsInformation
+      */
+     double elevation = 0;
+ 
++    /**
++     * Geoidal separation (Diff. between WGS-84 earth ellipsoid and
++     * mean sea level.  -=geoid is below WGS-84 ellipsoid)
++     */
++    double elevation_diff = 0;
++
+     /**
+      * Ground speed, in km/h.
+      */
+diff --git a/src/core/gps/qgsnmeaconnection.cpp b/src/core/gps/qgsnmeaconnection.cpp
+index ce12e25cd9..410de0874e 100644
+--- a/src/core/gps/qgsnmeaconnection.cpp
++++ b/src/core/gps/qgsnmeaconnection.cpp
+@@ -188,6 +188,7 @@ void QgsNmeaConnection::processGgaSentence( const char *data, int len )
+     mLastGPSInformation.longitude = nmea_ndeg2degree( longitude );
+     mLastGPSInformation.latitude = nmea_ndeg2degree( latitude );
+     mLastGPSInformation.elevation = result.elv;
++    mLastGPSInformation.elevation_diff = result.diff;
+     mLastGPSInformation.quality = result.sig;
+     mLastGPSInformation.satellitesUsed = result.satinuse;
+   }
+-- 
+2.30.0
+
+
+From 9b7283abfae2f960c3d38180ee057028bc611d91 Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Mon, 11 Jan 2021 22:38:33 +0100
+Subject: [PATCH 2/2] Update src/core/gps/qgsgpsconnection.h
+
+---
+ src/core/gps/qgsgpsconnection.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/gps/qgsgpsconnection.h b/src/core/gps/qgsgpsconnection.h
+index d443855588..e8606efff5 100644
+--- a/src/core/gps/qgsgpsconnection.h
++++ b/src/core/gps/qgsgpsconnection.h
+@@ -130,7 +130,9 @@ class CORE_EXPORT QgsGpsInformation
+ 
+     /**
+      * Geoidal separation (Diff. between WGS-84 earth ellipsoid and
+-     * mean sea level.  -=geoid is below WGS-84 ellipsoid)
++     * mean sea level.
++     *
++     * \since QGIS 3.18
+      */
+     double elevation_diff = 0;
+ 
+-- 
+2.30.0
+
