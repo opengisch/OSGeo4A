@@ -76,6 +76,7 @@ RUN apt-get install -qq -y --no-install-recommends \
     bison \
     file \
     python3-six \
+    python3-distutils \
     zip \
     pkg-config \
     ninja-build \
