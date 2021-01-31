@@ -4,7 +4,7 @@
 VERSION_poppler=21.01.0
 
 # dependencies of this recipe
-DEPS_poppler=()
+DEPS_poppler=(freetype)
 
 # url of the package
 URL_poppler=https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-${VERSION_poppler}/poppler-poppler-${VERSION_poppler}.tar.gz
