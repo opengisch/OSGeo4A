@@ -4,7 +4,7 @@
 VERSION_poppler=21.01.0
 
 # dependencies of this recipe
-DEPS_poppler=(freetype)
+DEPS_poppler=(freetype libpng)
 
 # url of the package
 URL_poppler=https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-${VERSION_poppler}/poppler-poppler-${VERSION_poppler}.tar.gz
@@ -44,6 +44,7 @@ function build_poppler() {
   push_arm
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DENABLE_DCTDECODER=none \
     $BUILD_poppler
   try $MAKESMP
   try $MAKESMP install
