@@ -44,7 +44,7 @@ function build_poppler() {
   push_arm
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
-    -DENABLE_DCTDECODER=none \
+    -DENABLE_DCTDECODER=unmaintained \
     -DENABLE_UTILS=OFF \
     -DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
     $BUILD_poppler
