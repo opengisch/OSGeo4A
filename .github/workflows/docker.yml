@@ -35,12 +35,14 @@ jobs:
           registry: docker.pkg.github.com
           image_name: qt-ndk
           context: .docker/qt-ndk
+          image_tag: ${{ steps.qt_version.outputs.version }}
           build_extra_args: "--build-arg QT_VERSION=${{ steps.qt_version.outputs.version }}"
 
       - name: Build
         env:
           ARCH: ${{ matrix.arch }}
         run: |
+          docker tag docker.pkg.github.com/opengisch/osgeo4a/qt-ndk:${{ steps.qt_version.outputs.version }} qt-ndk
           docker build --build-arg ARCHES="${ARCH}" -t opengisch/qfield-sdk:latest .
       - name: Create target specific SDK
         if: ${{ github.event_name != 'pull_request' }}
