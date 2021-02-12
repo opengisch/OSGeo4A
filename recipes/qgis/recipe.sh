@@ -28,6 +28,8 @@ function prebuild_qgis() {
     return
   fi
 
+  try patch --verbose --forward -p1 < $RECIPE_qgis/patches/0001-No-exception-pal.patch
+
   touch .patched
 }
 

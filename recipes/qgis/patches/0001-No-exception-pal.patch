@@ -1,0 +1,93 @@
+From 31ad4eddec93cfad032a647e3103488ea989227f Mon Sep 17 00:00:00 2001
+From: Matthias Kuhn <matthias@opengis.ch>
+Date: Fri, 12 Feb 2021 19:13:04 +0100
+Subject: [PATCH] No exception pal
+
+---
+ src/core/pal/problem.cpp | 18 ++++++++++++++----
+ src/core/pal/problem.h   |  2 +-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/src/core/pal/problem.cpp b/src/core/pal/problem.cpp
+index 14e89b239b..64b0b6e208 100644
+--- a/src/core/pal/problem.cpp
++++ b/src/core/pal/problem.cpp
+@@ -336,8 +336,11 @@ inline Chain *Problem::chain( int seed )
+             // evaluate conflicts graph in solution after moving seed's label
+ 
+             lp->getBoundingBox( amin, amax );
+-            mActiveCandidatesIndex.intersects( QgsRectangle( amin[0], amin[1], amax[0], amax[1] ), [lp, &delta_tmp, &conflicts, &currentChain, this]( const LabelPosition * lp2 ) -> bool
++            bool aborted = false;
++            mActiveCandidatesIndex.intersects( QgsRectangle( amin[0], amin[1], amax[0], amax[1] ), [lp, &delta_tmp, &conflicts, &currentChain, &aborted, this]( const LabelPosition * lp2 ) -> bool
+             {
++              if ( aborted )
++                return false;
+               if ( lp2->isInConflict( lp ) )
+               {
+                 const int feat = lp2->getProblemFeatureId();
+@@ -348,7 +351,8 @@ inline Chain *Problem::chain( int seed )
+                 {
+                   if ( ( *cur )->feat == feat )
+                   {
+-                    throw - 1;
++                    aborted = true;
++                    return false;
+                   }
+                 }
+ 
+@@ -361,6 +365,9 @@ inline Chain *Problem::chain( int seed )
+               return true;
+             } );
+ 
++            if ( aborted )
++              return nullptr;
++
+             // no conflict -> end of chain
+             if ( conflicts.isEmpty() )
+             {
+@@ -559,10 +566,10 @@ inline Chain *Problem::chain( int seed )
+ }
+ 
+ 
+-void Problem::chain_search()
++bool Problem::chain_search()
+ {
+   if ( mFeatureCount == 0 )
+-    return;
++    return false;
+ 
+   int i;
+   int seed;
+@@ -586,6 +593,8 @@ void Problem::chain_search()
+   double amin[2];
+   double amax[2];
+ 
++  bool rv = true;
++
+   while ( true )
+   {
+ 
+@@ -652,6 +661,7 @@ void Problem::chain_search()
+ 
+   solution_cost();
+   delete[] ok;
++  return rv;
+ }
+ 
+ QList<LabelPosition *> Problem::getSolution( bool returnInactive, QList<LabelPosition *> *unlabeled )
+diff --git a/src/core/pal/problem.h b/src/core/pal/problem.h
+index 39aa563bd8..e02eda23b6 100644
+--- a/src/core/pal/problem.h
++++ b/src/core/pal/problem.h
+@@ -115,7 +115,7 @@ namespace pal
+       /**
+        * \brief Test with very-large scale neighborhood
+        */
+-      void chain_search();
++      bool chain_search();
+ 
+       /**
+        * Solves the labeling problem, selecting the best candidate locations for all labels and returns a list of these
+-- 
+2.29.2
+
