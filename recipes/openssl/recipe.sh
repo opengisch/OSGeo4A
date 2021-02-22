@@ -57,7 +57,7 @@ function build_openssl() {
   export CFLAGS=""
   export ANDROID_NDK_HOME=$ANDROIDNDK
 
-  try $BUILD_openssl/Configure shared ${SSL_ARCH} -D__ANDROID_API__=$ANDROIDAPI --prefix=/
+  try $BUILD_openssl/Configure shared threads ${SSL_ARCH} -DOPENSSL_THREADS -D__ANDROID_API__=$ANDROIDAPI --prefix=/
   ${MAKE} depend
   ${MAKE} DESTDIR=${STAGE_PATH} SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
 
