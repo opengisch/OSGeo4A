@@ -1,0 +1,23 @@
+From 623334af769aab1967f1237d03fab35fc3d18ca0 Mon Sep 17 00:00:00 2001
+From: nirvn <nirvn.asia@gmail.com>
+Date: Tue, 13 Apr 2021 12:30:29 +0700
+Subject: [PATCH] [vectorlayer] Fix updateFeature() when an attribute's variant
+ goes from null to default null value
+
+---
+ src/core/vector/qgsvectorlayer.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/vector/qgsvectorlayer.cpp b/src/core/vector/qgsvectorlayer.cpp
+index 2aae763c71..1b35f35288 100644
+--- a/src/core/vector/qgsvectorlayer.cpp
++++ b/src/core/vector/qgsvectorlayer.cpp
+@@ -1074,7 +1074,7 @@ bool QgsVectorLayer::updateFeature( QgsFeature &updatedFeature, bool skipDefault
+ 
+     for ( int attr = 0; attr < fa.count(); ++attr )
+     {
+-      if ( fa.at( attr ) != ca.at( attr ) )
++      if ( !qgsVariantEqual( fa.at( attr ), ca.at( attr ) ) )
+       {
+         if ( changeAttributeValue( updatedFeature.id(), attr, fa.at( attr ), ca.at( attr ), true ) )
+         {
