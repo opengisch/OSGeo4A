@@ -63,7 +63,8 @@ function build_gdal() {
     --with-poppler=$STAGE_PATH \
     --with-jpeg=internal \
     --with-libtiff=internal \
-    --with-geotiff=internal
+    --with-geotiff=internal \
+    --disable-shared
   try $MAKESMP
   try $MAKESMP install &> install.log
   pop_arm
