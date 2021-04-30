@@ -49,6 +49,9 @@ jobs:
         run: |
           mkdir /tmp/osgeo4a
           docker run --rm --entrypoint tar opengisch/qfield-sdk:latest czC /home/osgeo4a . > /tmp/osgeo4a-${{ matrix.arch }}.tar.gz
+      - name: Setup upterm session
+        if: ${{ failure() }}
+        uses: lhotari/action-upterm@v1
       - uses: actions/upload-artifact@master
         if: ${{ github.event_name != 'pull_request' }}
         with:
