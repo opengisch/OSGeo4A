@@ -1,6 +1,6 @@
 --- a/configure
 +++ b/configure
-@@ -11971,8 +11971,17 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu)
+@@ -12535,8 +12535,17 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu)
    version_type=linux
    need_lib_prefix=no
    need_version=no
@@ -20,7 +20,7 @@
    finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
    shlibpath_var=LD_LIBRARY_PATH
    shlibpath_overrides_runpath=no
-@@ -15808,8 +15817,17 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu)
+@@ -16372,8 +16381,17 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu)
    version_type=linux
    need_lib_prefix=no
    need_version=no
