@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=6.3.2
+VERSION_proj=7.2.1
 
 # dependencies of this recipe
 DEPS_proj=(sqlite3)
@@ -10,7 +10,7 @@ DEPS_proj=(sqlite3)
 URL_proj=https://download.osgeo.org/proj/proj-${VERSION_proj}.tar.gz
 
 # md5 of the package
-MD5_proj=2ca6366e12cd9d34d73b4602049ee480
+MD5_proj=befbafd25e65ddf0c26a8321d8bcdcd2
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
