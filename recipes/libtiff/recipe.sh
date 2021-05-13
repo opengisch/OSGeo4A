@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_libtiff=4.0.9
+VERSION_libtiff=4.2.0
 
 # dependencies of this recipe
 DEPS_libtiff=()
@@ -10,7 +10,7 @@ DEPS_libtiff=()
 URL_libtiff=http://download.osgeo.org/libtiff/tiff-${VERSION_libtiff}.tar.gz
 
 # md5 of the package
-MD5_libtiff=54bad211279cc93eb4fca31ba9bfdc79
+MD5_libtiff=2bbf6db1ddc4a59c89d6986b368fc063
 
 # default build path
 BUILD_libtiff=$BUILD_PATH/libtiff/$(get_directory $URL_libtiff)

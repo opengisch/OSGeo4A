@@ -4,7 +4,7 @@
 VERSION_proj=7.2.1
 
 # dependencies of this recipe
-DEPS_proj=(sqlite3)
+DEPS_proj=(sqlite3 libtiff)
 
 # url of the package
 URL_proj=https://download.osgeo.org/proj/proj-${VERSION_proj}.tar.gz
