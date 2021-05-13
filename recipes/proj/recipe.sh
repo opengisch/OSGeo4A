@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=7.2.1
+VERSION_proj=8.0.1
 
 # dependencies of this recipe
 DEPS_proj=(sqlite3 libtiff)
@@ -10,7 +10,7 @@ DEPS_proj=(sqlite3 libtiff)
 URL_proj=https://download.osgeo.org/proj/proj-${VERSION_proj}.tar.gz
 
 # md5 of the package
-MD5_proj=befbafd25e65ddf0c26a8321d8bcdcd2
+MD5_proj=c2511f070f0e4854b1b8bf8baccf294c
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
@@ -50,6 +50,8 @@ function build_proj() {
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
     -DPROJ_TESTS=OFF \
     -DEXE_SQLITE3=$(which sqlite3) \
+    -DENABLE_CURL=OFF \
+    -DBUILD_PROJSYNC=OFF \
     $BUILD_proj
   try $MAKESMP install
   pop_arm
