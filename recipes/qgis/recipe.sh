@@ -8,10 +8,10 @@ DEPS_qgis=(gdal qca libspatialite libspatialindex expat gsl postgresql libzip qt
 # DEPS_qgis=()
 
 # url of the package
-URL_qgis=https://github.com/qgis/QGIS/archive/a1c9847919be062e0ac1e7fc1b020c98555fdfae.tar.gz
+URL_qgis=https://github.com/qgis/QGIS/archive/204fc2a34f3faf9072c3537c9c00f6a2cb3128a7.tar.gz
 
 # md5 of the package
-MD5_qgis=dc31362df2552887fc4b84f566463ad5
+MD5_qgis=ddb7156dc54d7cc91a2a7f70f95bb699
 
 # default build path
 BUILD_qgis=$BUILD_PATH/qgis/$(get_directory $URL_qgis)
@@ -27,8 +27,6 @@ function prebuild_qgis() {
   if [ -f .patched ]; then
     return
   fi
-
-  try patch -p1 < $RECIPE_qgis/patches/update_feature_fix.patch
 
   touch .patched
 }
