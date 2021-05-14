@@ -28,6 +28,8 @@ function prebuild_qgis() {
     return
   fi
 
+  try patch -p1 < $RECIPE_qgis/patches/fix_python_cmake.patch
+
   touch .patched
 }
 
