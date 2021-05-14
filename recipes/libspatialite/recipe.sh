@@ -4,7 +4,7 @@
 VERSION_libspatialite=5.0.1
 
 # dependencies of this recipe
-DEPS_libspatialite=(sqlite3 proj iconv freexl geos)
+DEPS_libspatialite=(sqlite3 proj iconv freexl geos librttopo)
 
 # url of the package
 URL_libspatialite=http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-${VERSION_libspatialite}.tar.gz
@@ -61,7 +61,7 @@ function build_libspatialite() {
     --enable-static=no \
     --with-geosconfig=$STAGE_PATH/bin/geos-config \
     --enable-libxml2=no \
-    --enable-rttopo=no \
+    --enable-rttopo=yes \
     --enable-gcp=no \
     --enable-minizip=no \
     --disable-dependency-tracking

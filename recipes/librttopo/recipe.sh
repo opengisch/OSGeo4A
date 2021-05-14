@@ -4,7 +4,7 @@
 VERSION_librttopo=1.1.0
 
 # dependencies of this recipe
-DEPS_librttopo=()
+DEPS_librttopo=(geos)
 
 # url of the package
 URL_librttopo=https://git.osgeo.org/gitea/rttopo/librttopo/archive/librttopo-${VERSION_librttopo}.tar.gz
@@ -52,6 +52,7 @@ function build_librttopo() {
     --host=$TOOLCHAIN_PREFIX \
     --build=x86_64 \
     --prefix=$STAGE_PATH \
+    --with-geosconfig=$STAGE_PATH/bin/geos-config
   try $MAKESMP
   try $MAKESMP install
 
