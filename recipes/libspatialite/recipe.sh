@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_libspatialite=4.3.0a
+VERSION_libspatialite=5.0.1
 
 # dependencies of this recipe
 DEPS_libspatialite=(sqlite3 proj iconv freexl geos)
@@ -10,7 +10,7 @@ DEPS_libspatialite=(sqlite3 proj iconv freexl geos)
 URL_libspatialite=http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-${VERSION_libspatialite}.tar.gz
 
 # md5 of the package
-MD5_libspatialite=6b380b332c00da6f76f432b10a1a338c
+MD5_libspatialite=5f4a961afbb95dcdc715b5d7f8590573
 
 # default build path
 BUILD_libspatialite=$BUILD_PATH/libspatialite/$(get_directory $URL_libspatialite)
@@ -44,22 +44,31 @@ function shouldbuild_libspatialite() {
 
 # function called to build the source code
 function build_libspatialite() {
-  try mkdir -p $BUILD_PATH/libspatialite/build-$ARCH
+  try rsync -a $BUILD_libspatialite/ $BUILD_PATH/libspatialite/build-$ARCH/
   try cd $BUILD_PATH/libspatialite/build-$ARCH
+  
   push_arm
+  
   export CPPFLAGS=$CXXFLAGS
   LDFLAGS="$LDFLAGS -llog" \
-  CFLAGS="-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H" \
-    try $BUILD_libspatialite/configure \
+    try $BUILD_PATH/libspatialite/build-$ARCH/configure \
     --prefix=$STAGE_PATH \
     --host=$TOOLCHAIN_PREFIX \
     --build=x86_64 \
     --target=android \
+    --enable-examples=no \
+    --enable-proj=yes \
+    --enable-static=no \
     --with-geosconfig=$STAGE_PATH/bin/geos-config \
-    --enable-libxml2=no
-
+    --enable-libxml2=no \
+    --enable-rttopo=no \
+    --enable-gcp=no \
+    --enable-minizip=no \
+    --disable-dependency-tracking
+  
   try $MAKESMP
   try make install &> install.log
+  
   pop_arm
 }
 

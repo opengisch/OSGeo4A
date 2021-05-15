@@ -45,6 +45,10 @@ RUN dpkg --add-architecture i386 && apt-get -qq update && apt-get -qq dist-upgra
     sudo \
     curl \
     make \
+    autoconf \
+    automake \
+    autotools-dev \
+    libtool \
     openjdk-8-jdk \
     ant \
     libarchive-tools \
