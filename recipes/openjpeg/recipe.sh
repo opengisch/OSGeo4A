@@ -2,7 +2,7 @@
 
 
 # version of your package
-VERSION_openjpeg=2.3.1
+VERSION_openjpeg=2.4.0
 
 # dependencies of this recipe
 DEPS_openjpeg=()
