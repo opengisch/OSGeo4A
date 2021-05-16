@@ -52,8 +52,7 @@ function build_gsl() {
   try $BUILD_gsl/configure \
     --prefix=$STAGE_PATH \
     --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64 \
-    LIBS="`pkg-config --libs-only-l cblas` -lm"
+    --build=x86_64
   try $MAKESMP
   try make install
 

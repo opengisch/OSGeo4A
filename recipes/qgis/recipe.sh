@@ -59,7 +59,7 @@ function build_qgis() {
     -DGEOS_LIB_NAME_WITH_PREFIX=-lgeos_c \
     -DGSL_CONFIG=$STAGE_PATH/bin/gsl-config \
     -DGSL_CONFIG_PREFER_PATH=$STAGE_PATH/bin \
-    -DGSL_EXE_LINKER_FLAGS=-Wl,-rpath, \
+    -DGSL_EXE_LINKER_FLAGS=-Wl,--no-as-needed -lgsl -lgslcblas -lm,-rpath, \
     -DGSL_INCLUDE_DIR=$STAGE_PATH/include/gsl \
     -DICONV_INCLUDE_DIR=$STAGE_PATH/include \
     -DICONV_LIBRARY=$STAGE_PATH/lib/libiconv.so \
