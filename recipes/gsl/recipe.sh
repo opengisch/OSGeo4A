@@ -46,14 +46,18 @@ function shouldbuild_gsl() {
 function build_gsl() {
   mkdir $BUILD_PATH/gsl/build-$ARCH
   cd $BUILD_PATH/gsl/build-$ARCH
-	push_arm
+  
+  push_arm
+  
   try $BUILD_gsl/configure \
     --prefix=$STAGE_PATH \
     --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
+    --build=x86_64 \
+    LIBS="`pkg-config --libs-only-l gslcblas` -lm"
   try $MAKESMP
   try make install
-	pop_arm
+
+  pop_arm
 }
 
 # function called after all the compile have been done
