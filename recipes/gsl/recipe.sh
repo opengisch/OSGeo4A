@@ -50,7 +50,8 @@ function build_gsl() {
   try $BUILD_gsl/configure \
     --prefix=$STAGE_PATH \
     --host=$TOOLCHAIN_PREFIX \
-    --build=x86_64
+    --build=x86_64 \
+    GSL_LDFLAGS="-Lcblas/.libs/ -lgslcblas"
   try $MAKESMP
   try make install
 	pop_arm
