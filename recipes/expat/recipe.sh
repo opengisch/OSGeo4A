@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_expat=2.2.10
+VERSION_expat=2.4.1
 
 # dependencies of this recipe
 DEPS_expat=()
@@ -10,7 +10,7 @@ DEPS_expat=()
 URL_expat=http://freefr.dl.sourceforge.net/project/expat/expat/$VERSION_expat/expat-${VERSION_expat}.tar.gz
 
 # md5 of the package
-MD5_expat=bbd8baaf328fc8e906fbb0efc3a5be1e
+MD5_expat=8738ef9ed1c5dcc03207286ea84f4299
 
 # default build path
 BUILD_expat=$BUILD_PATH/expat/$(get_directory $URL_expat)
