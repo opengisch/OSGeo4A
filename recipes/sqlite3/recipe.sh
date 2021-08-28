@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # version of your package
-VERSION_sqlite3=3330000
+VERSION_sqlite3=3360000
 
 # dependencies of this recipe
 DEPS_sqlite3=()
 
 # url of the package
-URL_sqlite3=http://www.sqlite.org/2020/sqlite-amalgamation-${VERSION_sqlite3}.zip
+URL_sqlite3=http://www.sqlite.org/2021/sqlite-amalgamation-${VERSION_sqlite3}.zip
 
 # md5 of the package
-MD5_sqlite3=944829c3d88a958be935480b8e56b1fb
+MD5_sqlite3=c5d360c74111bafae1b704721ff18fe6
 
 # default build path
 BUILD_sqlite3=$BUILD_PATH/sqlite3/$(get_directory $URL_sqlite3)
