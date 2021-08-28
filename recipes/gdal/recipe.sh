@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_gdal=3.2.1
+VERSION_gdal=3.3.1
 
 # dependencies of this recipe
 DEPS_gdal=(iconv sqlite3 geos postgresql expat openjpeg libspatialite webp libpng poppler)
@@ -10,7 +10,7 @@ DEPS_gdal=(iconv sqlite3 geos postgresql expat openjpeg libspatialite webp libpn
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
 
 # md5 of the package
-MD5_gdal=142dd8a1dc6a598b7e60c1e9e8a1b8ed
+MD5_gdal=4b256d19897aed9dd34c4fdf54212e2c
 
 # default build path
 BUILD_gdal=$BUILD_PATH/gdal/$(get_directory $URL_gdal)
@@ -32,6 +32,9 @@ function prebuild_gdal() {
   try cp $ROOT_OUT_PATH/.packages/config.guess $BUILD_gdal
   # Remove bundled lib
   try rm -rf $BUILD_gdal/frmts/zlib
+
+  try sed -i 's|LDFLAGS=\"\"|LDFLAGS=\"${LDFLAGS}\"|g' configure
+  try sed -i 's|LDFLAGS=\"\"|LDFLAGS=\"${LDFLAGS}\"|g' m4/geos.m4
 
   touch .patched
 }
@@ -71,5 +74,5 @@ function build_gdal() {
 
 # function called after all the compile have been done
 function postbuild_gdal() {
-	true
+  true
 }
