@@ -28,8 +28,6 @@ function prebuild_exiv2() {
     return
   fi
 
-  # The following patch is required for older api levels
-  try patch -p1 < $RECIPE_exiv2/patches/exiv2.patch
   touch .patched
 }
 
