@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_gdal=3.3.1
+VERSION_gdal=3.3.2
 
 # dependencies of this recipe
 DEPS_gdal=(iconv sqlite3 geos postgresql expat openjpeg libspatialite webp libpng poppler)
@@ -10,7 +10,7 @@ DEPS_gdal=(iconv sqlite3 geos postgresql expat openjpeg libspatialite webp libpn
 URL_gdal=http://download.osgeo.org/gdal/$VERSION_gdal/gdal-${VERSION_gdal}.tar.gz
 
 # md5 of the package
-MD5_gdal=4b256d19897aed9dd34c4fdf54212e2c
+MD5_gdal=fd82c580ec9e16a0a46cd176243a8a56
 
 # default build path
 BUILD_gdal=$BUILD_PATH/gdal/$(get_directory $URL_gdal)
