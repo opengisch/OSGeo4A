@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_proj=8.1.0
+VERSION_proj=8.1.1
 
 # dependencies of this recipe
 DEPS_proj=(sqlite3 libtiff)
@@ -10,7 +10,7 @@ DEPS_proj=(sqlite3 libtiff)
 URL_proj=https://download.osgeo.org/proj/proj-${VERSION_proj}.tar.gz
 
 # md5 of the package
-MD5_proj=719aa3448d3e911cb8f729a6020fad6c
+MD5_proj=f017fd7d35311b0d65b2cf0503844690
 
 # default build path
 BUILD_proj=$BUILD_PATH/proj/$(get_directory $URL_proj)
