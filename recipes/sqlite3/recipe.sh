@@ -10,7 +10,7 @@ DEPS_sqlite3=()
 URL_sqlite3=http://www.sqlite.org/2021/sqlite-amalgamation-${VERSION_sqlite3}.zip
 
 # md5 of the package
-MD5_sqlite3=c5d360c74111bafae1b704721ff18fe6
+MD5_sqlite3=5526d3309d889d0b9ed8ce73c1ee3b23
 
 # default build path
 BUILD_sqlite3=$BUILD_PATH/sqlite3/$(get_directory $URL_sqlite3)
