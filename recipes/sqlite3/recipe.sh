@@ -45,9 +45,10 @@ function shouldbuild_sqlite3() {
 function build_sqlite3() {
   try mkdir -p $BUILD_PATH/sqlite3/build-$ARCH
   try cd $BUILD_PATH/sqlite3/build-$ARCH
-	push_arm
+  push_arm
   try $CMAKECMD \
     -DCMAKE_INSTALL_PREFIX:PATH=$STAGE_PATH \
+    -DSQLITE_ALLOW_ROWID_IN_VIEW=ON \
     $BUILD_sqlite3
   try $MAKESMP install
   pop_arm
