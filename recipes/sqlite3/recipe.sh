@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version of your package
-VERSION_sqlite3=3360000
+VERSION_sqlite3=3350500
 
 # dependencies of this recipe
 DEPS_sqlite3=()
